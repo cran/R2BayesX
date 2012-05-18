@@ -1,0 +1,169 @@
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{graphicx}
+\parindent0em
+
+\begin{document}
+\begin{center}
+\LARGE{\bf BAYESREG OBJECT b: regression procedure}
+\end{center} 
+\vspace{1cm}
+
+\noindent {\bf \large Response:}
+\begin{tabbing}
+Number of observations: \= 210\\
+Response Variable: \> y\\
+Family: \> Gaussian\\
+\end{tabbing}
+
+\noindent {\bf \large Predictor:}\\
+
+
+\begin{tabular}{ccp{12cm}}
+$\eta$ & $=$ & $\gamma_{const}const + f_{x}(x) + f_{id}(id)$
+\end{tabular}
+\\ 
+\\
+
+\noindent {\bf \large Priors:}\\
+\\
+Fixed effects:\\
+diffuse priors\\
+\\\\
+$f_{x}(x)$:\\
+P-spline with second order random walk penalty\\
+Number of knots: 8\\
+Knot choice: equidistant\\
+Degree of Splines: 3\\
+Inverse gamma prior for variance component with hyperparameters a=0.001 and b=0.001\\
+\\\\
+$f_{id}(id)$\\
+Markov random field\\
+Inverse gamma prior for variance component with hyperparameters a=0.001 and b=0.001\\
+\\\\
+
+\noindent {\bf \large MCMC Options:}
+\begin{tabbing}
+Levels for credible intervals: \= \\
+Level 1: \> 95\\
+Level 2: \> 80\\
+Number of Iterations: \> 12000\\
+Burn in: \> 2000\\
+Thinning Parameter: \> 100
+\end{tabbing}
+\vspace{0.5cm}
+
+ {\bf \large Estimation results for the deviance: }\\ 
+
+{\bf Unstandardized deviance } 
+
+\vspace{-0.4cm}
+\begin{tabbing}
+\hspace{3cm} \= \\
+  Mean:           \> 693.80468 \\
+  Std. Dev:       \> 14.925032 \\
+  2.5\% Quantile:  \> 667.4179 \\
+  10\% Quantile:  \> 675.55959 \\
+  50\% Quantile:  \> 693.03026 \\
+  90\% Quantile:  \> 714.72261 \\
+  97.5\% Quantile:  \> 722.23004 \\
+\end{tabbing}
+
+{\bf Saturated deviance } 
+
+\vspace{-0.4cm}
+\begin{tabbing}
+\hspace{3cm} \= \\
+  Mean:           \> 211.75483 \\
+  Std. Dev:       \> 20.28022 \\
+  2.5\% Quantile:  \> 170.71869 \\
+  10\% Quantile:  \> 186.76649 \\
+  50\% Quantile:  \> 209.93272 \\
+  90\% Quantile:  \> 239.57748 \\
+  97.5\% Quantile:  \> 251.42836 \\
+\end{tabbing}
+
+
+ {\bf \large Estimation results for the DIC: }\\ 
+
+{\bf DIC based on the unstandardized deviance } 
+
+\vspace{-0.4cm}
+\begin{tabbing}
+\hspace{3cm} \= \\
+deviance($\bar{\mu}$) \> 649.0103 \\
+pD  \> 44.794386 \\
+DIC  \> 738.59907 \\
+\end{tabbing}
+
+{\bf DIC based on the saturated deviance } 
+
+\vspace{-0.4cm}
+\begin{tabbing}
+\hspace{3cm} \= \\
+deviance($\bar{\mu}$) \> 165.51503 \\
+pD \> 46.239802 \\
+DIC \> 257.99464 \\
+\end{tabbing}
+
+
+ {\bf \large Estimation results for the scale parameter: }\\ 
+
+\vspace{-0.4cm}
+\begin{tabbing}
+\hspace{3cm} \= \\
+Mean  \> 1.59119 \\
+Std. dev.:  \> 0.189236 \\
+  2.5\% Quantile:  \>1.30414 \\
+  10\% Quantile:  \>1.33929 \\
+  50\% Quantile:  \>1.56993 \\
+  90\% Quantile:  \>1.84688 \\
+  97.5\% Quantile:  \>1.97113 \\
+\end{tabbing}
+
+
+\newpage 
+
+
+\noindent {\bf \large Fixed Effects:}\\
+\\
+\begin{tabular}{|r|rrrrr|}
+\hline
+Variable & Mean & STD & 2.5\%-Quant. & Median & 97.5\%-Quant.\\
+\hline
+const & 1.65687 & 0.0876656 & 1.51333 & 1.65726 & 1.83511\\
+\hline 
+\end{tabular}
+
+\newpage
+\noindent {\bf \large Plots:}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.6]{/home/nik/tmp1/exmodel_f_x_pspline}
+\caption{Non--linear Effect of 'x'.
+Shown are the posterior means together with 95\% and 80\% pointwise credible intervals.}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.6]{/home/nik/tmp1/exmodel_f_id_spatial_pmean}
+\caption{Non--linear Effect of 'id'. Shown are the posterior means.}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.6]{/home/nik/tmp1/exmodel_f_id_spatial_pcat95}
+\caption{Non--linear Effect of 'id'. Posterior probabilities for a nominal level of 95\%.
+Black denotes regions with strictly negative credible intervals,
+white denotes regions with strictly positive credible intervals.}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[scale=0.6]{/home/nik/tmp1/exmodel_f_id_spatial_pcat80}
+\caption{Non--linear Effect of 'id'. Posterior probabilities for a nominal level of 80\%.
+Black denotes regions with strictly negative credible intervals,
+white denotes regions with strictly positive credible intervals.}
+\end{figure}
+\end{document}
