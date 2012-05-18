@@ -1,5 +1,5 @@
 bayesx.construct.ps.smooth.spec <- bayesx.construct.psplinerw1.smooth.spec <- 
-bayesx.construct.psplinerw2.smooth.spec <- bayesx.construct.pspline.smooth.spec <- 
+bayesx.construct.psplinerw2.smooth.spec <- bayesx.construct.pspline.smooth.spec <-
 function(object, dir, prg, data)
 {
   if(length(object$p.order) == 1L) 

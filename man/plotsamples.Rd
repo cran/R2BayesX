@@ -75,4 +75,4 @@ plotsamples(sax, selected = "sx(x)", acf = TRUE, lag.max = 200)
 }
 }
 
-\keyword{regression}
+\keyword{hplot}

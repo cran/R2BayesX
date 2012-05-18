@@ -1,5 +1,4 @@
-bayesx.construct.kr.smooth.spec <- bayesx.construct.kriging.smooth.spec <-
-function(object, dir, prg, data)
+bayesx.construct.kr.smooth.spec <- bayesx.construct.kriging.smooth.spec <- function(object, dir, prg, data)
 {
   termo <- object$term
   if(length(termo) < 2L)

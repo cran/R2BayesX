@@ -1,5 +1,4 @@
-s4dim <-
-function(x)
+s4dim <- function(x)
 {
   dim <- 1L
   if(ncol(x) == 10L)

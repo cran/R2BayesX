@@ -1,5 +1,4 @@
-DIC <-
-function(object, ...)
+DIC <- function(object, ...)
 {
   UseMethod("DIC")
 }

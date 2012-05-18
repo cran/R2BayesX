@@ -1,5 +1,4 @@
-plot2d.default <-
-function(x, residuals, range, col.residuals = "black",
+plot2d.default <- function(x, residuals, range, col.residuals = "black",
   fill.select = NULL, col.polygons = NULL, col.rug = NULL, pb = FALSE, 
   x.co = NULL, rug = FALSE, jitter = FALSE, specs)
 {
@@ -7,7 +6,8 @@ function(x, residuals, range, col.residuals = "black",
     residuals <- TRUE
   else
     residuals <- FALSE
-  x <- na.omit(x)
+  if(nrow(x) > 1)
+    x <- na.omit(x)
   if(!is.matrix(x))
     x <- matrix(x, nrow = 1L)
   if(residuals)

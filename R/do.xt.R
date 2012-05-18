@@ -1,5 +1,4 @@
-do.xt <-
-function(term, object, not = NULL, noco = FALSE)
+do.xt <- function(term, object, not = NULL, noco = FALSE)
 {
   if(!is.null(object$xt)) {
     names.xt <- names(object$xt)

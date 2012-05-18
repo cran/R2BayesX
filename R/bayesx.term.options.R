@@ -1,5 +1,4 @@
-bayesx.term.options <-
-function(bs = "ps", method = "MCMC")
+bayesx.term.options <- bxopts <- function(bs = "ps", method = "MCMC")
 {
   bterms <- c("lasso", "ridge", "bl", "kr", "gk", 
     "gs", "mrf", "ps", "rw1", "rw2", "random", "te",
@@ -8,7 +7,7 @@ function(bs = "ps", method = "MCMC")
     "baseline", "tensor")
   if(!is.na(bs <- pmatch(bs, bterms))) {
     bs <- bterms[bs]
-    cat("\npossible options for \'bs = \"", bs, "\"\': \n\n", sep = "")
+    cat("\nAvailable options for \'bs = \"", bs, "\"\': \n\n", sep = "")
     if(bs %in% c("lasso", "ridge")) {
       if(method == "MCMC") {
         cat("  a, b: options a and b specify the hyperparameters of the  \n",

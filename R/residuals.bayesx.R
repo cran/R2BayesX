@@ -1,5 +1,4 @@
-residuals.bayesx <-
-function(object, model = NULL, term = NULL, ...)
+residuals.bayesx <- function(object, model = NULL, term = NULL, ...)
 {
   object <- get.model(object, model)
   rval <- list()
@@ -17,9 +16,11 @@ function(object, model = NULL, term = NULL, ...)
           eval(parse(text = paste("rval[[i]]$'", tn[j], "' <- tmp", sep = "")))
         }
       } else rval[[i]] <- attr(object[[i]]$effects[[term]], "partial.resids")
-    } else rval[[i]] <- object[[i]]$residuals
-  if(!is.null(object[[i]]$bayesx.setup$model.name))
-    mn[i] <- object[[i]]$bayesx.setup$model.name
+    } else {
+      rval[[i]] <- bayesx.reorder(object[[i]], object[[i]]$residuals, TRUE)
+    }
+    if(!is.null(object[[i]]$bayesx.setup$model.name))
+      mn[i] <- object[[i]]$bayesx.setup$model.name
   }
   mn[duplicated(mn)] <- paste(mn[duplicated(mn)], 1:length(mn[duplicated(mn)]) + 1L, sep = "")
   names(rval) <- mn

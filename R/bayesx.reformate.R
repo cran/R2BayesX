@@ -1,5 +1,4 @@
-bayesx.reformate <-
-function(x)
+bayesx.reformate <- function(x)
 {
   if(!is.null(x$fixed.effects) && length(x$fixed.effects) > 0L) {
     e <- x$fixed.effects

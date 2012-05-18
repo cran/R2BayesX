@@ -7,7 +7,7 @@ sx <- function(x, z = NULL, bs = "ps", by = NA, ...)
     "rw1", "rw2",
     "season",
     "ps", "psplinerw1", "psplinerw2", "pspline",
-    "te", "pspline2dimrw2",
+    "te", "pspline2dimrw2", "te1", "pspline2dimrw1",
     "kr", "kriging",
     "gk", "geokriging",
     "gs", "geospline",
@@ -26,12 +26,12 @@ sx <- function(x, z = NULL, bs = "ps", by = NA, ...)
   if(bs %in% c("rsps", "hrandom_pspline")) {
     bs <- "rsps"
     x <- deparse(substitute(x), backtick = TRUE, width.cutoff = 500)
-    rcall <- paste("R2BayesX:::r(x = ", by, ", bs = ", sQuote(bs), ", by = ", x, ", ...)", sep = "")
+    rcall <- paste("r(x = ", by, ", bs = ", sQuote(bs), ", by = ", x, ", ...)", sep = "")
     rval <- eval(parse(text = rcall))
   } else {
     if(length(grep("~", term <- deparse(call$x))) && bs %in% c("re", "ra", "random")) {
       x <- deparse(substitute(x), backtick = TRUE, width.cutoff = 500)
-      rcall <- paste("R2BayesX:::r(x = ", x, ", by = ", by, ", ...)", sep = "")
+      rcall <- paste("r(x = ", x, ", by = ", by, ", ...)", sep = "")
       rval <- eval(parse(text = rcall))
     } else {
       k <- -1
@@ -50,10 +50,16 @@ sx <- function(x, z = NULL, bs = "ps", by = NA, ...)
         by <- "NA"
       }
       options("warn" = warn)
+      if(bs %in% c("pspline2dimrw1", "pspline2dimrw2", "te",
+        "gs", "geospline", "kr", "gk", "kriging", "geokriging")) {
+        if(by != "NA")
+          stop(paste("by variables are not allowed for smooths of type bs = '", bs, "'!", sep = ""))
+      }
+      if(bs == "te1") bs <- "pspline2dimrw1"
       if(!is.null(xt$knots))
         xt$nrknots <- xt$knots
       if(bs %in% c("ps", "te", "psplinerw1", "psplinerw2", "pspline",
-        "pspline2dimrw2", "gs", "geospline")) {
+        "pspline2dimrw2", "pspline2dimrw1", "gs", "geospline")) {
         if(!is.null(xt$degree))
           m <- xt$degree
         if(!is.null(xt$order)) {

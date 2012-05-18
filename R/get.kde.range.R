@@ -10,7 +10,7 @@ kde.quantiles <- function(x, probs = c(0.05, 0.95), ...)
   if(is.null(args$to))
     args$to <- max(x, na.rm = TRUE)
   args$x <- x
-  kde <- do.call(stats:::density.default, delete.args(stats::density.default, args))
+  kde <- do.call(stats::density.default, delete.args(stats::density.default, args))
   quants <- approx.quantile(x = kde$x, y = kde$y, probs = probs)
 
   return(quants)

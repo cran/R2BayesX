@@ -65,7 +65,7 @@ b1 <- bayesx(y ~ sx(x) + z + w, data = dat)
 
 ## extract fitted values
 fit <- fitted(b1)
-hist(fit$linpred, freq = FALSE)
+hist(fit, freq = FALSE)
 
 ## now extract 1st model term
 ## and plot it
@@ -73,8 +73,7 @@ fx <- fitted(b1, term = "sx(x)")
 plot(fx)
 
 ## extract model residuals
-res <- residuals(b1)
-hist(res[, 1])
+hist(residuals(b1))
 
 ## extract partial residuals for sx(x)
 pres <- residuals(b1, term = "sx(x)")
@@ -86,12 +85,11 @@ points(pres)
 ## use of read.bayesx.output
 ## load example data from
 ## package R2BayesX
-dir <- file.path(find.package("R2BayesX"), "/examples/ex01")
+dir <- file.path(find.package("R2BayesX"), "examples", "ex01")
 b2 <- read.bayesx.output(dir)
 
 ## extract fitted values
-fit <- fitted(b2)
-hist(fit$linpred)
+hist(fitted(b2))
 
 ## extract model term of x
 ## and plot it

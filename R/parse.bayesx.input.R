@@ -1,5 +1,4 @@
-parse.bayesx.input <-
-function(formula, data, weights = NULL, subset = NULL, offset = NULL, 
+parse.bayesx.input <- function(formula, data, weights = NULL, subset = NULL, offset = NULL, 
   na.action = na.fail, contrasts = NULL, control = bayesx.control(...), ...)
 {
   if(missing(data))
@@ -18,13 +17,13 @@ function(formula, data, weights = NULL, subset = NULL, offset = NULL,
   if(!is.null(offset) && offset == "ra$offset") offset <- NULL
   if(!is.null(subset) && subset == "NULL") subset <- NULL
   if(!is.null(subset) && subset == "ra$subset") subset <- NULL
+  if(is.null(na.action))
+    na.action <- get(getOption("na.action"))
   co.id <- attr(control, "co.id")
   outfile <- control$outfile
   control$oformula <- formula
   control$terms <- terms(formula, specials = c("s", "te", "r", "sx", "t2"), keep.order = TRUE)
-  intcpt <- TRUE
-  if(grepl("-1", as.character(formula)[3L]))
-    intcpt <- FALSE
+  intcpt <- attr(control$terms, "intercept") > 0
   tlsm <- attr(terms(formula), "term.labels")
   formula <- mgcv::interpret.gam(formula)$fake.formula
   control$first <- TRUE
@@ -98,8 +97,13 @@ function(formula, data, weights = NULL, subset = NULL, offset = NULL,
     }
     if(!is.null(subset) && is.character(subset)) {
       S <- data[[subset]]
-      if(is.null(S))
-        S <- eval(parse(text = subset), envir = .GlobalEnv)
+      if(is.null(S)) {
+        S <- try(eval(parse(text = subset), envir = .GlobalEnv), silent = TRUE)
+        if(class(S) == "try-error")
+          S <- try(eval(parse(text = subset), envir = data), silent = TRUE)
+        if(class(S) == "try-error")
+          stop("problems evaluating argument subset!")
+      }
       subset <- S
     }
     ff <- formula
@@ -110,7 +114,7 @@ function(formula, data, weights = NULL, subset = NULL, offset = NULL,
       Y <- f2int(Y)
       control$nYLevels <- levels(as.factor(Y))
       if(!is.null(control$reference)) {
-
+         aaa <- 1 ## FIXME!
       }
     }
     if(!is.null(control$reference)) {
@@ -120,8 +124,8 @@ function(formula, data, weights = NULL, subset = NULL, offset = NULL,
         else
           control$reference <- control$nYLevels[control$YLevels == control$reference]
       }
-      if(!control$reference %in% control$nYLevels)
-        stop("argument reference is specified wrong, not in response!")
+      if(!(control$reference %in% control$nYLevels))
+        stop("argument reference is specified wrong, level not within response levels!")
     }
     ff[2] <- NULL
     only <- only2 <- FALSE
@@ -140,9 +144,20 @@ function(formula, data, weights = NULL, subset = NULL, offset = NULL,
         if(length(Y) > length(offset))
           offset <- offset[get.unique(Y, 22L)$ind]
       }
-      ml <- list(formula = ff, data = data, weights = weights, subset = subset,
-        offset = offset, na.action = na.action, drop.unused.levels = TRUE)
+      if(is.function(weights)) weights <- NULL
+      if(is.function(subset)) subset <- NULL
+      if(is.function(offset)) offset <- NULL
+      ml <- list(formula = ff, data = data, weights = if(control$prediction) NULL else weights,
+        subset = subset, offset = offset, na.action = na.action, drop.unused.levels = TRUE)
       data <- do.call("model.frame", ml)
+      if(control$prediction) {
+        if(!is.null(weights))
+          data[["(weights)"]] <- weights
+        if(!is.null(offset))
+          data[["(offset)"]] <- offset
+        if(!is.null(subset))
+          data <- subset(data, subset)
+      }
       if(!is.null(h.variables)) {
         nd <- names(data)
         for(k in nd)
@@ -159,7 +174,7 @@ function(formula, data, weights = NULL, subset = NULL, offset = NULL,
             for(j in 1L:length(term))
               if(is.factor(data[[term[j]]])) {
                 if(class(object) %in% c("mrf.smooth.spec", "gk.smooth.spec", "gs.smooth.spec")) {
-                  data[[term[j]]] <- f2int(data[[term[j]]], type = 2L)
+                  data[[term[j]]] <- f2int(data[[term[j]]], type = 3L)
                 } else {
                   data[[term[j]]] <- f2int(data[[term[j]]])
                 }
@@ -180,21 +195,23 @@ function(formula, data, weights = NULL, subset = NULL, offset = NULL,
       Y <- as.data.frame(Y)
       names(Y) <- Yn
       data <- cbind(Y, data)
-    } 
+    }
     if(ncol(data) < 2L) {
-      control$order <- order(data[,1L])
-      data[,1L] <- data[order(data[,1L]), 1L]
+      control$order <- order(data[, 1L])
+      data[, 1L] <- data[order(data[, 1L]), 1L]
     } else {
       control$order <- order(Y)
-      data <- data[order(Y),]
+      data <- data[order(Y), ]
     }
-    control <- c(control, list(data = data, Yn = Yn))
+    control <- c(control, list(data = na.action(data), Yn = Yn))
   } else {
     Yn <- as.character(formula[2L])
+    data <- path.expand(data)
     control <- c(control, list(data = data, Y = Yn, Yn = Yn, weights = weights, offset = offset))
   }
   attr(control$data, "terms") <- control$formula
   attr(attr(control$data, "terms"), "response") <- 1L
+  attr(control$data, "na.action") <- na.action
   control$contrasts <- contrasts
   attr(control, "co.id") <- co.id
   class(control) <- "bayesx.input"

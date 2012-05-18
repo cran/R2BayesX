@@ -1,18 +1,25 @@
-colorlegend <-
-function(color = NULL, ncol = NULL, x = NULL, breaks = NULL, 
-  pos = NULL, side.legend = 1L, side.ticks = 1L, range = NULL, lrange = NULL, 
-  width = 1L, height = 1L, scale = TRUE, xlim = NULL, ylim = NULL, plot = NULL, full = FALSE,
+colorlegend <- function(color = NULL, ncol = NULL, x = NULL, breaks = NULL, 
+  pos = "center", shift = 0.02, side.legend = 1L, side.ticks = 1L, range = NULL, lrange = NULL, 
+  width = 0.4, height = 0.06, scale = TRUE, xlim = NULL, ylim = NULL, plot = NULL, full = FALSE,
   add = FALSE, col.border = "black", lty.border = 1L, lwd.border = 1L, ticks = TRUE, 
-  at = NULL, col.ticks = "black", lwd.ticks = 1L, lty.ticks = 1L, length.ticks = 1L, 
-  labels = NULL, distance.labels = 1L, col.labels = "black", cex.labels = 1L, 
-  digits = 2L, swap = FALSE, symmetric = TRUE, xpd = NULL, ...)
+  at = NULL, col.ticks = "black", lwd.ticks = 1L, lty.ticks = 1L, length.ticks = 0.3, 
+  labels = NULL, distance.labels = 0.8, col.labels = "black", cex.labels = 1L, 
+  digits = 2L, swap = FALSE, symmetric = TRUE, xpd = NULL,
+  title = NULL, side.title = 2, shift.title = c(0, 0), ...)
 {
-  op <- par(no.readonly = TRUE)
   args <- list(...)
-  if(is.null(xlim))
-    xlim <- c(0L, 1L)
-  if(is.null(ylim))
-    ylim <- c(0L, 1L)
+  if(is.null(xlim)) {
+    if(add)
+      xlim <- par("usr")[1L:2L]
+    else
+      xlim <- c(0L, 1L)
+  }
+  if(is.null(ylim)) {
+    if(add)
+      ylim <- par("usr")[3L:4L]
+    else
+      ylim <- c(0L, 1L)
+  }
   if(!side.legend %in% c(1L, 2L)) {
     warning("argument side.legend is specified wrong, set to default!")
     side.legend <- 1L
@@ -40,7 +47,8 @@ function(color = NULL, ncol = NULL, x = NULL, breaks = NULL,
   if(xpd)
     par(xpd = xpd)
   pos2 <- NULL
-  postxt <- c("bottomleft", "topleft", "topright", "bottomright")
+  postxt <- c("bottomleft", "topleft", "topright", "bottomright",
+    "left", "right", "top", "bottom", "center")
   poscheck <- pmatch(pos, postxt)
   if(all(!is.na(poscheck)) && length(poscheck) > 0) {
     pos2 <- postxt[pmatch(pos, postxt)]
@@ -57,8 +65,8 @@ function(color = NULL, ncol = NULL, x = NULL, breaks = NULL,
   if(side.legend > 1L)
     limits <- rev(limits)
   if(scale) {
-    width <- width * diff(limits[[1L]]) * 0.7
-    height <- height * diff(limits[[2L]]) * 0.3
+    width <- width * diff(limits[[1L]])
+    height <- height * diff(limits[[2L]])
   }
   if(side.legend > 1L) {
     wi <- width
@@ -69,7 +77,7 @@ function(color = NULL, ncol = NULL, x = NULL, breaks = NULL,
     xlim <- range(c(pos[1L], pos[1L] + width, pos[1L] + width, pos[1L]))
     ylim <- range(c(pos[2L], pos[2L], pos[2L] + height, pos[2L] + height))
   } else {
-    pos2 <- dopos(pos2, limits, width, height, side.legend)
+    pos2 <- dopos(pos2, limits, width, height, side.legend, shift)
     xlim <- pos2$xlim
     ylim <- pos2$ylim
   }
@@ -130,14 +138,14 @@ function(color = NULL, ncol = NULL, x = NULL, breaks = NULL,
         labels <- round(at, digits = digits)
       if(side.legend < 2L) {
         at <- obs2legend(at, xlim)
-        length.ticks <- length.ticks * diff(ylim) * 0.1
+        length.ticks <- length.ticks * height
         if(any(at > max(xlim))) 
           at[at > max(xlim)] <- max(xlim)
         if(any(at < min(xlim)))
           at[at < min(xlim)] <- min(xlim)
       } else {
         at <- obs2legend(at, ylim)
-        length.ticks <- length.ticks * diff(xlim) * 0.1
+        length.ticks <- length.ticks * width
         if(any(at > max(ylim))) 
           at[at > max(ylim)] <- max(ylim)
         if(any(at < min(ylim)))
@@ -161,8 +169,8 @@ function(color = NULL, ncol = NULL, x = NULL, breaks = NULL,
                 lwd = lwd.ticks[i], lty = lty.ticks[i], col = col.ticks[i])
             }
             if(dl) {
-              graphics::text(at[i], ylim[side.ticks] - length.ticks - (distance.labels * length.ticks * 1.8),
-                labels = labels[i], col = col.labels[i], cex = cex.labels[i], ...)
+              graphics::text(at[i], ylim[side.ticks] - length.ticks - (distance.labels * length.ticks * 2),
+                labels = labels[i], col = col.labels[i], cex = cex.labels[i], pos = 1, ...)
             }
           } else {
             if(ticks) {
@@ -170,8 +178,9 @@ function(color = NULL, ncol = NULL, x = NULL, breaks = NULL,
                 lwd = lwd.ticks[i], lty = lty.ticks[i], col = col.ticks[i]) 
             }
             if(dl) {
-              graphics::text(xlim[side.ticks] - length.ticks - (distance.labels * length.ticks * 1.8), 
-                at[i], labels = labels[i], col = col.labels[i], cex = cex.labels[i], ...)
+              graphics::text(xlim[side.ticks] - length.ticks - (distance.labels * length.ticks * 2), 
+                at[i], labels = labels[i], col = col.labels[i], cex = cex.labels[i],
+                pos = if(side.ticks < 2L) 2 else 4, ...)
             }
           }
         }
@@ -183,7 +192,20 @@ function(color = NULL, ncol = NULL, x = NULL, breaks = NULL,
         }
       axis(where, at = at, labels = labels, col = col.labels, 
         tick = ticks, lty = lty.ticks, col.ticks = col.ticks, 
-        lwd.ticks = lwd.ticks, cex = cex.labels)
+        lwd.ticks = lwd.ticks, cex.axis = cex.labels[1])
+      }
+    }
+    if(!is.null(title)) {
+      if(length(shift.title) < 2)
+        shift.title <- c(shift.title, 0)
+      if(!full) {
+        xp <- xlim[1L] + shift.title[1] * diff(range(xlim)) + diff(range(xlim)) / 2
+        yp <- ylim[2L] + shift.title[2] * diff(range(ylim))
+        text(if(side.legend < 2) xp else yp,
+          if(side.legend < 2) yp else xp, title, pos = 3,
+          srt = if(side.legend == 2) 270 else 0, cex = cex.labels)
+      } else {
+        mtext(title, side = side.title)
       }
     }
   }

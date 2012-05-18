@@ -1,5 +1,4 @@
-bayesx_runtime <- runtime <-
-function(x, model = 1L)
+bayesx_runtime <- runtime <- function(x, model = 1L)
 {
   x <- get.model(x, model)
   runtime <- NULL

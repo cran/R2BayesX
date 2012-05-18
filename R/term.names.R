@@ -1,8 +1,7 @@
-term.names <-
-function(x)
+term.names <- function(x)
 {
   n <- length(x)
-  names <- vector("list",n)
+  names <- vector("list", n)
   for(i in 1L:length(x)) {
     if(is.sm(x[i]))
       names[[i]] <- eval(parse(text = x[i]))$term

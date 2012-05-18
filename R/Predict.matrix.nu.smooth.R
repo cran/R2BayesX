@@ -1,5 +1,4 @@
-Predict.matrix.nu.smooth <-
-function(object, data)
+Predict.matrix.nu.smooth <- function(object, data)
 { 
   X <- Predict.matrix.pspline.smooth(object,data)
   if(is.null(object$xt$weights))
@@ -9,7 +8,7 @@ function(object, data)
   R <- NULL
   for(i in 1L:ncol(X)) {
     x <- X[,i] * h
-    R <- cbind(R, x/sum(x))
+    R <- cbind(R, x / sum(x))
   }
 	
   return(R)

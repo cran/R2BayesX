@@ -16,9 +16,9 @@ bayesx.term.options(bs = "ps", method = "MCMC")
 }
 
 \arguments{
-  \item{bs}{the term specification for which controlling parameters should be shown.}
-  \item{method}{for which method should additional arguments be shown, options are \code{"MCMC"},
-    \code{"REML"} and \code{"STEP"}.}
+  \item{bs}{character, the term specification for which controlling parameters should be shown.}
+  \item{method}{character, for which method should additional arguments be shown, options are
+    \code{"MCMC"}, \code{"REML"} and \code{"STEP"}.}
 }
 
 \details{

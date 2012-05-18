@@ -20,13 +20,16 @@ function(col, ncol = NULL, data = NULL, range = NULL,
     stop("at least one needs to be specified")
   if(is.null(breaks)) {
     if(is.null(range)) {
-      range <- range(data, na.rm = TRUE) 
+      range <- range(data, na.rm = TRUE)
       if(symmetric) { 
         mar <- max(abs(range))
         range <- c(0 - mar, mar)
       }
     }
-    breaks <- seq(range[1L], range[2L], length.out = ncol + 1L)
+    if(diff(range) == 0)
+      breaks <- seq(min(range) - 1, min(range) + 1, length.out = ncol + 1L)
+    else
+      breaks <- seq(range[1L], range[2L], length.out = ncol + 1L)
   } else stopifnot(length(breaks) == ncol + 1L)
   if(is.matrix(data)) {
     obs2col <- function(x) {

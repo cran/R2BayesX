@@ -1,6 +1,5 @@
-bayesx.control <-
-function(model.name = "bayesx.estim", family = "gaussian", method = "MCMC",  
-  verbose = TRUE, dir.rm = TRUE, outfile = NULL, replace = FALSE,
+bayesx.control <- function(model.name = "bayesx.estim", family = "gaussian", method = "MCMC",  
+  verbose = FALSE, dir.rm = TRUE, outfile = NULL, replace = FALSE,
   iterations = 12000L, burnin = 2000L, maxint = NULL, step = 10L, predict = TRUE,
   seed = NULL, hyp.prior = NULL, distopt = NULL,  reference = NULL, zipdistopt = NULL,
   begin = NULL, level = NULL,  eps = 1e-05, lowerlim = 0.001, maxit = 400L, maxchange = 1e+06,
@@ -34,6 +33,7 @@ function(model.name = "bayesx.estim", family = "gaussian", method = "MCMC",
     family <- "gaussian"
   if(is.function(family))
     family <- family()$family
+  family <- tolower(family)
   control$family <- family
   if(!is.null(level))
     if(length(level) < 2L)
@@ -85,7 +85,15 @@ function(model.name = "bayesx.estim", family = "gaussian", method = "MCMC",
     control$hmcmc <- FALSE
   }
   if(method == "STEP") {
+    if(!is.null(CI)) {
+      cin <- c("mcmcselect", "mcmcbootstrap")
+      CI <- cin[pmatch(tolower(CI), cin)]
+      CI <- strsplit(CI, "mcmc")[[1]][2]
+      CI <- paste("MCMC", CI, sep = "")
+    }
     if(!is.null(CI) && (CI == "MCMCselect" || CI == "MCMCbootstrap")) {
+      if(CI == "MCMCbootstrap")
+        burnin <- NULL
       control$iterations <- iterations
       control$burnin <- burnin
       control$step <- step
@@ -113,8 +121,13 @@ function(model.name = "bayesx.estim", family = "gaussian", method = "MCMC",
   }
   if(!is.null(outfile))
     start <- start + 1L
-  attr(control,"co.id") <- start:length(control)
-
+  attr(control, "co.id") <- start:length(control)
+  control$prediction <- if(is.null(control$prediction)) {
+    FALSE
+  } else control$prediction
+  control$read <- if(is.null(control$read)) {
+    TRUE
+  } else control$read
   return(control)
 }
 

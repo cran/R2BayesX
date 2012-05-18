@@ -1,5 +1,4 @@
-plot.linear.bayesx <-
-function(x, diagnostics = FALSE, ...) 
+plot.linear.bayesx <- function(x, diagnostics = FALSE, ...) 
 {
   if(is.null(x)) {
     warning("there is nothing to plot!")
@@ -10,7 +9,7 @@ function(x, diagnostics = FALSE, ...)
     attr(x, "specs")$is.factor <- FALSE
   if(!attr(x, "specs")$is.factor) {
     for(j in 2L:ncol(x))
-      x[,j] <- x[,j] - mean(x[,j])
+      x[, j] <- x[, j] - mean(x[, j], na.rm = TRUE)
     args$x <- x
     args$diagnostics <- diagnostics
     do.call("plot.sm.bayesx", args)

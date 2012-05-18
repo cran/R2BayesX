@@ -1,5 +1,6 @@
 \name{plot3d}
 \alias{plot3d}
+\alias{plotsurf}
 
 \title{
   3D Effect Plot 
@@ -16,8 +17,10 @@ plot3d(x, residuals = FALSE, col.surface = NULL,
   ncol = 99L, swap = FALSE, col.residuals = NULL, col.contour = NULL, 
   c.select = NULL, grid = 30L, image = FALSE, contour = FALSE, 
   legend = TRUE, cex.legend = 1, breaks = NULL, range = NULL, 
-  digits = 2L, d.persp = 1L, r.persp = sqrt(3), linear = TRUE, 
-  extrap = FALSE, outscale = 0, data = NULL, ...)
+  digits = 2L, d.persp = 1L, r.persp = sqrt(3), outscale = 0,
+  data = NULL, sep = "", shift = NULL, trans = NULL,
+  type = "akima", linear = FALSE, extrap = FALSE,
+  k = 40, ...)
 }
 
 \arguments{
@@ -26,7 +29,8 @@ plot3d(x, residuals = FALSE, col.surface = NULL,
     the structure for bivariate functions returned within \code{\link{bayesx}} and 
     \code{\link{read.bayesx.output}} model term objects is used, also see 
     \code{\link{fitted.bayesx}}. Another possibility is to specify the plot via a \code{formula}, 
-    e.g. for simple plotting of bivariate surfaces \code{z ~ x + y}, also see the example.}
+    e.g. for simple plotting of bivariate surfaces \code{z ~ x + y}, also see the example.
+    \code{x} may also be a character file path to the data to be used for plotting.}
   \item{residuals}{if set to \code{TRUE}, partial residuals may also be plotted if available.}
   \item{col.surface}{the color of the surface, may also be a function, e.g. 
     \code{col.surface = heat.colors}.}
@@ -54,12 +58,26 @@ plot3d(x, residuals = FALSE, col.surface = NULL,
   \item{digits}{specifies the legend decimal places.}
   \item{d.persp}{see argument \code{d} in function \code{\link[graphics]{persp}}.}
   \item{r.persp}{see argument \code{r} in function \code{\link[graphics]{persp}}.}
-  \item{linear}{see function \code{\link[akima]{interp}}.}
-  \item{extrap}{see function \code{\link[akima]{interp}}.}
   \item{outscale}{scales the outer ranges of \code{x} and \code{z} limits used for interpolation.}
   \item{data}{if \code{x} is a \code{formula}, a \code{data.frame} or \code{list}. By default the 
     variables are taken from \code{environment(x)}: typically the environment from which 
-    \code{plot3d} is called.}
+    \code{plot3d} is called. Note that \code{data} may also be a character file path to the data.}
+  \item{sep}{the field separator character when \code{x} or \code{data} is a character, see function
+    \code{\link{read.table}}.}
+  \item{shift}{numeric. Constant to be added to the smooth before plotting.}
+  \item{trans}{function to be applied to the smooth before plotting, e.g., to transform the
+    plot to the response scale.}
+  \item{type}{character. Which type of interpolation metjod should be used. The default is
+    \code{type = "akima"}, see function \code{\link[akima]{interp}}. The two other options are
+    \code{type = "mba"}, which calls function \code{\link[MBA]{mba.surf}} of package \pkg{MBA}, or
+    \code{type = "mgcv"}, which uses a spatial smoother withing package \pkg{mgcv} for interpolation.
+    The last option is definitely the slowest, since a full regression model needs to be estimated.}
+  \item{linear}{logical. Should linear interpolation be used withing function
+     \code{\link[akima]{interp}}?}
+  \item{extrap}{logical. Should interpolations be computed outside the observation area
+    (i.e., extrapolated)?}
+  \item{k}{integer. The number of basis functions to be used to compute the interpolated surface
+    when \code{type = "mgcv"}.}
   \item{\dots}{parameters passed to \code{\link{colorlegend}} if an image plot with legend is drawn,
     also other graphical parameters, please see the details.}
 }
@@ -77,9 +95,9 @@ plot3d(x, residuals = FALSE, col.surface = NULL,
 }
 
 \note{
-  Function \code{plot3d} uses the \pkg{akima} package to construct smooth interpolated surfaces,
-  therefore, package \pkg{akima} needs to be installed. The \pkg{akima} package has an ACM license
-  that restricts applications to non-commercial usage, see
+  Function \code{plot3d} uses per default the \pkg{akima} package to construct smooth interpolated
+  surfaces, therefore, package \pkg{akima} needs to be installed. The \pkg{akima} package has an ACM
+  license that restricts applications to non-commercial usage, see
 
   \url{http://www.acm.org/publications/policies/softwarecrnotice}
   
@@ -95,7 +113,7 @@ plot3d(x, residuals = FALSE, col.surface = NULL,
 
 \seealso{
   \code{\link{plot.bayesx}}, \code{\link{bayesx}}, \code{\link{read.bayesx.output}},
-  \code{\link{fitted.bayesx}} \code{\link{colorlegend}}.
+  \code{\link{fitted.bayesx}}, \code{\link{colorlegend}}.
 }
 
 \examples{
@@ -175,4 +193,4 @@ plot3d(sin(z) * cos(w) ~ z + w,
   image = TRUE, grid = 200, data = dat)
 }
 
-\keyword{regression}
+\keyword{hplot}

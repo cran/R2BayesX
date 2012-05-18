@@ -1,5 +1,4 @@
-bayesx_logfile <-
-function(x, model = 1L)
+bayesx_logfile <- function(x, model = 1L)
 {
   x <- get.model(x, model)
   bayesx.log <- NULL

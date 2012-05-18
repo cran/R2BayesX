@@ -1,5 +1,4 @@
-terms.bayesx <-
-function(x, model = NULL, ...)
+terms.bayesx <- function(x, model = NULL, ...)
 {
   x <- get.model(x, model)
   if(length(x) > 1L) {

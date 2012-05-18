@@ -1,5 +1,4 @@
-write.term.info <-
-function(file, terms, data, object = NULL, contrasts.arg = NULL, 
+write.term.info <- function(file, terms, data, object = NULL, contrasts.arg = NULL, 
   xlev = NULL, intcpt = TRUE, rdafile)
 {
   warn <- getOption("warn")
@@ -66,12 +65,14 @@ function(file, terms, data, object = NULL, contrasts.arg = NULL,
           info <- paste("list(term=\'", te$label, "\',pos=", k, ",by=\'", te$by,
             "\',isFactor=FALSE", ",isFactorBy=", fby, ",isFactorByNames=", fnv, 
             ",map=", map, ",israndom=", israndom, ",class=\'", reclass(class(te)),
-            "\',bs=\'", gsub(".smooth.spec", "", class(te)), "\')", sep = "")
+            "\',bs=\'", gsub(".smooth.spec", "", class(te)),
+            "\',call=\'", terms[k], "\')", sep = "")
         } else {
           info <- paste("list(term=\'", te$label, "\',pos=", k, ",by=\'", te$by,
             "\',isFactor=FALSE", ",isFactorBy=", fby, ",map=", map, 
             ",israndom=", israndom, ",class=\'", reclass(class(te)),
-            "\',bs=\'", gsub(".smooth.spec", "", class(te)),"\')", sep = "")
+            "\',bs=\'", gsub(".smooth.spec", "", class(te)),
+            "\',call=\'", terms[k], "\')", sep = "")
         }
       } else {
         sp <- FALSE

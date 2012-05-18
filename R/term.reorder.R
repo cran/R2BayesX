@@ -1,5 +1,4 @@
-term.reorder <-
-function(x, info) 
+term.reorder <- function(x, info) 
 {
   if(!is.null(x) && length(x) > 0L) {
     rval <- list()
@@ -9,7 +8,10 @@ function(x, info)
     nt <- rep(NA, ni)
     taken <- NULL
     for(k in 1L:ni) {
-      term <- eval(parse(text = info[k]))
+      pt <- try(parse(text = info[k]), silent = TRUE)
+      if(inherits(pt, "try-error")) next
+      term <- eval(pt)
+      if(is.null(term$term)) next
       if(!is.null(term$by) && term$by != "NA")
         term$term <- paste(term$term, ":", term$by, sep = "")
       if(is.null(term$isFactorBy))
@@ -61,7 +63,7 @@ function(x, info)
         by <- list()
         xl <- names(x)
         for(k in 1L:length(term$isFactorByNames))
-          if(length(j <- grep(paste("):", term$isFactorByNames[k], sep = ""), xl, fixed = TRUE))) {
+          if(!is.na(j <- match(term$isFactorByNames[k], xl))) {
             if(!is.null(term$map)) {
               if(grep(term$map, ls(envir = globalenv())))
                 attr(x[[j]], "map.name") <- term$map

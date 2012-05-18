@@ -16,7 +16,8 @@
 \usage{  
 bayesx(formula, data, weights = NULL, subset = NULL, 
   offset = NULL, na.action = NULL, contrasts = NULL, 
-  control = bayesx.control(\dots), model = TRUE, \dots)
+  control = bayesx.control(\dots), model = TRUE,
+  chains = NULL, cores = NULL, \dots)
 }
 
 \arguments{
@@ -33,13 +34,26 @@ bayesx(formula, data, weights = NULL, subset = NULL,
   \item{subset}{an optional vector specifying a subset of observations to be used in the fitting 
     process.}
   \item{offset}{can be used to supply a model offset for use in fitting.}
-  \item{na.action}{a function which indicates what should happen when the data contain \code{NA}'s.}
+  \item{na.action}{a function which indicates what should happen when the data contain \code{NA}'s.
+    The default is set by the \code{na.action} setting of \code{\link{options}}, and is
+    \code{\link{na.omit}} if set to \code{NULL}.}
   \item{contrasts}{an optional list. See the \code{contrasts.arg} of 
     \code{\link[stats]{model.matrix.default}}.}
   \item{control}{specify several global control parameters for \code{bayesx}, see 
     \code{\link{bayesx.control}}.}
   \item{model}{a logical value indicating whether \code{\link[stats]{model.frame}} should be
-          included as a component of the returned value.}
+    included as a component of the returned value.}
+  \item{chains}{integer. The number of sequential chains that should be run, the default is one
+    chain if \code{chains = NULL}. For each chain a separate seed for the random number generator is
+    used. The return value of \code{bayesx} is a list of class \code{"bayesx"}, i.e. each list
+    element represents a seperate model, for which the user can e.g. apply all plotting methods or
+    extractor functions. Convergence diagnostics can then be computed using function
+    \code{\link{GRstats}}.}
+  \item{cores}{integer. How many cores should be used? The default is one core if
+    \code{cores = NULL}. The return value is again a list of class \code{"bayesx"}, for which all
+    plotting and extractor functions can be applied, see argument \code{chains}. Note that this
+    option is not available on Windows systems, see the documentation of function
+    \code{\link[parallel]{mclapply}}.}
   \item{\dots}{arguments passed to \code{\link{bayesx.control}}, e.g. \code{family} and 
     \code{method}, defaults are \code{family = "gaussian"}, \code{method = "MCMC"}.}
 }
@@ -265,7 +279,6 @@ set.seed(333)
 ## simulate some geographical data
 data("MunichBnd")
 N <- length(MunichBnd); n <- N*5
-names(MunichBnd) <- 1:N
      
 ## regressors
 dat <- data.frame(x1 = runif(n, -3, 3),

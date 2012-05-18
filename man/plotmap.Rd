@@ -1,6 +1,7 @@
 \name{plotmap}
 \alias{plotmap}
 \alias{plot.bnd}
+\alias{drawmap}
 
 \title{
   Plot Maps
@@ -9,16 +10,18 @@
 \description{
   The function takes a \code{\link[base]{list}} polygons and draws the corresponding map. Different 
   colors for each polygon can be used. Typically used for objects of class \code{"mrf.bayesx"} and
-  \code{"ra.bayesx"} returned from function \code{\link{bayesx}} and 
+  \code{"random.bayesx"} returned from function \code{\link{bayesx}} and 
   \code{\link{read.bayesx.output}}.
 }
  
 \usage{
-plotmap(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE, 
-  swap = FALSE, range = NULL, names = FALSE, values = FALSE, 
-  col = NULL, ncol = 100, breaks = NULL, cex.legend = 1, 
-  cex.names = 1, cex.values = cex.names, digits = 2L, 
-  mar.min = 2, add = FALSE, ...)
+plotmap(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
+  swap = FALSE, range = NULL, names = FALSE, values = FALSE,
+  col = NULL, ncol = 100, breaks = NULL, cex.legend = 1,
+  cex.names = 1, cex.values = cex.names, digits = 2L,
+  mar.min = 2, add = FALSE, interp = FALSE, grid = 200,
+  extrap = FALSE, outside = FALSE, type = "akima", linear = FALSE,
+  k = 40, p.pch = 15, p.cex = 1, shift = NULL, trans = NULL, ...)
 }
 
 \arguments{
@@ -56,9 +59,42 @@ plotmap(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
     calculated according to the height to width ratio of the map with minimal boundary 
     \code{mar.min}.}
   \item{add}{if set to \code{TRUE}, the map will be added to an existing plot.}
+  \item{interp}{logical. Should the values provided in argument \code{x} be interpolated to obtain
+    a smooth colored map.}
+  \item{grid}{integer. Defines the number of grid cells to be used for interpolation.}
+  \item{extrap}{logical. Should interpolations be computed outside the observation area
+    (i.e., extrapolated)?}
+  \item{outside}{logical. Should interpolated values outside the boundaries of the map be plotted.}
+  \item{type}{character. Which type of interpolation metjod should be used. The default is
+    \code{type = "akima"}, see function \code{\link[akima]{interp}}. The two other options are
+    \code{type = "mba"}, which calls function \code{\link[MBA]{mba.surf}} of package \pkg{MBA}, or
+    \code{type = "mgcv"}, which uses a spatial smoother withing package \pkg{mgcv} for interpolation.
+    The last option is definitely the slowest, since a full regression model needs to be estimated.}
+  \item{linear}{logical. Should linear interpolation be used withing function
+     \code{\link[akima]{interp}}?}
+  \item{k}{integer. The number of basis functions to be used to compute the interpolated surface
+    when \code{type = "mgcv"}.}
+  \item{p.pch}{numeric. The point size of the grid cells when using interpolation.}
+  \item{p.cex}{numeric. The size of the grid cell points whein using interpolation.}
+  \item{shift}{numeric. Constant to be added to the smooth before plotting.}
+  \item{trans}{function to be applied to the smooth before plotting, e.g., to transform the
+    plot to the response scale.}
   \item{\dots}{parameters to be passed to \code{\link{colorlegend}} and others, e.g. change the 
     \code{border} of the polygons and \code{density}, see \code{\link[graphics]{polygon}}. Please 
     see the exmaples.}
+}
+
+\note{
+  Function \code{plotmap} uses per default the \pkg{akima} package to construct smooth interpolated
+  surfaces, therefore, package \pkg{akima} needs to be installed. The \pkg{akima} package has an ACM
+  license that restricts applications to non-commercial usage, see
+
+  \url{http://www.acm.org/publications/policies/softwarecrnotice}
+  
+  Function \code{plotmap} prints a note refering to the ACM licence. This note can be supressed by
+  setting
+
+  \code{options("use.akima" = TRUE)} 
 }
 
 \author{
@@ -202,4 +238,4 @@ par(op)
 }
 }
 
-\keyword{regression} 
+\keyword{hplot} 

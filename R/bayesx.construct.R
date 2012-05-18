@@ -1,11 +1,9 @@
-bayesx.construct <-
-function(object, dir, prg, data) 
+bayesx.construct <- function(object, dir, prg, data) 
 {
   UseMethod("bayesx.construct")
 }
 
-bayesx.construct.default <-
-function(object, dir, prg, data) 
+bayesx.construct.default <- function(object, dir, prg, data) 
 {
   cl <- class(object)
   bs <- gsub(".smooth.spec", "", cl, fixed = TRUE)

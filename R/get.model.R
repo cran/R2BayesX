@@ -1,5 +1,4 @@
-get.model <-
-function(x, model)
+get.model <- function(x, model)
 {
   elmts <- c("formula", "bayesx.setup", "bayesx.prg", "bayesx.run",   
     "fitted.values", "residuals", "response", "effects", "smooth.hyp", 

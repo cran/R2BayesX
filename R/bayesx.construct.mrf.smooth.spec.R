@@ -1,5 +1,4 @@
-bayesx.construct.mrf.smooth.spec <- bayesx.construct.spatial.smooth.spec <-
-function(object, dir, prg, data)
+bayesx.construct.mrf.smooth.spec <- bayesx.construct.spatial.smooth.spec <- function(object, dir, prg, data)
 {
   if(missing(prg))
     prg <- " "
@@ -57,22 +56,22 @@ function(object, dir, prg, data)
       if(length(classm) > 1L)
         if("list" %in% classm)
           class(map) <- classm[classm != "list"]
-      mapfile <- paste(map.name,counter ,".", class(map), sep = "")
+      mapfile <- paste(map.name, counter, ".", class(map), sep = "")[1]
       if(any(grepl(mapfile, files))) {
         if(is.null(counter))
           counter <- 0L
         counter <- counter + 1L
       } else ok <- FALSE
     }
-    mapfile <- paste(dir, "/", mapfile, sep = "")
-    prgfile <- paste(dir, "/", prg, sep = "")
+    mapfile <- file.path(dir, mapfile)
+    prgfile <- file.path(dir, prg)
     prgok <- file.exists(prgfile)
   } else prgok <- FALSE
   if(prgok)
     cat("map", map.name, "\n", file = prgfile, append = TRUE)
   if(dirok) {
     if(inherits(map, "bnd")) {
-      if(!any(is.na(poly.names <- f2int(names(map), type = 2L)))) {
+      if(!any(is.na(poly.names <- as.integer(names(map))))) {
         poly.names <- sort(poly.names)
         poly.names <- as.character(poly.names)
       } else poly.names <- sort(names(map))
@@ -81,8 +80,22 @@ function(object, dir, prg, data)
       write.bnd(map = map, file = mapfile, replace = TRUE)
       cmd <- paste(map.name, ".infile using ", mapfile, "\n", sep = "")
     } else {
-      write.gra(map = map, file = mapfile, replace = TRUE)
-      cmd <- paste(map.name, ".infile, graph using ", mapfile, "\n", sep = "")
+      if(!is.character(map)) {
+        dx <- as.character(unique(data[[object$term]]))
+        cnm <- colnames(map)
+        if(!all(dx %in% cnm))
+          stop(paste("not all regions specified in variable", object$term, "in adjacency matrix!"))
+        write.gra(map = map, file = mapfile, replace = TRUE)
+        cmd <- paste(map.name, ".infile, graph using ", mapfile, "\n", sep = "")
+      } else {
+        stopifnot(is.character(map))
+        pos <- regexpr("\\.([[:alnum:]]+)$", map)
+        fext <- ifelse(pos > -1L, substring(map, pos + 1L), "")
+        if(fext == "gra")
+          cmd <- paste(map.name, ".infile, graph using ", path.expand(map), "\n", sep = "")
+        else
+          cmd <- paste(map.name, ".infile using ", path.expand(map), "\n", sep = "")
+      }
     }
   }
   if(prgok)

@@ -1,5 +1,4 @@
-samples <-
-function(object, model = NULL, term = NULL, acf = FALSE, ...)
+samples <- function(object, model = NULL, term = NULL, coda = TRUE, acf = FALSE, ...)
 {
   if(is.null(object) || length(object) < 2L)
     stop("nothing to do!")
@@ -36,16 +35,30 @@ function(object, model = NULL, term = NULL, acf = FALSE, ...)
   for(i in 1L:k) {
     rval[[i]] <- list()
     for(j in 1:length(term)) {
-      if(is.na(match(term[j], "linear-samples")) && is.na(match(term[j], "var-samples"))) {
+      if(is.character(term[j]) & !is.null(neff <- names(object[[i]]$effects))) {
+        if(!(term[j] %in% c("linear-samples", "var-samples"))) {
+          term[j] <- gsub("[[:space:]]", "", term[j])
+          term[j] <- neff[pmatch(term[j], neff)]
+          if(is.na(term[j])) stop(paste("term", term[j], "does not exist, no samples available!"))
+        }
+      } else {
+        if(term[j] > length(object[[i]]$effects))
+          stop("term does not exist, no samples available!")
+      }
+      if(is.na(pmatch(term[j], "linear-samples")) && is.na(pmatch(term[j], "var-samples"))) {
+        xn <- NULL
         if(!is.null(attr(object[[i]]$effects[[term[j]]], "specs")) &&
           !is.null(attr(object[[i]]$effects[[term[j]]], "specs")$is.factor) && 
           attr(object[[i]]$effects[[term[j]]], "specs")$is.factor) {
-          sattr <- NULL
-          for(jj in 1L:length(object[[i]]$effects[[term[j]]]))
-            sattr <- cbind(sattr, attr(object[[i]]$effects[[term[j]]][[jj]], "sample"))
-          if(!is.null(sattr) && ncol(sattr) > 1L)
-            colnames(sattr) <- paste("C", 1L:ncol(sattr), sep = "")
+          linhead <- colnames(attr(object[[i]]$fixed.effects, "sample"))
+          sattr <- attr(object[[i]]$fixed.effects, "sample")[, grepl(term[j], linhead)]
           attr(object[[i]]$effects[[term[j]]], "sample") <- sattr
+          xn <- term[j]
+        } else {
+          if(!is.null(xn <- attr(object[[i]]$effects[[term[j]]], "specs")$term))
+            xn <- paste(xn, collapse = ".", sep = "")
+          else
+            xn <- term[j]
         }
         tmp <- list()
         if(!is.null(attr(object[[i]]$effects[[term[j]]], "sample")))
@@ -60,21 +73,19 @@ function(object, model = NULL, term = NULL, acf = FALSE, ...)
             tmp2$Var <- samplesacf(tmp$Var, ...)
           tmp <- tmp2
         }
-        if(!is.null(xn <- attr(object[[i]]$effects[[term[j]]], "specs")$term))
-          xn <- paste(xn, collapse = ".", sep = "")
-        else
-          xn <- term[j]
         eval(parse(text = paste("rval[[i]]$'", xn, "' <- tmp", sep = "")))
       } 
-      if(!is.na(match(term[j], "linear-samples"))) {
+      if(!is.na(pmatch(term[j], "linear-samples"))) {
         if(acf) {
           if(!is.null(attr(object[[i]]$fixed.effects, "sample"))) {
             tmp <- samplesacf(attr(object[[i]]$fixed.effects, "sample"), ...)
           } else tmp <- NULL
         } else tmp <- attr(object[[i]]$fixed.effects, "sample")
-        eval(parse(text = paste("rval[[i]]$'Lin' <- tmp", sep = "")))
+        if(!is.null(dim(tmp)))
+          colnames(tmp) <- gsub("(Intercept)", "Intercept", colnames(tmp), fixed = TRUE)
+        eval(parse(text = paste("rval[[i]]$'Param' <- tmp", sep = "")))
       } 
-      if(!is.na(match(term[j], "var-samples"))) {
+      if(!is.na(pmatch(term[j], "var-samples"))) {
         if(acf) {
           if(!is.null(attr(object[[i]]$variance, "sample"))) {
             tmp <- samplesacf(attr(object[[i]]$variance, "sample"), ...)
@@ -88,16 +99,44 @@ function(object, model = NULL, term = NULL, acf = FALSE, ...)
   }
   if(k > 1L) {
     mn[duplicated(mn)] <- paste(mn[duplicated(mn)], 1:length(mn[duplicated(mn)]) + 1L, sep = "")
-    names(rval) <- mn
+    names(rval) <- if(is.null(names(object))) mn else names(object)
   } else rval <- rval[[1L]]
   if(is.null(rval) || length(rval) < 1L)
     rval <- NA
   if(any(is.na(rval)))
     warning("samples are missing in object!")
   rval <- delete.NULLs(rval)
-  if(length(rval) < 2L && length(rval[[1L]]) < 2L)
-    names(rval[[1L]]) <- names(rval)
-  rval <- as.data.frame(rval)
+  if(!is.null(dim(rval)) & all(dim(rval) == 1))
+    rval <- as.numeric(rval)
+  if(coda) {
+    require("coda")
+    nc <- if(inherits(object[[1]], "bayesx")) length(object) else 1
+    if(nc < 2)
+      rval <- list(rval)
+    crval <- list()
+    for(i in 1:nc) {
+      st <- NULL
+      for(j in rval[[i]]) {
+        if(is.list(j))
+          j <- as.data.frame(j)
+        st <- cbind(st, as.matrix(j))
+      }
+      crval[[i]] <- mcmc(st, start = 1, end = nrow(st), thin = 1)
+    }
+    if(nc > 1) {
+      crval <- mcmc.list(crval)
+      for(j in 1:nc) {
+        colnames(crval[[j]]) <- gsub("Coef.C", "Coef.", colnames(crval[[j]]), fixed = TRUE)
+      }
+      names(crval) <- names(object)
+    } else {
+      crval <- crval[[1]]
+      colnames(crval) <- gsub("Coef.C", "Coef.", colnames(crval), fixed = TRUE)
+    }
+    rval <- crval
+  } else {
+    rval <- as.data.frame(rval)
+  }
 
   return(rval)
 }

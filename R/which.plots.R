@@ -1,5 +1,4 @@
-which.plots <-
-function(x, which, ask, model.name, nx, ...)
+which.plots <- function(x, which, ask, model.name, nx, ...)
 {
   args <- list(...)
   nw <- length(which)
@@ -56,7 +55,7 @@ function(x, which, ask, model.name, nx, ...)
       args2$main <- "Normal Q-Q Plot"
       args2$ylim <- NULL
       args2$xlim <- NULL
-      args2 <- delete.args(stats::qqnorm.default, args2)
+      args2 <- delete.args("qqnorm.default", args2, package = "stats")
       args2$cex <- args$cex
       do.call(stats::qqnorm, args2)
       stats::qqline(r2)

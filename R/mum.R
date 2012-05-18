@@ -1,5 +1,4 @@
-mum <-
-function(x)
+mum <- function(x)
 {
   if(!is.null(x)) {
     rn <- rownames(x)
@@ -19,7 +18,7 @@ function(x)
     if(nrow(x) > 1L) {
       a <- duplicated(x[,1L], fromLast = FALSE)
       b <- duplicated(x[,1L], fromLast = TRUE)
-     a[a != b] <- TRUE
+      a[a != b] <- TRUE
       if(any(a)) {
         drn <- rn[a]
         nc <- nchar(drn)

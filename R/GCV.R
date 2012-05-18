@@ -1,5 +1,4 @@
-GCV <-
-function(object, ...)
+GCV <- function(object, ...)
 {
   UseMethod("GCV")
 }

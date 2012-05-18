@@ -1,5 +1,4 @@
-resplit <-
-function(x)
+resplit <- function(x)
 {
   if(!is.null(x))
     x <- paste(x, sep = "", collapse = "")

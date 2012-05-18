@@ -1,5 +1,4 @@
-write.prg.setup <-
-function(response, object, prg.file, data.file, thismodel, terms.specs)
+write.prg.setup <- function(response, object, prg.file, data.file, thismodel, terms.specs)
 {
   add.terms <- terms.specs$terms
   bt <- NULL
@@ -73,13 +72,18 @@ function(response, object, prg.file, data.file, thismodel, terms.specs)
       hlevel <- 2L
     fullformula <- paste(fullformula, " hlevel=", hlevel, sep = "")
   }
-  if(!is.null(predict))
-    if(predict) {
-      if(is.null(object$hlevel))
-        fullformula <- paste(fullformula, "predict")
-      if((!is.null(object$hlevel) || object$hmcmc) && object$hlevel < 2L)
-        fullformula <- paste(fullformula, "predict=full")
+  if(!is.null(predict)) {
+    if(is.logical(predict)) {
+      if(predict) {
+        if(is.null(object$hlevel))
+          fullformula <- paste(fullformula, "predict")
+        if((!is.null(object$hlevel) || object$hmcmc) && object$hlevel < 2L)
+          fullformula <- paste(fullformula, "predict=full")
+      }
+    } else {
+      fullformula <- paste(fullformula, paste("predict", predict, sep = "="))
     }
+  }
   fullformula <- paste(fullformula, "using", dset)
   cat("dataset", dset, "\n", file = prg.file, append = TRUE)
   cat(paste(dset, ".infile using ", data.file, "\n\n", sep = ""), file = prg.file, append = TRUE)

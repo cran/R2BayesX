@@ -12,65 +12,76 @@
 
 \usage{
 colorlegend (color = NULL, ncol = NULL, x = NULL, 
-  breaks = NULL, pos = NULL, side.legend = 1L, 
+  breaks = NULL, pos = "center", shift = 0.02, side.legend = 1L, 
   side.ticks = 1L, range = NULL, lrange = NULL, 
-  width = 1L, height = 1L, scale = TRUE, xlim = NULL, 
+  width = 0.4, height = 0.06, scale = TRUE, xlim = NULL, 
   ylim = NULL, plot = NULL, full = FALSE, add = FALSE, 
   col.border = "black", lty.border = 1L, lwd.border = 1L, 
   ticks = TRUE, at = NULL, col.ticks = "black", lwd.ticks = 1L, 
-  lty.ticks = 1L, length.ticks = 1L, labels = NULL, 
-  distance.labels = 1L, col.labels = "black", cex.labels = 1L, 
-  digits = 2L, swap = FALSE, symmetric = TRUE, xpd = NULL, ...)
+  lty.ticks = 1L, length.ticks = 0.3, labels = NULL, 
+  distance.labels = 0.8, col.labels = "black", cex.labels = 1L, 
+  digits = 2L, swap = FALSE, symmetric = TRUE, xpd = NULL,
+  title = NULL, side.title = 2, shift.title = c(0, 0), ...)
 }
 
 \arguments{
-  \item{color}{the colors for the legend, may also be a function, e.g. \code{colors = heat.colors}.}
-  \item{ncol}{the number of different colors that should be generated if \code{color} is a 
+  \item{color}{character, integer. The colors for the legend, may also be a function, e.g.
+    \code{colors = heat.colors}.}
+  \item{ncol}{integer, the number of different colors that should be generated if \code{color} is a 
     function.}
-  \item{x}{values for which the color legend should be drawn.}
-  \item{breaks}{a set of breakpoints for the colors: must give one more breakpoint than 
+  \item{x}{numeric, values for which the color legend should be drawn.}
+  \item{breaks}{numeric, a set of breakpoints for the colors: must give one more breakpoint than 
     \code{ncol}.}
-  \item{pos}{the position of the legend, either a numeric vector, e.g. \code{pos = c(0.1, 0.2)} will 
-    add the legend at the 10\eqn{\%} point in the x-direction and at the 20\eqn{\%} point in the 
-    y-direction of the plotting window, may also be negative, or one of the following: 
-    \code{"bottomleft"}, \code{"topleft"}, \code{"topright"} or \code{"bottomright"}.}
-  \item{side.legend}{if set to \code{2} the legend will be flipped by 90 degrees.}
-  \item{side.ticks}{if set to \code{2}, the ticks and labels will be on the opposite site of the 
-    legend.}
-  \item{range}{specifies a range for \code{x} values for which the legend should be drawn.}
-  \item{lrange}{specifies the range of legend.}
-  \item{width}{the width of the legend, if \code{scale = TRUE} the width is proportional to the
-    x-limits of the plotting window.}
-  \item{height}{the height of the legend, if \code{scale = TRUE} the height is proportional to the
-    y-limits of the plotting window.}
-  \item{scale}{if set to \code{TRUE}, the \code{width} and \code{height} of the legend will be
-    calculated proportional to the x- and y-limits of the plotting window.}
-  \item{xlim}{the x-limits of the plotting window the legend should be added for, numeric vector 
-    e.g. returned from function \code{\link[base]{range}}.}
-  \item{ylim}{the y-limits of the plotting window the legend should be added for, numeric vector 
-    e.g. returned from function \code{\link[base]{range}}.}
-  \item{plot}{if set to \code{TRUE}, the legend will be drawn in a separate plotting window.}
-  \item{full}{if set to \code{TRUE}, the legend will be drawn using the full window range.}
-  \item{add}{if set to \code{TRUE}, the legend will be added to an existing plot.}
+  \item{pos}{character, numeric. The position of the legend. Either a numeric vector, e.g.
+    \code{pos = c(0.1, 0.2)} will add the legend at the 10\eqn{\%} point in the x-direction and at
+    the 20\eqn{\%} point in the y-direction of the plotting window, may also be negative, or one of
+    the following: \code{"bottomleft"}, \code{"topleft"}, \code{"topright"}, \code{"bottomright"},
+    \code{"left"}, \code{"right"}, \code{"top"}, \code{"bottom"} and \code{"center"}.}
+  \item{shift}{numeric, if argument \code{pos} is a character, \code{shift} determines the distance
+    of the legend from the plotting box.}
+  \item{side.legend}{integer, if set to \code{2} the legend will be flipped by 90 degrees.}
+  \item{side.ticks}{integer, if set to \code{2}, the ticks and labels will be on the opposite site
+    of the legend.}
+  \item{range}{numeric, specifies a range for \code{x} values for which the legend should be drawn.}
+  \item{lrange}{numeric, specifies the range of legend.}
+  \item{width}{numeric, the width of the legend, if \code{scale = TRUE} the width is proportional to
+    the x-limits of the plotting window.}
+  \item{height}{numeric, the height of the legend, if \code{scale = TRUE} the height is proportional
+    to the y-limits of the plotting window.}
+  \item{scale}{logical, if set to \code{TRUE}, the \code{width} and \code{height} of the legend will
+    be calculated proportional to the x- and y-limits of the plotting window.}
+  \item{xlim}{numeric, the x-limits of the plotting window the legend should be added for, numeric
+    vector, e.g., returned from function \code{\link[base]{range}}.}
+  \item{ylim}{numeric, the y-limits of the plotting window the legend should be added for, numeric
+    vector, e.g., returned from function \code{\link[base]{range}}.}
+  \item{plot}{logical, if set to \code{TRUE}, the legend will be drawn in a separate plotting window.}
+  \item{full}{logical, if set to \code{TRUE}, the legend will be drawn using the full window range.}
+  \item{add}{logical, if set to \code{TRUE}, the legend will be added to an existing plot.}
   \item{col.border}{the color of the surrounding border line of the legend.}
   \item{lty.border}{the line type of the surrounding border line of the legend.}
   \item{lwd.border}{the line width of the surrounding border line of the legend.}
-  \item{ticks}{if set to \code{TRUE}, ticks will be added to the legend.}
-  \item{at}{specifies at which locations ticks and labels should be added.}
+  \item{ticks}{logical, if set to \code{TRUE}, ticks will be added to the legend.}
+  \item{at}{numeric, specifies at which locations ticks and labels should be added.}
   \item{col.ticks}{the colors of the ticks.}
   \item{lwd.ticks}{the line width of the ticks.}
   \item{lty.ticks}{the line type of the ticks.}
-  \item{length.ticks}{the length of the ticks.}
-  \item{labels}{specifies labels that should be added to the ticks.}
-  \item{distance.labels}{the distance of the labels to the ticks, proportional to the length of
-    the ticks.}
+  \item{length.ticks}{numeric, the length of the ticks as percentage of the \code{height} or
+    \code{width} of the colorlegend.}
+  \item{labels}{character, specifies labels that should be added to the ticks.}
+  \item{distance.labels}{numeric, the distance of the labels to the ticks, proportional to the
+    length of the ticks.}
   \item{col.labels}{the colors of the labels.}
   \item{cex.labels}{text size of the labels.}
-  \item{digits}{the decimal places if labels are numerical.}
-  \item{swap}{if set to \code{TRUE} colors will be represented in reverse order.}
-  \item{symmetric}{if set to \code{TRUE}, a symmetric legend will be drawn corresponding to the
-    \code{+- max(abs(x))} value.}
+  \item{digits}{integer, the decimal places if labels are numerical.}
+  \item{swap}{logical, if set to \code{TRUE} colors will be represented in reverse order.}
+  \item{symmetric}{logical, if set to \code{TRUE}, a symmetric legend will be drawn corresponding to
+    the \code{+- max(abs(x))} value.}
   \item{xpd}{sets the \code{xpd} parameter in function \code{\link[graphics]{par}}.}
+  \item{title}{character, a title for the legend.}
+  \item{side.title}{integer, \code{1} or \code{2}. Specifies where the legend is placed, either on
+    top if \code{side.title = 1} or at the bottom if \code{side.title = 2}.}
+  \item{shift.title}{numeric vector of length 2. Specifies a possible shift of the title in either
+    x- or y-direction.}
   \item{\dots}{other graphical parameters to be passed to function \code{\link[graphics]{text}}.}
 }
 
@@ -94,10 +105,10 @@ colorlegend(width = 1, height = 0.8, scale = FALSE,
   pos = c(0, 0.2), length.ticks = 0.5)
 colorlegend(color = heat.colors, ncol = 9)
 colorlegend(color = heat.colors, ncol = 9, swap = TRUE)
-colorlegend(pos = "bottomleft", xpd = TRUE)
-colorlegend(pos = "topleft", xpd = TRUE)
-colorlegend(pos = "topright", xpd = TRUE)
-colorlegend(pos = "bottomright", xpd = TRUE)
+colorlegend(pos = "bottomleft")
+colorlegend(pos = "topleft")
+colorlegend(pos = "topright")
+colorlegend(pos = "bottomright")
 
 
 ## take x values for the color legend
@@ -143,14 +154,12 @@ x <- y <- seq(-3, 3, length.out = n)
 z <- outer(sin(x), cos(x)) 
 pal <- colorlegend(color = diverge_hcl, x = z, plot = FALSE)
 op <- par(no.readonly = TRUE)
-par(mar = c(5.1, 4.1, 4.1, 6.1))
+par(mar = c(4.1, 4.1, 1.1, 1.1))
+layout(matrix(c(1, 2), nrow = 1), widths = c(1, 0.3))
 image(x = x, y = y, z = z, col = pal$colors, breaks = pal$breaks)
-colorlegend(color = diverge_hcl, x = z, plot = FALSE, add = TRUE,
-  xlim = range(x), ylim = range(z), scale = FALSE, 
-  side.legend = 2, side.ticks = 2, pos = c(1.05, -1),
-  width = diff(range(y)), height = 0.1 * diff(range(x)), 
-  length.ticks = 3, at = seq(min(z), max(z), length.out = 5),
-  xpd = TRUE)
+par(mar = c(4.1, 0.1, 1.1, 3.1))
+colorlegend(color = diverge_hcl, x = z, plot = TRUE, full = TRUE,
+  side.legend = 2, side.ticks = 2)
 par(op)
 
 
@@ -159,10 +168,11 @@ n <- 50
 x <- sin(seq(-3, 3, length.out = n)) 
 pal <- colorlegend(color = diverge_hcl, x = x, plot = FALSE)
 op <- par(no.readonly = TRUE)
+par(mar = c(7.1, 4.1, 1.1, 1.1))
 barplot(x, border = "transparent", col = pal$map(x))
 colorlegend(color = diverge_hcl, x = x, plot = FALSE, add = TRUE,
   xlim = c(0, 60), ylim = c(-1, 1), pos = c(0, -0.15), xpd = TRUE,
-  scale = FALSE, width = 60, height = 0.15, length.ticks = 3,
+  scale = FALSE, width = 60, height = 0.15,
   at = seq(min(x), max(x), length.out = 9))
 par(op)
 }

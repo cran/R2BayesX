@@ -23,6 +23,8 @@ export(
   "GCV",
   "DIC",
   "samples",
+  "GRstats",
+  "term.freqs",
 
   ## BayesX extractor functions
   "bayesx_logfile",       
@@ -34,9 +36,28 @@ export(
   "colorlegend",
   "plot2d",               
   "plot3d",              
-  "plotblock",            
+  "plotblock",
   "plotmap",              
-  "plotsamples"
+  "plotsamples",
+  "sliceplot",
+
+  ## old package BayesX functions
+  "write.bnd",
+  "bnd2gra",
+  "add.neighbor",
+  "delete.neighbor",
+  "get.neighbor",
+  "write.gra",
+  "read.gra",
+  "read.bnd",
+  "shp2bnd",
+  "bnd2sp",
+  "sp2bnd",
+  "nb2gra",
+  "gra2nb",
+  "plotnonp",
+  "plotsurf",
+  "drawmap"
 )
 
 ## methods for objects of class bayesx etc.
@@ -101,6 +122,7 @@ S3method("bayesx.construct", "pspline.smooth.spec")
 S3method("bayesx.construct", "random.smooth.spec")
 S3method("bayesx.construct", "rsps.smooth.spec")
 S3method("bayesx.construct", "pspline2dimrw2.smooth.spec")
+S3method("bayesx.construct", "pspline2dimrw1.smooth.spec")
 S3method("bayesx.construct", "kriging.smooth.spec")
 S3method("bayesx.construct", "baseline.smooth.spec")
 S3method("bayesx.construct", "catspecific.smooth.spec")

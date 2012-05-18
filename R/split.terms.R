@@ -1,5 +1,4 @@
-split.terms <-
-function(terms, vars, data, dropvars, intcpt)
+split.terms <- function(terms, vars, data, dropvars, intcpt)
 {
   if(length(terms) > 0L) {
     sm <- is.sm(terms)
@@ -17,8 +16,7 @@ function(terms, vars, data, dropvars, intcpt)
         tmp2 <- data[[tmp]]
         if(is.factor(tmp2)) {
           if(intcpt) {
-            ff <- eval(parse(text = paste("model.matrix(~ ", tmp,")", sep = "")), 
-              envir = data)
+            ff <- eval(parse(text = paste("model.matrix(~ ", tmp,")", sep = "")), envir = data)
             tmp <- rmf(colnames(ff)[2L:ncol(ff)])
           } else {
             ff <- eval(parse(text = paste("model.matrix(~ -1 + ", tmp,")", sep = "")), 

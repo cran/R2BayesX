@@ -1,25 +1,22 @@
-plot3d <-
-function(x, residuals = FALSE, col.surface = NULL, 
+plot3d <- function(x, residuals = FALSE, col.surface = NULL, 
   ncol = 99L, swap = FALSE, col.residuals = NULL, col.contour = NULL, 
   c.select = NULL, grid = 30L, image = FALSE, contour = FALSE, 
   legend = TRUE, cex.legend = 1, breaks = NULL, range = NULL, 
-  digits = 2L, d.persp = 1L, r.persp = sqrt(3), linear = TRUE, extrap = FALSE, 
-  outscale = 0, data = NULL, ...)
+  digits = 2L, d.persp = 1L, r.persp = sqrt(3), 
+  outscale = 0, data = NULL, sep = "",
+  shift = NULL, trans = NULL,
+  type = "akima", linear = FALSE, extrap = FALSE, k = 40, ...)
 {
-  if(isTRUE(getOption("use.akima"))) {
-    stopifnot(require("akima"))
-  } else {
-    if(require("akima")) {
-      cat("NOTE: Package 'akima' has an ACM license that restricts applications to non-commercial usage.\n")
-    } else {
-      stop(paste("plot3() can only be used if the 'akima' package is installed. ",
-        "Note that 'akima' has an ACM license that restricts applications to ",
-        "non-commercial usage.", sep = ""))
-    }
-  }
-  
   if(is.null(x))
     return(invisible(NULL))
+  if(is.character(x)) {
+    stopifnot(file.exists(x <- path.expand(x)))
+    x <- read.table(x, header = TRUE, sep = sep)
+  }
+  if(is.character(data)) {
+    stopifnot(file.exists(data <- path.expand(data)))
+    data <- read.table(data, header = TRUE, sep = sep)
+  }
   if(inherits(x,"formula")) {
     if(is.null(data))
       data <- environment(x)
@@ -30,20 +27,28 @@ function(x, residuals = FALSE, col.surface = NULL,
     if(ncol(x) < 3L)
       stop("formula is specified wrong!")
     if(ncol(x) > 3L)
-      x <- x[,c(2L, 3L, 1L, 4L:ncol(x))]
+      x <- x[, c(2L, 3L, 1L, 4L:ncol(x))]
     else
-      x <- x[,c(2L, 3L, 1L)]
+      x <- x[, c(2L, 3L, 1L)]
   }
-  if(is.data.frame(x))
+  if(is.data.frame(x)) {
+    if(!is.na(match("intnr", names(x))) & !is.null(c.select) & !is.character(c.select))
+      c.select <- c.select - 1
     x <- df2m(x)
+  }
   if(!is.matrix(x))
     stop("x must be a matrix!")
   if(ncol(x) < 3)
     stop("x must have at least 3 columns!")
   args <- list(...)
+  if(!is.null(shift))
+    shift <- as.numeric(shift[1])
   e <- NULL
-  if(!is.null(attr(x, "partial.resids")))
+  if(!is.null(attr(x, "partial.resids"))) {
     e <- attr(x, "partial.resids")
+    if(!is.null(shift))
+      e[, 3L] <- e[, 3L] + shift
+  }
   if(!is.null(e) && all(is.na(e)))
     residuals <- FALSE
   specs <- attr(x, "specs")
@@ -55,9 +60,9 @@ function(x, residuals = FALSE, col.surface = NULL,
       by <- specs$term[length(specs$term)]
   }
   nx <- colnames(x)
-  x <- x[order(x[,1L]),]
-  X <- x[,1L]
-  z <- x[,2L]
+  x <- x[order(x[, 1L]), ]
+  X <- x[, 1L]
+  z <- x[, 2L]
   xrd <- diff(range(X))
   zrd <- diff(range(z))
   xn <- seq(min(X) - outscale * xrd , max(X) + outscale * xrd, length = grid)
@@ -101,24 +106,36 @@ function(x, residuals = FALSE, col.surface = NULL,
     if(is.null(take))
       stop("argument c.select is specified wrong!")
     for(k in 1:length(take)) {
-      fitted[[k]] <- akima::interp(X, z, x[,take[k]], xo = xn, yo = zn, 
-        duplicate = "strip", linear = linear, extrap = extrap)$z
+      fitted[[k]] <- interp2(X, z, x[, take[k]], xo = xn, yo = zn,
+        type = type, linear = linear, extrap = extrap, k = k)
     }
   }
   if(length(fitted[[1L]]) == 1L && is.na(fitted[[1L]][1L])) {
-    fitted[[1L]] <- akima::interp(X, z, x[,3L], xo = xn, yo = zn, 
-      duplicate = "strip", linear = linear, extrap = extrap)$z
+    fitted[[1L]] <- interp2(X, z, x[, 3L], xo = xn, yo = zn,
+      type = type, linear = linear, extrap = extrap, k = k)
   }
-  if(!is.null(range))
+  if(!is.null(range)) {
     for(k in 1L:length(fitted)) {
       if(min(range, na.rm = TRUE) > min(fitted[[k]], na.rm = TRUE))
         fitted[[k]][fitted[[k]] < min(range, na.rm = TRUE)] <- min(range, na.rm = TRUE)  
       if(max(range, na.rm = TRUE) < max(fitted[[k]], na.rm = TRUE))
         fitted[[k]][fitted[[k]] > max(range, na.rm = TRUE)] <- max(range, na.rm = TRUE)  
     }
+  }
+  if(!is.null(shift)) {
+    for(k in 1L:length(fitted)) {
+        fitted[[k]] <- fitted[[k]] + shift
+    }
+  }
+  if(!is.null(trans)) {
+    if(!is.function(trans)) stop("argument trans must be a function!")
+    for(k in 1L:length(fitted)) {
+      fitted[[k]] <- trans(fitted[[k]])
+    }
+  }
   names <- colnames(x)[1L:2L]
   if(residuals)
-    zlimit <- range(c(unlist(fitted), e[,3L]), na.rm = TRUE)
+    zlimit <- range(c(unlist(fitted), e[, 3L]), na.rm = TRUE)
   else
     zlimit <- range(unlist(fitted), na.rm = TRUE)
   if(is.null(args$xlab))
@@ -166,7 +183,7 @@ function(x, residuals = FALSE, col.surface = NULL,
       args$col <- color[1L]
       args$border <- bcol[1L]
       pmat <- do.call(graphics::persp, 
-        delete.args(graphics:::persp.default, args, c("lwd", "lty")))
+        delete.args("persp.default", args, c("lwd", "lty"), package = "graphics"))
       for(k in 2L:length(fitted)) {
         par(new = TRUE)
         args$col <- color[k]
@@ -174,10 +191,11 @@ function(x, residuals = FALSE, col.surface = NULL,
         myfit <- matrix(fitted[[k]], grid, grid)
         args$z <- substitute(myfit)
         pmat <- do.call(graphics::persp, 
-          delete.args(graphics:::persp.default, args, c("lwd", "lty")))
+          delete.args("persp.default", args, c("lwd", "lty"), package = "graphics"))
       }
     } else {
-      pmat <- do.call(graphics::persp, delete.args(graphics:::persp.default, args, c("lwd", "lty")))
+      pmat <- do.call(graphics::persp, delete.args("persp.default",
+        args, c("lwd", "lty"), package = "graphics"))
     }
     if(residuals && !is.null(e)) {
       t3d <- trans3d(e[,1L], e[,2L], e[,3L], pmat)
@@ -209,7 +227,8 @@ function(x, residuals = FALSE, col.surface = NULL,
       if(legend) {
         mar[4L] <- 0
         par(mar = mar)
-        layout(matrix(c(1, 2), nrow = 1), widths = c(1, 0.2))
+        w <- (3 + mar[2L]) * par("csi") * 2.54
+        layout(matrix(c(1, 2), nrow = 1), widths = c(1, lcm(w)))
       }
       do.call(graphics::image, 
         delete.args(graphics::image.default, args, 
@@ -237,7 +256,8 @@ function(x, residuals = FALSE, col.surface = NULL,
       }
       if(legend) {
         mar <- mar.orig
-        mar[2L] <- 0.5
+        mar[2L] <- 1
+        mar[4L] <- 3.1
         par(mar = mar, xaxs = "i", yaxs = "i")
         args2 <- args
         if(is.null(args$side.legend))

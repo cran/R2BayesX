@@ -1,7 +1,7 @@
-plot.bayesx <-
-function(x, model = NULL, term = NULL, which = 1L, ask = FALSE, ...)
+plot.bayesx <- function(x, model = NULL, term = NULL, which = 1L, ask = FALSE, ...)
 {
   op <- par(no.readonly = TRUE)
+  on.exit(par(op))
   pc <- FALSE
   which.match <- c("effect", "coef-samples", "var-samples", "intcpt-samples", 
     "hist-resid", "qq-resid", "scatter-resid", "scale-resid", "scale-samples", 
@@ -127,7 +127,6 @@ function(x, model = NULL, term = NULL, which = 1L, ask = FALSE, ...)
   }
   if(!pc)
     warning("there is nothing to plot!")
-  # par(op)
 
   return(invisible(NULL))
 }

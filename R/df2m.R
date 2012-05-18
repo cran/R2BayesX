@@ -1,5 +1,4 @@
-df2m <-
-function(x)
+df2m <- function(x)
 {
   if(!is.null(x)) {
     xattr <- attributes(x)

@@ -1,5 +1,4 @@
-write.bayesx.input <-
-function(object)
+write.bayesx.input <- function(object)
 {
   if(is.null(object) || missing(object))
     stop("nothing to do!")
@@ -116,7 +115,7 @@ function(object)
       nc <- ncol(dat)
       dat <- cbind(dat, model.offset(object$data))
       colnames(dat)[nc + 1L] <- "ModelOffset"
-    }  
+    }
     if(!is.null(model.weights(object$data))) {
       nc <- ncol(dat)
       dat <- cbind(dat, model.weights(object$data))
@@ -150,7 +149,7 @@ function(object)
     nc <- ncol(dat)
     intcpt <- FALSE
     if("(Intercept)" %in% vars && nc > 1L) {
-      dat <- matrix(dat[,!vars %in% "(Intercept)"], ncol = (nc - 1L))
+      dat <- matrix(dat[, !vars %in% "(Intercept)"], ncol = (nc - 1L))
       colnames(dat) <- vars[!vars %in% "(Intercept)"]
       intcpt <- TRUE
     }
@@ -173,9 +172,8 @@ function(object)
       }
     }
     data.file <- paste(object$outfile, "/", object$model.name, ".data.raw", sep = "")
-
     if(!file.exists(data.file))
-      write.table(unique(dat), data.file, col.names = TRUE, row.names = FALSE, quote = FALSE)
+      write.table(dat, data.file, col.names = TRUE, row.names = FALSE, quote = FALSE)
     else {
       wok <- TRUE
       i <- 1L
@@ -183,7 +181,7 @@ function(object)
         data.file <- paste(object$outfile, "/", object$model.name, ".data", i, ".raw", sep = "")
         i <- i + 1L
         if(!file.exists(data.file)) {
-          write.table(unique(dat), data.file, col.names = TRUE, row.names = FALSE, quote = FALSE)
+          write.table(dat, data.file, col.names = TRUE, row.names = FALSE, quote = FALSE)
           wok <- FALSE
         }
       }

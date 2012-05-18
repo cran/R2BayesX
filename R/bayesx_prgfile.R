@@ -1,5 +1,4 @@
-bayesx_prgfile <-
-function(x, model = 1L)
+bayesx_prgfile <- function(x, model = 1L)
 {
   x <- get.model(x, model)
   bayesx.prg <- NULL

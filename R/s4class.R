@@ -1,30 +1,37 @@
-s4class <-
-function(x)
+s4class <- function(x)
 {
-  if(grepl("_random", x))
-    cx <- "random.bayesx"
-  if(grepl("_pspline", x))
+  cx <- NULL
+  for(j in c(".", "_")) {
+    if(grepl(paste("_random", j, sep = ""), x, fixed = TRUE))
+      cx <- "random.bayesx"
+    if(grepl(paste("_spatialtotal", j, sep = ""), x, fixed = TRUE))
+      cx <- "mrf.bayesx"
+    if(grepl(paste("_pspline", j, sep = ""), x, fixed = TRUE))
+      cx <- "sm.bayesx"
+    if(grepl(paste("_season", j, sep = ""), x, fixed = TRUE))
+      cx <- "sm.bayesx"
+    if(grepl(paste("_rw", j, sep = ""), x, fixed = TRUE))
+      cx <- "sm.bayesx"
+    if(grepl(paste("_spatial", j, sep = ""), x, fixed = TRUE))
+      cx <- "mrf.bayesx"
+    if(grepl(paste("_geospline", j, sep = ""), x, fixed = TRUE))
+      cx <- "geo.bayesx"
+    if(grepl(paste("_geokriging", j, sep = ""), x, fixed = TRUE))
+      cx <- "geo.bayesx"
+    if(grepl(paste("_logbaseline", j, sep = ""), x, fixed = TRUE))
+      cx <- "sm.bayesx"
+    if(grepl(paste("_kriging", j, sep = ""), x, fixed = TRUE))
+      cx <- "sm.bayesx"
+  }
+  if(is.null(cx)) {
+    warning(paste("no appropriate class found for:", x))
     cx <- "sm.bayesx"
-  if(grepl("_season", x))
-    cx <- "sm.bayesx"
-  if(grepl("_rw", x))
-    cx <- "sm.bayesx"
-  if(grepl("_spatial", x))
-    cx <- "mrf.bayesx"
-  if(grepl("_geospline", x))
-    cx <- "geo.bayesx"
-  if(grepl("_geokriging", x))
-    cx <- "geo.bayesx"
-  if(grepl("_logbaseline", x))
-    cx <- "sm.bayesx"
-  if(grepl("_kriging", x))
-    cx <- "sm.bayesx"
+  }
 
   return(cx)
 }
 
-s4bs <-
-function(x)
+s4bs <- function(x)
 {
   if(grepl("_random", x))
     bs <- "re"

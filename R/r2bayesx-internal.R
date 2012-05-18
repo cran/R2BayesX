@@ -1,10 +1,8 @@
-.print_bayesx <-
-function(x, ...)
+.print_bayesx <- function(x, digits = max(3L, getOption("digits") - 3L), ...)
 {
   if(!is.null(x$call)) {
     cat("Call:\n")
     print(x$call)
-    cat("\n")
   } else {
     if(!is.null(x$model.fit$formula)) {
       cat("Formula:\n")
@@ -15,23 +13,27 @@ function(x, ...)
     }
   }
   if(!is.null(x$model.fit)) {
+    cat("Summary:\n")
     mfn <- names(x$model.fit)
     mfn <- mfn[mfn != "formula" & mfn != "order" & 
       mfn != "YLevels" & mfn != "nYLevels" & 
       mfn != "model.name"]
     step <- 5L
     for(i in 1L:length(mfn)) {
-      txt <- deparse(x$model.fit[[mfn[i]]])
+      txt <- x$model.fit[[mfn[i]]]
+      if(is.numeric(txt))
+        txt <- round(txt, digits)
+      txt <- deparse(txt)
       if(i < step) {
         if(!is.null(txt) && txt != "") {
           if(mfn[i] != "step.final.model")
-            cat(mfn[i], "=", txt," ")
-          else {
-            cat("\n\n")
-            cat("Stepwise final model:\n")
-            cat("\n")
-            cat(txt)
-          }
+            cat(mfn[i], "=", gsub('\"', "", txt, fixed = TRUE), " ")
+#          else {
+#            cat("\n\n")
+#            cat("Stepwise final model:\n")
+#            cat(gsub('\"', "", txt, fixed = TRUE))
+#            cat("\n\n")
+#          }
         }
       }
       if(i == step) {
@@ -46,8 +48,7 @@ function(x, ...)
   return(invisible(NULL))
 }
 
-.print_summary_bayesx <-
-function(x, digits = max(3L, getOption("digits") - 3L),
+.print_summary_bayesx <- function(x, digits = max(3L, getOption("digits") - 3L),
   signif.stars = getOption("show.signif.stars"), ...)
 {
   if(!is.null(x$model.fit))
@@ -87,7 +88,7 @@ function(x, digits = max(3L, getOption("digits") - 3L),
   if(!is.null(x$fixed.effects)) {
     fc <- TRUE
     if(nrow(x$fixed.effects) < 2L) {
-      if(all(x$fixed.effects[1L,] == 0))
+      if(!any(is.na(x$fixed.effects)) && all(x$fixed.effects[1L,] == 0))
         fc <- FALSE
     } else {
       if(!all(as.character(x$fixed.effects) == "NaN") && all(x$fixed.effects[1L,] == 0)) {
@@ -107,7 +108,7 @@ function(x, digits = max(3L, getOption("digits") - 3L),
     cat("\n")
   }
   if(fc) {
-    cat("Parametric Coefficients:\n")
+    cat("Parametric coefficients:\n")
     printCoefmat(x$fixed.effects)
   }
   if(!is.null(x$smooth.hyp)) {

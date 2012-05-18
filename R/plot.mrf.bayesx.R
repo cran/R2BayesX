@@ -1,5 +1,4 @@
-plot.mrf.bayesx <-
-function(x, diagnostics = FALSE, ...)
+plot.mrf.bayesx <- function(x, diagnostics = FALSE, ...)
 {
   if(!is.null(x)) {
 		args <- list(...)
@@ -47,7 +46,7 @@ function(x, diagnostics = FALSE, ...)
       } else domap <- FALSE
       if(!domap) {
         args$x <- x
-        args$x <- do.call(R2BayesX:::compute.x.id, delete.args(R2BayesX:::compute.x.id, args))$x
+        args$x <- do.call(compute.x.id, delete.args(compute.x.id, args))$x
         if(is.null(args$from))
           args$from <- min(args$x, na.rm = TRUE)
         if(is.null(args$to))
@@ -55,16 +54,16 @@ function(x, diagnostics = FALSE, ...)
         if(is.null(args$main))
           args$main <- paste("Kernel density estimate of term", attr(x, "specs")$label)
         args2 <- args
-        args2$x <- do.call(stats:::density, delete.args(stats::density.default, args))
-        do.call(stats::plot.density, delete.args(stats::plot.density, args2))
+        args2$x <- do.call(stats::density, delete.args(stats::density.default, args))
+        do.call(plot, delete.args("plot.density", args2, package = "stats"))
         if(!is.null(args$kde.quantiles))
           if(args$kde.quantiles) {
             if(is.null(args$lty))
               args$lty <- 2L
             if(is.null(args$col))
               args$col <- "black"
-            abline(v = do.call(R2BayesX:::kde.quantiles, 
-              delete.args(R2BayesX:::kde.quantiles, args)), 
+            abline(v = do.call(kde.quantiles, 
+              delete.args(kde.quantiles, args)), 
               lty = args$lty, col = args$col)
           }       
       } else {

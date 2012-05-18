@@ -1,14 +1,14 @@
-rmf <-
-function(x) 
+rmf <- function(x) 
 {
   for(i in 1L:length(x)) {
-    for(char in c("+", "-", "*", ":", "^", "/", " ", "(", ")", "]", "[", ",")) 
+    for(char in c("+", "-", "*", ":", "^", "/", " ", "(", ")", "]", "[",
+      ",", ".", "<", ">", "?", "!", "'", "#", "~", "`", ";", "=", "&", "$", "@")) {
       x[i] <- gsub(char, "_", x[i], fixed = TRUE)
+    }
   }
 
   return(rmfs(x))
 }
-
 
 rmfs <- function(x)
 {
@@ -26,12 +26,10 @@ rrmfs <- function(x)
   return(x)
 }
 
-
-rmfscript <-
-function(x) 
+rmfscript <- function(x) 
 {
   for(i in 1L:length(x)) {
-    for(char in c("+", "-", "*", ":", "^", "/", " ", "(", ")", ",")) 
+    for(char in c("+", "-", "*", ":", "^", "/", " ", "(", ")", ",", ".")) 
       x[i] <- gsub(char, "", x[i], fixed = TRUE)
   }
 

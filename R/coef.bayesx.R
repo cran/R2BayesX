@@ -1,5 +1,4 @@
-coef.bayesx <-
-function(object, model = NULL, ...)
+coef.bayesx <- function(object, model = NULL, ...)
 {
   object <- get.model(object, model)
   if(length(object) > 1L) {

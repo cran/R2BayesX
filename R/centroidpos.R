@@ -1,6 +1,6 @@
-centroidpos <-
-function(polygon) 
+centroidpos <- function(polygon) 
 {
+  polygon <- na.omit(polygon)
   p <- polygon
   np <- (nrow(p) - 1L)
   if(is.na(p[1L, 1L])) {

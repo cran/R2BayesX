@@ -1,5 +1,4 @@
-geo.smooth.spec <-
-function(object, dir, prg, data, type)
+geo.smooth.spec <- function(object, dir, prg, data, type)
 {
   if(!is.list(object$xt))
     object$xt <- list(object$xt)
@@ -50,10 +49,10 @@ function(object, dir, prg, data, type)
       } else
         ok <- FALSE
     }
-    mapfile <- paste(dir, "/", mapfile, sep = "")
-    prgfile <- paste(dir, "/", prg, sep = "")
+    mapfile <- file.path(dir, mapfile)
+    prgfile <- file.path(dir, prg)
     cat("map", map.name, "\n", file = prgfile, append = TRUE)
-    if(!any(is.na(poly.names <- f2int(names(map), type = 2L)))) {
+    if(!any(is.na(poly.names <- as.integer(names(map))))) {
       poly.names <- sort(poly.names)
       poly.names <- as.character(poly.names)
     } else poly.names <- sort(names(map))

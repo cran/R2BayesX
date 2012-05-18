@@ -1,7 +1,7 @@
-plotblock <-
-function(x, residuals = FALSE, range = c(0.3, 0.3), 
+plotblock <- function(x, residuals = FALSE, range = c(0.3, 0.3), 
   col.residuals = "black", col.lines = "black", c.select = NULL, 
-  fill.select = NULL , col.polygons = NULL, data = NULL, ...)
+  fill.select = NULL , col.polygons = NULL, data = NULL,
+  shift = NULL, trans = NULL, ...)
 {
   if(is.null(x))
     return(invisible(NULL))
@@ -35,6 +35,8 @@ function(x, residuals = FALSE, range = c(0.3, 0.3),
     else
       args$ylab <- attr(x, "specs")$label
   }
+  if(!is.null(shift))
+    shift <- as.numeric(shift[1])
   if(!is.list(x))
     nc <- ncol(x)
   else
@@ -82,14 +84,22 @@ function(x, residuals = FALSE, range = c(0.3, 0.3),
         effects[[i]] <- matrix(effects[[i]], nrow = 1L)
       if(!is.matrix(effects[[i]]))
         effects[[i]] <- matrix(effects[[i]], nrow = 1L)
-      ylim <- c(ylim, effects[[i]][,2L:ncol(effects[[i]])])
+      if(!is.null(shift)) effects[[i]][, 2L:ncol(x[[i]])] <- effects[[i]][, 2L:ncol(x[[i]])] + shift
+      if(!is.null(trans)) {
+        if(!is.function(trans)) stop("argument trans must be a function!")
+        for(j in 2:ncol(effects[[i]]))
+          effects[[i]][, j] <- trans(effects[[i]][, j])
+      }
+      ylim <- c(ylim, effects[[i]][, 2L:ncol(effects[[i]])])
       colnames(effects[[i]]) <- rep(paste(xnam, xu[i], sep = ""), ncol(effects[[i]]))
       if(residuals) {
         if(length(pres <- e[e[,1L] == xu[i],])) {
-          if(!is.matrix(pres))
+          if(is.null(dim(pres)))
             pres <- matrix(pres, nrow = 1)
+          if(!is.null(shift))
+            pres[, 2L:ncol(pres)] <- pres[, 2L:ncol(pres)] + shift
           attr(effects[[i]], "partial.resids") <- pres
-          ylim <- c(ylim, pres[,2L:ncol(pres)])
+          ylim <- c(ylim, pres[, 2L:ncol(pres)])
         }
       }
     }
@@ -118,7 +128,19 @@ function(x, residuals = FALSE, range = c(0.3, 0.3),
         x[[i]] <- matrix(x[[i]][2L,], nrow = 1L)
       colnames(x[[i]]) <- cn
       if(residuals) {
+        if(!is.null(shift)) {
+          if(is.matrix(pres))
+            pres[, 2L:ncol(pres)] <- pres[, 2L:ncol(pres)] + shift
+          else
+            pres <- pres + shift
+        }
         attr(x[[i]], "partial.resids") <- pres
+      }
+      if(!is.null(shift)) x[[i]][, 2L:ncol(x[[i]])] <- x[[i]][, 2L:ncol(x[[i]])] + shift
+      if(!is.null(trans)) {
+        if(!is.function(trans)) stop("argument trans must be a function!")
+        for(j in 2:ncol(x[[i]]))
+          x[[i]][, j] <- trans(x[[i]][, j])
       }
       ylim <- c(ylim, x[[i]][,2L:ncol(x[[i]])])
     }

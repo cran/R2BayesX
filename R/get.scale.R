@@ -1,6 +1,6 @@
-get.scale <-
-function(files, dir)
+get.scale <- function(files, dir)
 {
+  files <- files[!grepl("Ii11iI", files, fixed = TRUE)]
   var <- NULL
   if(any(grep("scale.res", files))) {
     sample <- NULL

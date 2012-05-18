@@ -53,9 +53,9 @@
 
 \note{
   If a model is specified with a structured and an unstructured spatial effect, e.g. the model 
-  formula is something like \code{y ~ sx(id, bs = "mrf", map = MyMapBnd) + r(id)}, the model output 
-  contains of one additional total spatial effect, named with \code{"sx(id):total"}. Also see the 
-  last example. 
+  formula is something like \code{y ~ sx(id, bs = "mrf", map = MapBnd) + sx(id, bs = "re")}, the
+  model output contains of one additional total spatial effect, named with \code{"sx(id):total"}.
+  Also see the last example. 
 }
 
 \author{
@@ -209,4 +209,4 @@ plot(b)
 }
 }
 
-\keyword{regression}
+\keyword{hplot}

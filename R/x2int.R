@@ -1,5 +1,4 @@
-x2int <-
-function(x) 
+x2int <- function(x) 
 {
   warn <- getOption("warn")
   options(warn = -1)

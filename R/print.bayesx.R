@@ -1,5 +1,4 @@
-print.bayesx <-
-function(x, model = NULL, ...)
+print.bayesx <- function(x, model = NULL, ...)
 {
   x <- get.model(x, model)
   n <- length(x)
@@ -11,9 +10,12 @@ function(x, model = NULL, ...)
     stop <- n
   }
   ncheck <- n > 1L
+  nx <- names(x)
+  if(is.null(nx))
+    nx <- start:stop
   for(i in start:stop) {
     if(ncheck)
-      cat("###", i, "\n")
+      cat("###", nx[i], "\n")
     .print_bayesx(x[[i]])
   }
   if(ncheck) {

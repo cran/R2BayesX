@@ -1,5 +1,4 @@
-sfoofun <-
-function(x, xt = NULL, ...)
+sfoofun <- function(x, xt = NULL, ...)
 {
   if(is.null(x) || is.null(xt))
     return(NULL)

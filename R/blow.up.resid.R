@@ -1,8 +1,7 @@
- blow.up.resid <-
-function(data, x, xnam, response, eta, dimx, cx)
+blow.up.resid <- function(data, x, xnam, response, eta, dimx, cx)
 {
   if(!is.null(data) && !is.null(response) && !is.null(eta) && !is.factor(response)) {
-    x <- x[order(x[,1L]),]
+    x <- x[order(x[,1L]), ]
     if(!is.matrix(x))
       x <- matrix(x, nrow = 1)
     id <- NULL
@@ -17,7 +16,7 @@ function(data, x, xnam, response, eta, dimx, cx)
       response <- response[ox]
       if(!is.matrix(eta))
         eta <- matrix(eta, ncol = 1L)
-      eta <- eta[ox,]
+      eta <- eta[ox, ]
       ind <- unique.id(xtmp)
       if(max(ind) <= nrow(x)) {
         x <- as.data.frame(x[ind,])
@@ -37,7 +36,7 @@ function(data, x, xnam, response, eta, dimx, cx)
         if(length(xm <- colnames(x)[colnames(x) == "pmean"]) < 1L)
           xm <- 1L
         pres <- response - eta[,1L] + x[,xm]
-        x <- cbind(co[ind,], pres, id[ind])
+        x <- cbind(co[ind, ], pres, id[ind])
         if(ncol(x) < 3L)
           colnames(x) <- c("x.co", "partial.resids")
         else {

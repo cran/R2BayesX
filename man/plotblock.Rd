@@ -13,7 +13,8 @@
 \usage{
 plotblock(x, residuals = FALSE, range = c(0.3, 0.3), 
   col.residuals = "black", col.lines = "black", c.select = NULL, 
-  fill.select = NULL , col.polygons = NULL, data = NULL, ...)
+  fill.select = NULL , col.polygons = NULL, data = NULL,
+  shift = NULL, trans = NULL, ...)
 }
 
 \arguments{
@@ -49,6 +50,9 @@ plotblock(x, residuals = FALSE, range = c(0.3, 0.3),
   \item{data}{if \code{x} is a formula, a \code{data.frame} or \code{list}. By default the variables 
     are taken from \code{environment(x)}: typically the environment from which \code{plotblock} is 
     called.}
+  \item{shift}{numeric. Constant to be added to the smooth before plotting.}
+  \item{trans}{function to be applied to the smooth before plotting, e.g., to transform the
+    plot to the response scale.}
   \item{\dots}{graphical parameters, please see the details.}
 }
 
@@ -96,10 +100,10 @@ b <- bayesx(y ~ fac, data = dat)
 summary(b)
 
 ## plot factor term effects
-plot(b, term = "f(fac)")
+plot(b, term = "fac")
 
 ## extract fitted effects
-f <- fitted(b, term = "f(fac)")
+f <- fitted(b, term = "fac")
 
 ## now use plotblock
 plotblock(f)
@@ -145,4 +149,4 @@ plotblock(cbind(y - 0.1, y + 0.1) ~ fac, data = dat,
   border = "grey5")
 }
 
-\keyword{regression}
+\keyword{hplot}

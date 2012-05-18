@@ -1,8 +1,9 @@
-chacol <-
-function(x)
+chacol <- function(x)
 {
   if(!is.null(cn <- colnames(x))) {
     for(i in 1L:length(cn)) {
+      if(cn[i] == "deviance")
+        cn[i] <- "Deviance"
       if(cn[i] == "pmean")
         cn[i] <- "Mean"
       if(cn[i] == "pmed")

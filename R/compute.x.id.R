@@ -8,7 +8,7 @@ function(x, id = NULL, c.select = NULL, range = NULL, symmetric = TRUE)
     }
   }
   if(is.factor(id))
-    id <- f2int(id)
+    id <- f2int(id, type = 2L)
   if(is.array(x) && length(dim(x)) < 2L)
     x <- as.vector(x)
   if(is.vector(x) && is.vector(id)) {

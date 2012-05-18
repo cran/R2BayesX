@@ -1,5 +1,4 @@
-centroidtext <-
-function(polygon, poly.name = NULL, counter = "NA", cex = 1, ...) 
+centroidtext <- function(polygon, poly.name = NULL, counter = "NA", cex = 1, ...) 
 {
   pos <- centroidpos(polygon)		
   if(is.null(poly.name))

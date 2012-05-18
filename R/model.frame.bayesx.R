@@ -1,5 +1,4 @@
-model.frame.bayesx <-
-function (formula, ...) 
+model.frame.bayesx <- function (formula, ...) 
 {
   dots <- list(...)
   nargs <- dots[match(c("data", "na.action", "subset"), names(dots), 0L)]
@@ -16,6 +15,7 @@ function (formula, ...)
     if(is.null(fcall)) {
       dots$formula <- formula
       rval <- do.call("parse.bayesx.input", dots)
+      rval$data <- bayesx.reorder(rval$order, rval$data)
     } else {
       fcall[[1L]] <- as.name("parse.bayesx.input")
       fcall[names(nargs)] <- nargs
@@ -23,13 +23,13 @@ function (formula, ...)
       if(is.null(env)) 
         env <- parent.frame()
       rval <- eval(fcall, env)
+      rval$data <- bayesx.reorder(formula, rval$data)
     }
     if(!is.null(rval$h.random))
       return(gad(rval, rval$data))
     else
       return(rval$data)
-  }
-  else {
+  } else {
     if(any(mcheck)) {
       rval <- list()
       for(k in 1L:length(formula))
@@ -42,20 +42,23 @@ function (formula, ...)
     if(!is.null(formula$bayesx.setup$h.random)) {
       rval <- gad(formula$bayesx.setup, formula$bayesx.setup$data)
       return(rval)
-    } else return(formula$bayesx.setup$data)
+    } else {
+      data <- bayesx.reorder(formula, formula$bayesx.setup$data)
+      return(data)
+    }
   }
 }
 
 
 gad <- function(x, dat)
-  {
-    if(!is.null(x$h.random)) {
-      dat <- list(dat)
-      for(k in 1L:length(x$h.random)) {
-        dat <- c(dat, list(x$h.random[[k]]$data))
-        dat <- c(dat, gad(x$h.random[[k]], dat))
-      }
-      return(dat)
-    } else return(NULL)
-  }
+{
+  if(!is.null(x$h.random)) {
+    dat <- list(dat)
+    for(k in 1L:length(x$h.random)) {
+      dat <- c(dat, list(x$h.random[[k]]$data))
+      dat <- c(dat, gad(x$h.random[[k]], dat))
+    }
+    return(dat)
+  } else return(NULL)
+}
 

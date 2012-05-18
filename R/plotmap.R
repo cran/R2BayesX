@@ -1,33 +1,47 @@
-plotmap <-
-function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE, 
-  swap = FALSE, range = NULL, names = FALSE, values = FALSE, col = NULL, ncol = 100, 
-  breaks = NULL, cex.legend = 1, cex.names = 1, cex.values = cex.names, digits = 2L,
-  mar.min = 2, add = FALSE, ...)
+plotmap <- function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
+  swap = FALSE, range = NULL, names = FALSE, values = FALSE, col = NULL,
+  ncol = 100, breaks = NULL, cex.legend = 1, cex.names = 1, cex.values = cex.names,
+  digits = 2L, mar.min = 2, add = FALSE, interp = FALSE, grid = 200,
+  extrap = FALSE, outside = FALSE, type = "akima", linear = FALSE, k = 40,
+  p.pch = 15, p.cex = 1, shift = NULL, trans = NULL, ...)
 {
   if(missing(map))
     stop("map object is missing!")
-  if(is(map, "SpatialPolygonsDataFrame"))
-    map <- SPDF2bnd(map)
+  if(inherits(map, "SpatialPolygons"))
+    map <- sp2bnd(map)
   if(!is.list(map))
     stop("argument map must be a list() of matrix polygons!")
   args <- list(...)
   map.limits <- find.limits(map, mar.min, ...)
-  if(is.null(args$asp))
+  if(is.null(args$asp)) {
     args$asp <- attr(map, "asp")
+    if(is.null(args$asp))
+      args$asp <- map.limits$asp
+  }
   n <- length(map)
   if(is.null(x))
     legend <- FALSE
   poly.names.orig <- names(map)
   if(!any(is.na(poly.names <- x2int(names(map))))) {
-    poly.names <- sort(poly.names)
+    op <- order(poly.names)
+    poly.names <- poly.names[op]
     poly.names <- as.character(poly.names)
   } else {
-    poly.names <- sort(names(map))
+    poly.names <- names(map)
+    op <- order(poly.names)
+    poly.names <- poly.names[op]
   }
-  ## FIXME
-  ## if(length(unique(poly.names)) < length(poly.names)) {
-  ##   names(map) <- poly.names <- paste(1L:length(map))
-  ## }
+  poly.names.orig <- poly.names.orig[op]
+  if(length(upn <- unique(poly.names)) < length(poly.names)) {
+    nn <- NULL
+    for(i in upn) {
+      j <- poly.names == i
+      poly.names[j] <- paste(poly.names[j],
+        if(sum(j) > 1) paste(".", 1:sum(j), sep = "") else NULL,
+        sep = "")
+    }
+    names(map) <- poly.names
+  }
   map <- map[poly.names]
   poly.names <- names(map)
   surrounding <- attr(map, "surrounding")
@@ -51,9 +65,18 @@ function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
       #  l = c(30, 90), power = 1.5, gamma = 2.4, fixup = TRUE)
     }
     x <- compute.x.id(x, id, c.select, range, symmetric)
-    colors <- make_pal(col = col, ncol = ncol, data = x$x, 
+    if(!is.null(shift)) {
+      shift <- as.numeric(shift[1])
+      x$x <- x$x + shift
+    }
+    if(!is.null(trans)) {
+      if(!is.function(trans)) stop("argument trans must be a function!")
+      x$x <- trans(x$x)
+    }
+    map_fun <- make_pal(col = col, ncol = ncol, data = x$x, 
       range = range, breaks = breaks, swap = swap, 
-      symmetric = symmetric)$map(x$x)
+      symmetric = symmetric)$map
+    colors <- map_fun(x$x)
   } else {
     if(is.null(col))
       colors <- rep(NA, length.out = n)
@@ -64,13 +87,18 @@ function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
       colors <- rep(colors, length.out = n)
     }
   }
+  if(is.null(args$pos))
+    args$pos <- "right"
   if(legend && !is.null(args$pos) && args$pos[1L] == "right") {
     par.orig <- par(c("mar", "las", "mfrow"))
     mar.orig <- mar <- par.orig$mar
     mar[4L] <- 0
+    mar[c(1, 3)] <- 1
     on.exit(par(par.orig))
     par(mar = mar)
-    layout(matrix(c(1, 2), nrow = 1), widths = c(1, 0.18))
+    w <- (3 + mar[2L]) * par("csi") * 2
+    w <- max(c(2.84, w))
+    layout(matrix(c(1, 2), nrow = 1), widths = c(1, lcm(w)))
   }
   if(!is.null(map.limits$mar) && is.null(args$asp) && !add)
     par(mar = map.limits$mar)
@@ -85,21 +113,64 @@ function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
   if(is.null(args$ylab))
     args$ylab <- ""
   if(!add)
-    do.call(graphics::plot.default, delete.args(graphics::plot.default, args)) 
+    do.call(graphics::plot.default, delete.args(graphics::plot.default, args))
+  if(interp & !is.null(x)) {
+    stopifnot(require("maptools"))
+
+    cdata <- data.frame(centroids(map), "id" = names(map))
+    cdata <- merge(cdata, data.frame("z" = x$x, "id" = x$id), by = "id")
+
+    xo <- seq(map.limits$x[1], map.limits$x[2], length = grid)
+    yo <- seq(map.limits$y[1], map.limits$y[2], length = grid)
+
+    ico <- with(cdata, interp2(x = xco, y = yco, z = z,
+      xo = xo,
+      yo = yo,
+      type = type, linear = linear, extrap = extrap,
+      k = if(is.null(k)) ceiling(length(map) * 0.8) else as.integer(k)))
+    
+    yco <- rep(yo, each = length(xo))
+    xco <- rep(xo, length(yo))
+
+    cvals <- as.numeric(ico)
+    cvals[cvals < min(cdata$z)] <- min(cdata$z)
+    cvals[cvals > max(cdata$z)] <- max(cdata$z)
+    icolors <- map_fun(cvals)
+
+    if(!outside) {
+      gpclibPermit()
+      class(map) <- "bnd"
+      mapsp <- bnd2sp(map)
+      ob <- unionSpatialPolygons(mapsp, rep(1L, length = length(mapsp)), avoidGEOS  = TRUE)
+
+      nob <- length(slot(slot(ob, "polygons")[[1]], "Polygons"))
+      pip <- NULL
+      for(j in 1:nob) {
+        oco <- slot(slot(slot(ob, "polygons")[[1]], "Polygons")[[j]], "coords")
+        pip <- cbind(pip, point.in.polygon(xco, yco, oco[, 1L], oco[, 2L], mode.checked = FALSE) < 1L)
+      }
+      pip <- apply(pip, 1, function(x) all(x))
+    
+      icolors[pip] <- NA
+    }
+
+    points(SpatialPoints(cbind(xco, yco)), col = icolors, pch = p.pch, cex = p.cex)
+    colors <- rep(NA, length = length(colors))
+  }
   args$ylab <- args$xlab <- args$main <- ""
   args$type <- NULL
   args$axes <- NULL
-  lwd.p <- rep(args$lwd, length.out = n)
+  lwd.p <- if(!is.null(args$lwd)) rep(args$lwd, length.out = n) else NULL
   if(is.null(lwd.p))
     lwd.p <- rep(1, length.out = n)
-  lty.p <- rep(args$lty, length.out = n)
+  lty.p <- if(!is.null(args$lty)) rep(args$lty, length.out = n) else NULL
   if(is.null(lty.p))
     lty.p <- rep(1, length.out = n)
-  border.p <- rep(args$border, length.out = n)
+  border.p <- if(!is.null(args$border)) rep(args$border, length.out = n) else NULL
   if(is.null(border.p))
     border.p <- rep("black", length.out = n)
-  density.p <- rep(args$density, length.out = n)
-  angle.p <- rep(args$angle, length.out = n)
+  density.p <- if(!is.null(args$density)) rep(args$density, length.out = n) else NULL
+  angle.p <- if(!is.null(args$angle)) rep(args$angle, length.out = n) else NULL
   if(is.null(angle.p))
     angle.p <- rep(90, length.out = n)
   i <- 1L
@@ -144,12 +215,13 @@ function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
   if(legend) {
     if(is.null(args$pos))
       args$pos <- "topleft"
-    if(args$pos == "right") {
+    if(args$pos[1L] == "right") {
       args$full <- TRUE
       args$side.legend <- 2L
       args$side.ticks <- 2L
       mar <- mar.orig
-      mar[2L] <- 0
+      mar[2L] <- 0.5
+      mar[4L] <- 3.1
       par(mar = mar, xaxs = "i", yaxs = "i")
       args$plot <- TRUE
       args$add <- FALSE
@@ -159,14 +231,6 @@ function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
         args$xpd <- TRUE
       args$add <- TRUE
     }
-    if(is.null(args$width))
-      args$width <- 0.6
-    if(is.null(args$height))
-      args$height <- 0.2
-    if(is.null(args$distance.labels))
-     args$distance.labels <- 2
-    if(is.null(args$length.ticks))
-      args$length.ticks <- 2L
     args$xlim <- map.limits$xlim
     args$ylim <- map.limits$ylim
     args$color <- col
@@ -177,9 +241,14 @@ function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
     args$digits <- digits
     args$cex.labels <- cex.legend
     args$symmetric <- symmetric
+    if(is.null(range)) {
+      range <- range(args$x)
+      if(diff(range) == 0)
+        range <- unique(range) + c(-1, 1)
+    }
     args$range <- range
     if(is.null(args$lrange))
-      args$lrange <- x$range
+      args$lrange <- args$range
     do.call(colorlegend, delete.args(colorlegend, args, c("font")))
   }
   if(!is.null(args$xlab))

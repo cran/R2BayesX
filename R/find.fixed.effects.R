@@ -1,5 +1,4 @@
-find.fixed.effects <-
-function(dir, files, data, response, eta, model.name, rval, minfo, info)
+find.fixed.effects <- function(dir, files, data, response, eta, model.name, rval, minfo, info)
 {
   if(file.exists(info)) {
     info <- readLines(info)
@@ -44,6 +43,7 @@ function(dir, files, data, response, eta, model.name, rval, minfo, info)
           nL <- eval(parse(text = minfo$nYLevels))
           bsf <- strsplit(basename(file), "_")[[1L]]
           bsf <- gsub(".res", "", bsf[length(bsf)], fixed = TRUE)
+          bsf <- gsub("FixedEffects", "", bsf)
           if(bsf %in% nL)
             x$varname <- paste(x$varname, ":", oL[nL == bsf], sep = "")
         }
@@ -59,7 +59,8 @@ function(dir, files, data, response, eta, model.name, rval, minfo, info)
             split <- oL[nL == split]
           }
         }
-        x$varname <- paste(x$varname, ":", split, sep = "", collapse = "")
+        if(!any(grepl(split, x$varname)))
+          x$varname <- paste(x$varname, ":", split, sep = "", collapse = "")
       }
     }
     return(x)
@@ -76,17 +77,14 @@ function(dir, files, data, response, eta, model.name, rval, minfo, info)
     if(length(res <- grep(".res", fefiles, value = TRUE))) {
       if(length(res2 <- res[!grepl("_df.res", res)]))
         for(tf in res2)
-          FixedEffects <- rbind(FixedEffects, df2m2(fixed2table(paste(dir, "/", tf, sep = ""), tf)))
+          FixedEffects <- rbind(FixedEffects, df2m2(fixed2table(file.path(dir, tf), tf)))
       if(length(res2 <- res[grepl("_df.res", res)])) {
-        nres2 <- length(res2) 
-        fdf <- vector("list", length = nres2)
-        for(k in 1L:nres2)
-          fdf[[k]] <- read.table(paste(dir, "/", res2[k], sep = ""), header = TRUE)
+        fdf <- read.table(file.path(dir, res2[1]), header = TRUE)
       }
     }
     if(length(res <- grep("_sample.raw", fefiles, value = TRUE)))
       for(tf in res)
-        fsample <- cbind(fsample, df2m(read.table(paste(dir, "/", tf, sep = ""), header = TRUE)))
+        fsample <- cbind(fsample, df2m(read.table(file.path(dir, tf), header = TRUE)))
     attr(FixedEffects, "sample") <- fsample
     attr(FixedEffects, "df") <- fdf
     if(!is.null(FixedEffects) && !is.null(info)) {
@@ -115,6 +113,13 @@ function(dir, files, data, response, eta, model.name, rval, minfo, info)
       }
       rownames(FixedEffects) <- rep(rn, length.out = nrow(FixedEffects))
     }
+    if(ncol(FixedEffects) > 1) {
+      check <- all(FixedEffects[, 2:ncol(FixedEffects)] == 0)
+      if(is.na(check)) check <- TRUE 
+      if(check)
+        for(j in 2:ncol(FixedEffects))
+          FixedEffects[, j] <- rep(NA, nrow(FixedEffects))
+    }
     rval$fixed.effects <- FixedEffects
     rownames(rval$fixed.effects) <- rrmfs(rownames(rval$fixed.effects))
   }
@@ -124,7 +129,7 @@ function(dir, files, data, response, eta, model.name, rval, minfo, info)
     rF <- rownames(FixedEffects)
     cF <- colnames(FixedEffects)
     FEattr <- attributes(FixedEffects)
-    if(length(FixedEffects <- FixedEffects[rF != "(Intercept)",]))
+    if(length(FixedEffects <- FixedEffects[rF != "(Intercept)",])) {
       if(length(vars <- rF[rF %in% names(data)])) {
         j <- 0L
         if(!is.matrix(FixedEffects)) {
@@ -151,13 +156,15 @@ function(dir, files, data, response, eta, model.name, rval, minfo, info)
           j <- j + 1L
           x <- unique(as.vector(unlist(data[[tv]])))
           vc <- matrix(FixedEffects[rownames(FixedEffects) == tv,], nrow = 1L)
-          x <- cbind(x, x%*%vc)    
-          x <- x[order(x[,1L]),]
+          x <- cbind(x, x %*% vc) 
+          x <- x[order(x[,1L]), ]
+          if(length(jj <- which(apply(x, 1, function(x) { all(x == 0) }))))
+            x <- x[-jj, ]
           if(!is.matrix(x))
             x <- matrix(x, nrow = 1L)
           colnames(x) <- rep(c(tv, cF), length.out = ncol(x))
           rownames(x) <- 1L:nrow(x)
-          attr(x,"specs") <- list(dim = 1L, term = rrmfs(tv), label = rrmfs(tv))
+          attr(x, "specs") <- list(dim = 1L, term = rrmfs(tv), label = rrmfs(tv))
           attr(x, "partial.resids") <- blow.up.resid(data, x, tv, 
             response, eta, 1L, "linear.bayesx")
           if(!is.null(attr(x, "partial.resids"))) {
@@ -170,6 +177,7 @@ function(dir, files, data, response, eta, model.name, rval, minfo, info)
           eval(parse(text = paste("rval$effects$\'", rrmfs(tv), "\' <- x", sep = "")))
         }
       }
+    }
   }
 
   return(rval)

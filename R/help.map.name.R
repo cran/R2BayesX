@@ -1,5 +1,4 @@
-help.map.name <-
-function(x)
+help.map.name <- function(x)
 {
   if(is.null(x))
     return("")

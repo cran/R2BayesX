@@ -1,5 +1,4 @@
-extract.model.diagnostic <-
-function(object, model, what, print.names = FALSE)
+extract.model.diagnostic <- function(object, model, what, print.names = FALSE)
 {
   object <- get.model(object, model)
   dg <- df <- NULL
