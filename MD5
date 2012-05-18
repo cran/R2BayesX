@@ -1,4 +1,4 @@
-84e8a757a8655e3cd390626982f6b16c *DESCRIPTION
+af8189fd53a1b5f421904b46a52f51e6 *DESCRIPTION
 3d40f94420c5e664c336bd1c7b24bba1 *NAMESPACE
 34161709e64aae3bf471f5c1f111d205 *R/AIC.bayesx.R
 c1117241f989b4053784098f858405cb *R/BIC.bayesx.R
@@ -100,7 +100,7 @@ dc85ef37e85cfc0625262afa6d48e106 *R/plot.sm.bayesx.R
 89b2df2d07e61a6c6083022d2f1bffc2 *R/plot.varying.bayesx.R
 9703c21b87433a22ad0bbd42606118e0 *R/plot2d.R
 da6b79d3a5a5b5c22abab7f8ed0738c7 *R/plot2d.default.R
-846be10d8f1a028152bf880708c3552c *R/plot3d.R
+36ccbc15b9f4534798c5dfdf830d5861 *R/plot3d.R
 518f9554dc2fe08d5c9969d6666374c8 *R/plotblock.R
 1ca8924dfcb0c3a02aff0a5287417f18 *R/plotmap.R
 9555e674042722c69d29141b80e2cb66 *R/plotsamples.R
@@ -200,7 +200,7 @@ a7e1019187d19ff6ba75467c263e27b5 *man/cprob.Rd
 b7a9b30edb0254cab5a3789ffc34ade6 *man/parse.bayesx.input.Rd
 72e68dfa8325723ec3d4abe80703c74e *man/plot.bayesx.Rd
 1b0324c5e92885285dbfab430a3050f0 *man/plot2d.Rd
-3134de88414b511525b1fdd12444ff07 *man/plot3d.Rd
+fd0843fb7bd2a58481c7aa1d86c9d516 *man/plot3d.Rd
 6d902c3b28e10713461dc79316c9b0a1 *man/plotblock.Rd
 086ea6b18927ff205c1a9dfb8426bffa *man/plotmap.Rd
 4fc34282160c98ecc34969d698497e7f *man/plotsamples.Rd

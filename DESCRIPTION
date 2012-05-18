@@ -1,5 +1,5 @@
 Package: R2BayesX
-Version: 0.1-1
+Version: 0.1-2
 Date: 2012-05-18
 Title: Estimate Structured Additive Regression Models with BayesX
 Authors@R: c(person(given = "Nikolaus", family = "Umlauf", role =
@@ -11,13 +11,14 @@ Authors@R: c(person(given = "Nikolaus", family = "Umlauf", role =
         = "Achim.Zeileis@R-project.org"))
 Description: An R interface to estimate structured additive regression
         (STAR) models with BayesX.
-Depends: R (>= 2.13.0), akima, BayesX, BayesXsrc, colorspace, mgcv
-Suggests: coda, maptools
+Depends: R (>= 2.13.0), BayesX, BayesXsrc, colorspace, mgcv
+Suggests: akima, coda, maptools
 License: GPL-2 | GPL-3
 LazyLoad: yes
-Packaged: 2012-05-18 14:10:04 UTC; c403131
+Packaged: 2013-03-19 11:33:47 UTC; nik
 Author: Nikolaus Umlauf [aut, cre], Thomas Kneib [aut], Stefan Lang
         [aut], Achim Zeileis [aut]
 Maintainer: Nikolaus Umlauf <Nikolaus.Umlauf@uibk.ac.at>
 Repository: CRAN
-Date/Publication: 2012-05-20 12:12:36
+Date/Publication: 2013-03-19 12:59:52
+NeedsCompilation: yes

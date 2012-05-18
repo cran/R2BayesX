@@ -76,6 +76,19 @@ plot3d(x, residuals = FALSE, col.surface = NULL,
     }
 }
 
+\note{
+  Function \code{plot3d} uses the \pkg{akima} package to construct smooth interpolated surfaces,
+  therefore, package \pkg{akima} needs to be installed. The \pkg{akima} package has an ACM license
+  that restricts applications to non-commercial usage, see
+
+  \url{http://www.acm.org/publications/policies/softwarecrnotice}
+  
+  Function \code{plot3d} prints a note refering to the ACM licence. This note can be supressed by
+  setting
+
+  \code{options("use.akima" = TRUE)} 
+}
+
 \author{
   Nikolaus Umlauf, Thomas Kneib, Stefan Lang, Achim Zeileis.
 }

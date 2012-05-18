@@ -6,6 +6,18 @@ function(x, residuals = FALSE, col.surface = NULL,
   digits = 2L, d.persp = 1L, r.persp = sqrt(3), linear = TRUE, extrap = FALSE, 
   outscale = 0, data = NULL, ...)
 {
+  if(isTRUE(getOption("use.akima"))) {
+    stopifnot(require("akima"))
+  } else {
+    if(require("akima")) {
+      cat("NOTE: Package 'akima' has an ACM license that restricts applications to non-commercial usage.\n")
+    } else {
+      stop(paste("plot3() can only be used if the 'akima' package is installed. ",
+        "Note that 'akima' has an ACM license that restricts applications to ",
+        "non-commercial usage.", sep = ""))
+    }
+  }
+  
   if(is.null(x))
     return(invisible(NULL))
   if(inherits(x,"formula")) {
