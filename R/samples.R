@@ -109,7 +109,6 @@ samples <- function(object, model = NULL, term = NULL, coda = TRUE, acf = FALSE,
   if(!is.null(dim(rval)) & all(dim(rval) == 1))
     rval <- as.numeric(rval)
   if(coda) {
-    require("coda")
     nc <- if(inherits(object[[1]], "bayesx")) length(object) else 1
     if(nc < 2)
       rval <- list(rval)
@@ -121,10 +120,10 @@ samples <- function(object, model = NULL, term = NULL, coda = TRUE, acf = FALSE,
           j <- as.data.frame(j)
         st <- cbind(st, as.matrix(j))
       }
-      crval[[i]] <- mcmc(st, start = 1, end = nrow(st), thin = 1)
+      crval[[i]] <- coda::mcmc(st, start = 1, end = nrow(st), thin = 1)
     }
     if(nc > 1) {
-      crval <- mcmc.list(crval)
+      crval <- coda::mcmc.list(crval)
       for(j in 1:nc) {
         colnames(crval[[j]]) <- gsub("Coef.C", "Coef.", colnames(crval[[j]]), fixed = TRUE)
       }

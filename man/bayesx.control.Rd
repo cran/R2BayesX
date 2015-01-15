@@ -185,16 +185,20 @@ bayesx.control(model.name = "bayesx.estim",
 }
 
 \references{
-  For methodological and reference details see the \pkg{BayesX} manuals available at:
-  
+  For methodological and reference details see the \pkg{BayesX} manuals available at:  
   \url{http://www.BayesX.org}.
 
   Belitz C, Lang S (2008). Simultaneous selection of variables and smoothing parameters in 
     structured additive regression models. \emph{Computational Statistics \& Data Analysis}, 
     \bold{53}, 61--81.
 
-  Chambers J. M., Hastie T. J. (eds.) (1992). Statistical Models in S. \emph{Chapman \& Hall}, 
+  Chambers JM, Hastie TJ (eds.) (1992). \emph{Statistical Models in S}. Chapman \& Hall, 
     London.
+
+  Umlauf N, Adler D, Kneib T, Lang S, Zeileis A (2015).
+    Structured Additive Regression Models: An R Interface to BayesX.
+    \emph{Journal of Statistical Software}, \bold{63}(21), 1--46.
+    \url{http://www.jstatsoft.org/v63/i21/}
 }
 
 \seealso{

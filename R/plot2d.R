@@ -4,6 +4,7 @@ plot2d <- function(x, residuals = FALSE, rug = TRUE, jitter = TRUE,
   sep = "", month = NULL, year = NULL, step = 12,
   shift = NULL, trans = NULL, ...)
 {
+  rugp <- attr(x, "rug")
   if(is.null(x))
     return(invisible(NULL))
   if(is.character(x)) {
@@ -125,6 +126,7 @@ plot2d <- function(x, residuals = FALSE, rug = TRUE, jitter = TRUE,
       xlab = args$xlab, ylab = args$ylab, main = args$main)
   }
   args <- set.plot2d.specs(ncol(x) - 1L, args, col.lines, is.bayesx)
+  args$rugp <- rugp
   args$specs <- args
   args$residuals <- residuals
   args$col.residuals <- col.residuals

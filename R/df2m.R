@@ -3,7 +3,7 @@ df2m <- function(x)
   if(!is.null(x)) {
     xattr <- attributes(x)
     nxa <- names(xattr)
-    x$intnr <- NULL
+    x$intnr <- x$paramnr <- x$varname <- NULL
     cn <- colnames(x)
     x <- as.matrix(x)
     rownames(x) <- 1L:nrow(x)

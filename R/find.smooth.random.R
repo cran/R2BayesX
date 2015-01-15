@@ -23,12 +23,12 @@ find.smooth.random <- function(dir, files, data, response, eta, model.name, minf
       for(res in resfiles) {
         cxbs <- NULL
         x <- df2m(read.table(file.path(dir, res), header = TRUE))
-        x <- x[, !grepl("pstd", colnames(x), fixed = TRUE)]
+        x <- x[, !grepl("pstd", colnames(x), fixed = TRUE), drop = FALSE]
         dimx <- s4dim(x)
         if(sum(x[,(dimx + 1L):ncol(x)], na.rm = TRUE) != 0) {
           fprocessed <- c(fprocessed, file.path(dir, res))
           colnx <- colnames(x)
-          x <- x[order(x[,1L]),]
+          x <- x[order(x[,1L]), , drop = FALSE]
           colnames(x) <- rep(colnx, length.out = ncol(x))
           cx <- s4class(res)
           cxbs <- s4bs(res)

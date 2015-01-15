@@ -1,7 +1,5 @@
 shp2bnd <- function(shpname, regionnames, check.is.in = TRUE)
 {   
-  require("shapefiles")
-
     ## safe coercions ...
     shpname <- as.character(shpname)
     regionnames <- as.character(regionnames)
@@ -13,6 +11,9 @@ shp2bnd <- function(shpname, regionnames, check.is.in = TRUE)
               identical(length(check.is.in), 1L))
     
     ## now read the shapefile information
+    ## (FIXME: shapefiles actually needs to be on the search path for read.shapefil(), argh...)
+    stopifnot(requireNamespace("shapefiles"))
+    attachNamespace("shapefiles")
     shp <- shapefiles::read.shapefile(shpname)
     dbf <- shapefiles::read.dbf(paste(shpname,".dbf",sep=""))
 

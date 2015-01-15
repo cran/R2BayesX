@@ -15,8 +15,6 @@
 
 bnd2sp <- function(bndObject)
 {
-  require("sp")
-
     ## check if S3 class of bndObject is "bnd"
     stopifnot(inherits(x=bndObject,
                        what="bnd"))
@@ -99,8 +97,6 @@ sp2bnd <- function(spObject,
   ## squared Euclidean distance) and still match each other?
     
 {
-  require("sp")
-
   ## check if S4 class of spObject is "SpatialPolygons"
   stopifnot(is(object = spObject, class2 = "SpatialPolygons"))
 

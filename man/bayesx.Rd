@@ -151,8 +151,6 @@ bayesx(formula, data, weights = NULL, subset = NULL,
 }
 
 \references{
-  For methodological and reference details see:
-  
   Belitz C, Brezger A, Kneib T, Lang S (2011). \pkg{BayesX} - Software for Bayesian Inference in 
     Structured Additive Regression Models. Version 2.0.1. 
     URL \url{http://www.BayesX.org}.
@@ -170,6 +168,11 @@ bayesx(formula, data, weights = NULL, subset = NULL,
 
   Fahrmeir L, Kneib T, Lang S (2004). Penalized Structured Additive Regression for Space Time Data: 
     A Bayesian Perspective. \emph{Statistica Sinica}, \bold{14}, 731--761.
+
+  Umlauf N, Adler D, Kneib T, Lang S, Zeileis A (2015).
+    Structured Additive Regression Models: An R Interface to BayesX.
+    \emph{Journal of Statistical Software}, \bold{63}(21), 1--46.
+    \url{http://www.jstatsoft.org/v63/i21/}
 }
 
 \seealso{
@@ -299,22 +302,18 @@ b2 <- bayesx(y ~ sx(x1) + sx(id, bs = "mrf", map = MunichBnd),
 summary(b1)
 summary(b2)
 
-## plot the effects
-op <- par(no.readonly = TRUE)
-par(mfrow = c(1,3))
+## plot the spatial effects
 plot(b1, term = "sx(id)", map = MunichBnd, 
   main = "bayesx() MCMC estimate")
 plot(b2, term = "sx(id)", map = MunichBnd, 
   main = "bayesx() REML estimate")
 plotmap(MunichBnd, x = dat$sp, id = dat$id, 
   main = "Truth")
-par(op)
 
 ## try geosplines instead
 b <- bayesx(y ~ sx(id, bs = "gs", map = MunichBnd) + sx(x1), data = dat)
 summary(b)
 plot(b, term = "sx(id)", map = MunichBnd)
-plot(b, term = "sx(id)", map = MunichBnd, pos = "right")
 
 ## geokriging
 b <- bayesx(y ~ sx(id, bs = "gk", map = MunichBnd) + sx(x1), 
@@ -378,15 +377,12 @@ b <- bayesx(y ~ sx(x1) +
 summary(b)
 
 ## plot all spatial effects
-op <- par(no.readonly = TRUE)
-par(mfrow = c(1, 3))
 plot(b, term = "sx(id):mrf", map = MunichBnd, 
   main = "Structured spatial effect")
 plot(b, term = "sx(id):re", map = MunichBnd, 
   main = "Unstructured spatial effect")
 plot(b, term = "sx(id):total", map = MunichBnd, 
   main = "Total spatial effect", digits = 4)
-par(mfrow = op)
 
 
 ## some experiments with the

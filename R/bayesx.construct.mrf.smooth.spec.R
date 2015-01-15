@@ -14,6 +14,7 @@ bayesx.construct.mrf.smooth.spec <- bayesx.construct.spatial.smooth.spec <- func
     map.name <- object$xt$map.name
   if(!is.list(object$xt))
     object$xt <- list(object$xt)
+  map.name <- rmf(gsub("\\s", "", paste(map.name, sep = "", collapse = "")))
 
   map <- object$xt$map
   if(is.null(map)) {
@@ -33,14 +34,16 @@ bayesx.construct.mrf.smooth.spec <- bayesx.construct.spatial.smooth.spec <- func
     } else map <- object$xt[[1L]]
     if(is.null(map)) {
       map <- object$xt
-      if(is(map, "SpatialPolygonsDataFrame"))
-        map <- SPDF2bnd(map)
+      if(inherits(map, "SpatialPolygons"))
+        map <- sp2bnd(map)
       if(is.null(map) || (!is.list(map) && !inherits(map, "bnd") || !inherits(map, "gra")))
         stop("need to supply a bnd or graph file object in argument xt!")
     }
   }
-  if(is(map, "SpatialPolygonsDataFrame"))
-    map <- SPDF2bnd(map)
+  if(is(map, "nb"))
+    map <- nb2gra(map)
+  if(inherits(map, "SpatialPolygons"))
+    map <- sp2bnd(map)
   if(!inherits(map, "bnd") && !inherits(map, "gra")) {
     if(is.list(map))
       class(map) <- "bnd"

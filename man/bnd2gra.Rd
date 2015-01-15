@@ -8,11 +8,12 @@
 }
 
 \usage{
-bnd2gra(map)
+bnd2gra(map, npoints = 2)
 }
 
 \arguments{
   \item{map}{map in boundary format that should be converted.}
+  \item{npoints}{integer. How many points must be shared by two polygons to be a neighbor?}
 }
 
 \value{

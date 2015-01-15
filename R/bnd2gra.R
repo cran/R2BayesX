@@ -1,4 +1,4 @@
-bnd2gra <- function (map)
+bnd2gra <- function(map, npoints = 2)
 {
     ## check class of argument
     if (! inherits(map, "bnd"))
@@ -81,7 +81,7 @@ bnd2gra <- function (map)
                                      FUN=pointsMatrixToPointsCharVector)
 
             ## now decide if region i and j share at least 2 common points in their polygons
-            if (sum(pointsRegion.i %in% pointsRegion.j) >= 2L)
+            if (sum(pointsRegion.i %in% pointsRegion.j) >= npoints)
             {
                 ## then they are neighbors!
                 retMatrix[i, j] <-

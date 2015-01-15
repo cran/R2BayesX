@@ -1,5 +1,4 @@
-dopos <-
-function(pos, limits, width, height, side.legend, shift)
+dopos <- function(pos, limits, width, height, side.legend, shift)
 {
   if(side.legend > 1L)
     limits <- rev(limits)

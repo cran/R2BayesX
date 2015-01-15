@@ -19,6 +19,7 @@ parse.bayesx.input <- function(formula, data, weights = NULL, subset = NULL, off
   if(!is.null(subset) && subset == "ra$subset") subset <- NULL
   if(is.null(na.action))
     na.action <- get(getOption("na.action"))
+  begin <- NULL 
   co.id <- attr(control, "co.id")
   outfile <- control$outfile
   control$oformula <- formula
@@ -106,6 +107,16 @@ parse.bayesx.input <- function(formula, data, weights = NULL, subset = NULL, off
       }
       subset <- S
     }
+    if(!is.null(control$begin)) {
+      begin <- data[[control$begin]]
+      if(is.null(begin)) {
+        begin <- try(eval(parse(text = control$begin), envir = .GlobalEnv), silent = TRUE)
+        if(class(begin) == "try-error")
+          begin <- try(eval(parse(text = control$begin), envir = data), silent = TRUE)
+        if(class(begin) == "try-error")
+          stop("problems evaluating argument begin!")
+      }
+    }
     ff <- formula
     Yn <- as.character(ff[2L])
     Y <- eval(parse(text = Yn), envir = data)
@@ -147,7 +158,9 @@ parse.bayesx.input <- function(formula, data, weights = NULL, subset = NULL, off
       if(is.function(weights)) weights <- NULL
       if(is.function(subset)) subset <- NULL
       if(is.function(offset)) offset <- NULL
-      ml <- list(formula = ff, data = data, weights = if(control$prediction) NULL else weights,
+      ff2 <- eval(parse(text = paste("update(ff,", Yn, "~ .)")))
+      data[[Yn]] <- Y
+      ml <- list(formula = ff2, data = data, weights = if(control$prediction) NULL else weights,
         subset = subset, offset = offset, na.action = na.action, drop.unused.levels = TRUE)
       data <- do.call("model.frame", ml)
       if(control$prediction) {
@@ -184,18 +197,18 @@ parse.bayesx.input <- function(formula, data, weights = NULL, subset = NULL, off
       if(ncol(data) < 2L && names(data) == Yn)
         only <- TRUE
     }
-    if(!is.null(subset))
-      Y <- Y[subset]
-    if(length(Y) != nrow(data)) {
-      Y <- unique(Y)
-      if(length(Y) != nrow(data))
-        stop(paste("variable lengths differ (found for \'",Yn,"\')", sep = ""))
-    }
-    if(!only) {
-      Y <- as.data.frame(Y)
-      names(Y) <- Yn
-      data <- cbind(Y, data)
-    }
+#    if(!is.null(subset))
+#      Y <- Y[subset]
+#    if(length(Y) != nrow(data)) {
+#      Y <- unique(Y)
+#      if(length(Y) != nrow(data))
+#        warning(paste("variable lengths differ (found for \'",Yn,"\')", sep = ""))
+#    }
+#    if(!only) {
+#      Y <- as.data.frame(Y)
+#      names(Y) <- Yn
+#      data <- cbind(Y, data)
+#    }
     if(ncol(data) < 2L) {
       control$order <- order(data[, 1L])
       data[, 1L] <- data[order(data[, 1L]), 1L]
@@ -213,6 +226,8 @@ parse.bayesx.input <- function(formula, data, weights = NULL, subset = NULL, off
   attr(attr(control$data, "terms"), "response") <- 1L
   attr(control$data, "na.action") <- na.action
   control$contrasts <- contrasts
+  if(!is.null(begin))
+    control$begin.vec <- begin
   attr(control, "co.id") <- co.id
   class(control) <- "bayesx.input"
 

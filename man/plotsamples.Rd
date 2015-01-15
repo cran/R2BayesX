@@ -11,7 +11,8 @@
 }
  
 \usage{
-plotsamples(x, selected = "NA", acf = FALSE, var = FALSE, max.acf = FALSE, ...)
+plotsamples(x, selected = "NA", acf = FALSE, var = FALSE,
+  max.acf = FALSE, subset = NULL, ...)
 }
 
 \arguments{
@@ -23,8 +24,11 @@ plotsamples(x, selected = "NA", acf = FALSE, var = FALSE, max.acf = FALSE, ...)
     changes the main title.}
   \item{max.acf}{if set to \code{TRUE}, \code{plotsamples} will evaluate the maximum
     autocorrelation over all parameters of each sample.}
+  \item{subset}{integer. An index which selects the coefficients for which sampling paths
+    should be plotted.}
   \item{\dots}{other graphical parameters to be passed to \code{\link[graphics]{plot}} and
-    \code{\link[stats]{acf}}, e.g. argument \code{lag.max} if \code{acf = TRUE}.}
+    \code{\link[stats]{acf}}, e.g. argument \code{lag.max} if \code{acf = TRUE}. An argument
+    \code{ask} controls the display when more than 12 sampling paths should be plotted.}
 }
 
 \author{

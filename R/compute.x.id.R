@@ -1,5 +1,4 @@
-compute.x.id <-
-function(x, id = NULL, c.select = NULL, range = NULL, symmetric = TRUE)
+compute.x.id <- function(x, id = NULL, c.select = NULL, range = NULL, symmetric = TRUE)
 { 
   if(is.null(id) && (is.vector(x) || is.array(x))) {
     if(!is.null(names(x))) {
@@ -8,10 +7,10 @@ function(x, id = NULL, c.select = NULL, range = NULL, symmetric = TRUE)
     }
   }
   if(is.factor(id))
-    id <- f2int(id, type = 2L)
+    id <- as.character(id)
   if(is.array(x) && length(dim(x)) < 2L)
     x <- as.vector(x)
-  if(is.vector(x) && is.vector(id)) {
+  if(is.null(dim(x)) && is.null(dim(id))) {
     if(length(x) != length(id))
       stop("arguments x and id are differing!")
   } else {
@@ -19,11 +18,18 @@ function(x, id = NULL, c.select = NULL, range = NULL, symmetric = TRUE)
     if(is.list(x)) 
       nx <- names(x)
     if(is.matrix(x)) {
-      x <- as.list(as.data.frame(x))
-      nx <- names(x)  
-      if(all(nx %in% paste("V", 1L:length(nx), sep = ""))) {
-        nx[1L:2L] <- c("id", "x")
+      if(ncol(x) < 2 & !is.null(id)) {
+        x <- data.frame("id" = id, "x" = as.numeric(x))
+        nx <- names(x)
         c.select <- "x"
+        id <- NULL
+      } else {
+        x <- as.list(as.data.frame(x))
+        nx <- names(x)
+        if(all(nx %in% paste("V", 1L:length(nx), sep = ""))) {
+          nx[1L:2L] <- c("id", "x")
+          c.select <- "x"
+        }
       }
     }
     if(is.data.frame(x)) {
@@ -46,11 +52,12 @@ function(x, id = NULL, c.select = NULL, range = NULL, symmetric = TRUE)
       take <- c("mean", "Mean", "MEAN", "estimate", 
         "Estimate", "ESTIMATE", "mean", "pmode", "pmean_tot")
       did.take <- FALSE
-      for(k in take)
-        if(!is.na(pmatch(k, nx))) {
+      for(k in take) {
+        if(!is.na(pmatch(k, nx)) & !did.take) {
           x <- x[[k]]
           did.take <- TRUE
         }
+     }
      if(!did.take && length(x) > 1L)
        x <- x[[2L]]
     } else {

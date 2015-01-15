@@ -2,7 +2,7 @@ sliceplot <- function(x, y = NULL, z = NULL, view = 1, c.select = NULL,
   values = NULL, probs = c(0.1, 0.5, 0.9), grid = 100,
   legend = TRUE, pos = "topright", digits = 2, data = NULL,
   rawdata = FALSE, type = "akima", linear = FALSE, extrap = FALSE,
-  k = 40, ...)
+  k = 40, rug = TRUE, rug.col = NULL, jitter = TRUE, ...)
 {
   if(is.vector(x) & is.vector(y) & is.vector(z)) {
     nx <- c(
@@ -74,7 +74,7 @@ sliceplot <- function(x, y = NULL, z = NULL, view = 1, c.select = NULL,
   args$x <- slices[, 1]
   args$y <- slices[, 2:ncol(slices)]
   args$type = "l"
-  do.call("matplot", delete.args("matplot", args, "axes"))
+  do.call("matplot", delete.args("matplot", args, c("axes", "main", "xlab", "ylab")))
   if(legend) {
     l.args$x <- pos
     l.args$legend <- paste(nx[noview], "=", round(values, digits))
@@ -86,6 +86,11 @@ sliceplot <- function(x, y = NULL, z = NULL, view = 1, c.select = NULL,
     if(is.null(l.args$box.col))
       l.args$box.col <- NA
     do.call("legend", delete.args("legend", l.args))
+  }
+  if(rug) {
+    args$x <- if(jitter) jitter(x[, view]) else x[, view]
+    args$col <- rug.col
+    do.call(graphics::rug, delete.args(graphics::rug, args))
   }
   invisible(args)
 }

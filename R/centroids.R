@@ -6,7 +6,7 @@ centroids <- function(map)
     cp[i,] <- centroidpos(na.omit(map[[i]]))
   }
   rownames(cp) <- names(map)
-  colnames(cp) <- c("xco", "yco")
+  colnames(cp) <- c("x", "y")
 
   return(cp)
 }

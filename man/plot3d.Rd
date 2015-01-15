@@ -167,7 +167,7 @@ par(op)
 
 ## another variation
 dat$f1 <- with(dat, sin(z) * cos(w))
-plot3d(cbind(z = dat$z, w = dat$w, f1 = dat$f1))
+with(dat, plot3d(cbind(z, w, f1)))
 
 ## same with formula 
 plot3d(sin(z) * cos(w) ~ z + w, zlab = "f(z,w)", data = dat)

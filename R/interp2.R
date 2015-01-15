@@ -11,7 +11,6 @@ interp2 <- function(x, y, z, xo = NULL, yo = NULL, grid = 30,
 
   grid <- length(xo)
   x <- as.numeric(x); y <- as.numeric(y); z <- as.numeric(z)
-
   if(type %in% c("mgcv", "gam")) {
     xo <- as.numeric(xo); yo <- as.numeric(yo)
     xr <- range(x, na.rm = TRUE)
@@ -30,22 +29,18 @@ interp2 <- function(x, y, z, xo = NULL, yo = NULL, grid = 30,
     fit <- as.vector(predict(b, newdata = nd))
 
     if(!extrap) {
-      require("sp")
       pid <- chull(X <- cbind(x, y))
       pol <- X[c(pid, pid[1]), ]
-      pip <- point.in.polygon(nd$x, nd$y, pol[, 1], pol[, 2])
+      pip <- sp::point.in.polygon(nd$x, nd$y, pol[, 1], pol[, 2])
       fit[!pip] <- NA
     }
   }
   if(type == "mba") {
-    stopifnot(require("MBA"))
     fit <- MBA::mba.surf(data.frame("x" = x, "y" = y, "z" = z), grid, grid)$xyz.est$z
   }
   if(type == "akima") {
-    if(isTRUE(getOption("use.akima"))) {
-      stopifnot(require("akima"))
-    } else {
-      if(require("akima")) {
+    if(!isTRUE(getOption("use.akima"))) {
+      if(requireNamespace("akima")) {
         cat("NOTE: Package 'akima' has an ACM license that restricts applications to non-commercial usage.\n")
       } else {
         stop(paste("plot3d() can only be used if the 'akima' package is installed. ",

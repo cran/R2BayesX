@@ -1,4 +1,5 @@
-plotsamples <- function(x, selected = "NA", acf = FALSE, var = FALSE, max.acf = FALSE, ...)
+plotsamples <- function(x, selected = "NA", acf = FALSE, var = FALSE,
+  max.acf = FALSE, subset = NULL, ...)
 {
   if(is.null(x)) {
     warning("there is nothing to plot!")
@@ -38,7 +39,7 @@ plotsamples <- function(x, selected = "NA", acf = FALSE, var = FALSE, max.acf = 
     args$x <- 1L:nrow(x)
   } else args$verbose <- FALSE
   if(nr > 1L && !max.acf)
-    setmfrow(nr)
+    setmfrow(nr, args$ask)
   line <- 2L
   sa <- TRUE
   if(nr < 2L || max.acf)
@@ -52,7 +53,10 @@ plotsamples <- function(x, selected = "NA", acf = FALSE, var = FALSE, max.acf = 
   }
   if(max.acf)
     maxs <- NULL
-  for(k in 1L:nr) {
+  ind <- 1L:nr
+  if(!is.null(subset))
+    ind <- subset
+  for(k in ind) {
     if(!acf && !max.acf) {
       args$y <- x[,k]
       args$axes <- FALSE

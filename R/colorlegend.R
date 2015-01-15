@@ -73,6 +73,9 @@ colorlegend <- function(color = NULL, ncol = NULL, x = NULL, breaks = NULL,
     width <- height
     height <- wi
   }
+  if(full)
+    shift <- 0
+  shift <- rep(shift, length.out = 2)
   if(is.null(pos2)) {
     xlim <- range(c(pos[1L], pos[1L] + width, pos[1L] + width, pos[1L]))
     ylim <- range(c(pos[2L], pos[2L], pos[2L] + height, pos[2L] + height))
@@ -82,12 +85,14 @@ colorlegend <- function(color = NULL, ncol = NULL, x = NULL, breaks = NULL,
     ylim <- pos2$ylim
   }
   if(!is.null(x)) {
-    if(is.null(lrange)) {      
-      lrange <- range(x, na.rm = TRUE)
-      if(symmetric) {
-        mar <- max(abs(lrange))
-        lrange <- c(0 - mar, mar)
-      }
+    if(is.null(lrange)) {
+      if(is.null(range)) {      
+        lrange <- range(x, na.rm = TRUE)
+        if(symmetric) {
+          mar <- max(abs(lrange))
+          lrange <- c(0 - mar, mar)
+        }
+      } else lrange <- range
     }
     x <- unique(na.omit(sort(x)))
   } else { 
@@ -203,7 +208,7 @@ colorlegend <- function(color = NULL, ncol = NULL, x = NULL, breaks = NULL,
         yp <- ylim[2L] + shift.title[2] * diff(range(ylim))
         text(if(side.legend < 2) xp else yp,
           if(side.legend < 2) yp else xp, title, pos = 3,
-          srt = if(side.legend == 2) 270 else 0, cex = cex.labels)
+          srt = if(side.legend == 2) 270 else 0, cex = cex.labels, xpd = xpd)
       } else {
         mtext(title, side = side.title)
       }

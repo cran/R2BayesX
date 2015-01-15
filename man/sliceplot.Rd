@@ -14,7 +14,8 @@ sliceplot(x, y = NULL, z = NULL, view = 1, c.select = NULL,
   values = NULL, probs = c(0.1, 0.5, 0.9), grid = 100,
   legend = TRUE, pos = "topright", digits = 2, data = NULL,
   rawdata = FALSE, type = "akima", linear = FALSE,
-  extrap = FALSE, k = 40, ...)
+  extrap = FALSE, k = 40, rug = TRUE, rug.col = NULL,
+  jitter = TRUE, ...)
 }
 
 \arguments{
@@ -59,6 +60,10 @@ sliceplot(x, y = NULL, z = NULL, view = 1, c.select = NULL,
     (i.e., extrapolated)?}
   \item{k}{integer. The number of basis functions to be used to compute the interpolated surface
     when \code{type = "mgcv"}.}
+  \item{rug}{add a \code{\link[graphics]{rug}} to the plot.}
+  \item{jitter}{if set to \code{TRUE} a \code{\link[base]{jitter}}ed 
+      \code{\link[graphics]{rug}} plot is added.}
+  \item{rug.col}{specify the color of the rug representation.}
   \item{\dots}{parameters passed to \code{\link{matplot}} and \code{\link[graphics]{legend}}.}
 }
 

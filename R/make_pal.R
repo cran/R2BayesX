@@ -1,5 +1,4 @@
-make_pal <-
-function(col, ncol = NULL, data = NULL, range = NULL, 
+make_pal <- function(col, ncol = NULL, data = NULL, range = NULL, 
   breaks = NULL, swap = TRUE, symmetric = TRUE) 
 {
   if(is.null(symmetric))

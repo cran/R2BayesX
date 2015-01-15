@@ -1,7 +1,7 @@
 plotmap <- function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
-  swap = FALSE, range = NULL, names = FALSE, values = FALSE, col = NULL,
+  missing = TRUE, swap = FALSE, range = NULL, names = FALSE, values = FALSE, col = NULL,
   ncol = 100, breaks = NULL, cex.legend = 1, cex.names = 1, cex.values = cex.names,
-  digits = 2L, mar.min = 2, add = FALSE, interp = FALSE, grid = 200,
+  digits = 2L, mar.min = 2, add = FALSE, interp = FALSE, grid = 200, land.only = FALSE,
   extrap = FALSE, outside = FALSE, type = "akima", linear = FALSE, k = 40,
   p.pch = 15, p.cex = 1, shift = NULL, trans = NULL, ...)
 {
@@ -32,6 +32,7 @@ plotmap <- function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
     poly.names <- poly.names[op]
   }
   poly.names.orig <- poly.names.orig[op]
+  map <- map[op]
   if(length(upn <- unique(poly.names)) < length(poly.names)) {
     nn <- NULL
     for(i in upn) {
@@ -73,10 +74,10 @@ plotmap <- function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
       if(!is.function(trans)) stop("argument trans must be a function!")
       x$x <- trans(x$x)
     }
-    map_fun <- make_pal(col = col, ncol = ncol, data = x$x, 
+    map_fun <- make_pal(col = col, ncol = ncol, data = as.numeric(x$x), 
       range = range, breaks = breaks, swap = swap, 
       symmetric = symmetric)$map
-    colors <- map_fun(x$x)
+    colors <- map_fun(as.numeric(x$x))
   } else {
     if(is.null(col))
       colors <- rep(NA, length.out = n)
@@ -115,15 +116,14 @@ plotmap <- function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
   if(!add)
     do.call(graphics::plot.default, delete.args(graphics::plot.default, args))
   if(interp & !is.null(x)) {
-    stopifnot(require("maptools"))
-
     cdata <- data.frame(centroids(map), "id" = names(map))
     cdata <- merge(cdata, data.frame("z" = x$x, "id" = x$id), by = "id")
+    cdata <- unique(cdata)
 
     xo <- seq(map.limits$x[1], map.limits$x[2], length = grid)
     yo <- seq(map.limits$y[1], map.limits$y[2], length = grid)
 
-    ico <- with(cdata, interp2(x = xco, y = yco, z = z,
+    ico <- with(cdata, interp2(x = x, y = y, z = z,
       xo = xo,
       yo = yo,
       type = type, linear = linear, extrap = extrap,
@@ -132,29 +132,47 @@ plotmap <- function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
     yco <- rep(yo, each = length(xo))
     xco <- rep(xo, length(yo))
 
+    d4x <- abs(diff(xco))
+    d4x <- min(d4x[d4x != 0], na.rm = TRUE)
+    d4y <- abs(diff(yco))
+    d4y <- min(d4y[d4y != 0], na.rm = TRUE)
+    res <- c(d4x, d4y)
+    pp <- NULL
+    if(length(res))
+      pp <- cbind(xco, yco)
+
     cvals <- as.numeric(ico)
     cvals[cvals < min(cdata$z)] <- min(cdata$z)
     cvals[cvals > max(cdata$z)] <- max(cdata$z)
     icolors <- map_fun(cvals)
 
     if(!outside) {
-      gpclibPermit()
+      maptools::gpclibPermit()
       class(map) <- "bnd"
       mapsp <- bnd2sp(map)
-      ob <- unionSpatialPolygons(mapsp, rep(1L, length = length(mapsp)), avoidGEOS  = TRUE)
+      ob <- maptools::unionSpatialPolygons(mapsp, rep(1L, length = length(mapsp)), avoidGEOS  = TRUE)
 
       nob <- length(slot(slot(ob, "polygons")[[1]], "Polygons"))
       pip <- NULL
       for(j in 1:nob) {
         oco <- slot(slot(slot(ob, "polygons")[[1]], "Polygons")[[j]], "coords")
-        pip <- cbind(pip, point.in.polygon(xco, yco, oco[, 1L], oco[, 2L], mode.checked = FALSE) < 1L)
+        pip <- cbind(pip, sp::point.in.polygon(xco, yco, oco[, 1L], oco[, 2L], mode.checked = FALSE) < 1L)
       }
       pip <- apply(pip, 1, function(x) all(x))
     
       icolors[pip] <- NA
     }
 
-    points(SpatialPoints(cbind(xco, yco)), col = icolors, pch = p.pch, cex = p.cex)
+    if(land.only) {
+      icolors[is.na(maps::map.where("world", xco, yco))] <- NA
+    }
+
+    if(length(res)) {
+     rect(pp[, 1] - res[1] / 2, pp[, 2] - res[2] / 2, pp[, 1] + res[1] / 2, pp[, 2] + res[2] / 2,
+       col = icolors, border = NA, lwd = 0)
+    } else {
+      points(sp::SpatialPoints(cbind(xco, yco)), col = icolors, pch = p.pch, cex = p.cex)
+    }
     colors <- rep(NA, length = length(colors))
   }
   args$ylab <- args$xlab <- args$main <- ""
@@ -173,45 +191,48 @@ plotmap <- function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
   angle.p <- if(!is.null(args$angle)) rep(args$angle, length.out = n) else NULL
   if(is.null(angle.p))
     angle.p <- rep(90, length.out = n)
-  i <- 1L
-  for(poly in poly.names) {
-    args$x <- map[[poly]][,1L]
-    args$y <- map[[poly]][,2L]
-    args$border <- border.p[i]
-    args$angle <- angle.p[i]
-    args$lwd <- lwd.p[i]
-    args$lty <- lty.p[i]
-    if(!is.null(density.p))
-      args$density <- density.p[i]
-    if(!is.null(x)){ 
-      if(!is.na(k <- pmatch(poly, x$id))) {
-        args$col <- colors[k]
-        args$density <- NULL
-      } else {
-        args$col <- NULL
-        if(is.null(args$density))
-          args$density <- 20L
+
+  for(poly in unique(poly.names.orig)) {
+    for(i in which(poly.names.orig == poly)) {
+      args$x <- map[[i]][, 1L]
+      args$y <- map[[i]][, 2L]
+      args$border <- border.p[i]
+      args$angle <- angle.p[i]
+      args$lwd <- lwd.p[i]
+      args$lty <- lty.p[i]
+      if(!is.null(density.p))
+        args$density <- density.p[i]
+      if(!is.null(x)){ 
+        if(!is.na(k <- pmatch(poly, x$id))) {
+          args$col <- colors[k]
+          args$density <- NULL
+        } else {
+          if(!missing) next
+          args$col <- NULL
+          if(is.null(args$density))
+            args$density <- 20L
+        }
+      } else args$col <- colors[i]
+      do.call(graphics::polygon, 
+        delete.args(graphics::polygon, args, 
+        c("lwd", "cex", "lty")))
+      if(names && !values) {
+        args$polygon <- map[[i]]
+        args$poly.name <- poly.names.orig[i]
+        args$counter <- i
+        args$cex <- cex.names
+        do.call(centroidtext, delete.args(centroidtext, args, "font"))
       }
-    } else args$col <- colors[i]
-    do.call(graphics::polygon, 
-    delete.args(graphics::polygon, args, 
-    c("lwd", "cex", "lty")))
-    if(names && !values) {
-      args$polygon <- map[[poly]]
-      args$poly.name <- poly.names.orig[i]
-      args$counter <- i
-      args$cex <- cex.names
-      do.call(centroidtext, delete.args(centroidtext, args, "font"))
+      if(values && !names) {
+        args$polygon <- map[[i]]
+        args$poly.name <- as.character(round(x$x[k], digits = digits))
+        args$counter <- k
+        args$cex <- cex.values
+        do.call(centroidtext, delete.args(centroidtext, args, "font"))
+      }
     }
-    if(values && !names) {
-      args$polygon <- map[[poly]]
-      args$poly.name <- as.character(round(x$x[k], digits = digits))
-      args$counter <- k
-      args$cex <- cex.values
-      do.call(centroidtext, delete.args(centroidtext, args, "font"))
-    }
-    i <- i + 1L
   }
+
   if(legend) {
     if(is.null(args$pos))
       args$pos <- "topleft"
@@ -231,6 +252,7 @@ plotmap <- function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
         args$xpd <- TRUE
       args$add <- TRUE
     }
+    args$shift <- args$legend.shift
     args$xlim <- map.limits$xlim
     args$ylim <- map.limits$ylim
     args$color <- col

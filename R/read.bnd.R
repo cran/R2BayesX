@@ -1,6 +1,6 @@
 read.bnd <- function(file, sorted=FALSE)
 {
-    ## Liste wird erstellt: 1. Element enthält die 1. Spalte aus BND-Datei, 2. Element die 2. Spalte 
+    ## list with columns from .bnd file
     data.raw <- scan(file,
                      what = list("", ""),
                      sep = ",",
@@ -10,7 +10,7 @@ read.bnd <- function(file, sorted=FALSE)
     oldOptions <- options(warn = -1)
     on.exit(options(oldOptions))    
 
-    ## Ursache für Warnungen: NAs werden bei jedem Regionsnamen und bei is.in erzeugt
+    ## source of warnings: NAs in region names after is.in
     data.numeric <- lapply(data.raw,
                            as.numeric)
 
@@ -111,7 +111,7 @@ read.bnd <- function(file, sorted=FALSE)
         surrounding <- surrounding[newOrder]
     }
 
-    ## Bestimmung des Höhe-Breiten-Verhältnisses
+    ## determine aspect ratio
     minima <- sapply(map, function(x){apply(x,2,min)})
     maxima <- sapply(map, function(x){apply(x,2,max)})
     
@@ -121,13 +121,11 @@ read.bnd <- function(file, sorted=FALSE)
     x.range <- maximum[1] - minimum[1]
     y.range <- maximum[2] - minimum[2]
 
-    height2width <- round(y.range / x.range, digits=2)
-
     ## return the bnd object
-    return(structure(map,
-                     class="bnd",
-                     height2width=height2width,
-                     surrounding=surrounding,
-                     regions=regions))
+    rval <- structure(map, class = "bnd",
+      surrounding = surrounding, regions = regions)
+    attr(rval, "asp") <- (y.range / x.range) / cos((mean(c(maximum[2] - minimum[2])) * pi) / 180)
+
+    rval
 }
 

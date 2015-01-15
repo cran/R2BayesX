@@ -1,5 +1,4 @@
-coeffun <-
-function(x, args, diagnostics)
+coeffun <- function(x, args, diagnostics)
 {
   if(is.null(x)) {
     warning("there is nothing to plot!")

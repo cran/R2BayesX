@@ -1,3 +1,6 @@
+import("BayesXsrc")
+import("colorspace")
+import("mgcv")
 importFrom("stats", "AIC", "BIC")
 
 useDynLib("R2BayesX")

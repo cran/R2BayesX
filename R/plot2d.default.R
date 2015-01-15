@@ -84,10 +84,11 @@ plot2d.default <- function(x, residuals, range, col.residuals = "black",
   }
   if(rug) {
     specs$col <- col.rug
+    rugp <- if(!is.null(specs$rugp)) specs$rugp else x[,1L]
     if(jitter)      
-      specs$x <- jitter(x[,1L])
+      specs$x <- jitter(rugp)
     else
-      specs$x <- x[,1L]
+      specs$x <- rugp
     do.call(graphics::rug, delete.args(graphics::rug, specs))
   }
 
