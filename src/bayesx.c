@@ -116,7 +116,7 @@ SEXP getuit(SEXP x, SEXP xu, SEXP n, SEXP m, SEXP check)
 }
 	
     
-SEXP cpos(SEXP p, SEXP K, SEXP pos)
+SEXP cpos(SEXP p, SEXP K)
 {
   int i, n, k;
   n = INTEGER(K)[0];
@@ -138,8 +138,14 @@ SEXP cpos(SEXP p, SEXP K, SEXP pos)
   }
         
   tmp = 1/(3*asum);
+
+  SEXP pos;
+  PROTECT(pos = allocVector(REALSXP, 2));
+
   REAL(pos)[0] = tmp*xsum;
   REAL(pos)[1] = tmp*ysum;
+
+  UNPROTECT(1);
     
   return pos;
 }

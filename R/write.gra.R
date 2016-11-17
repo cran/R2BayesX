@@ -26,6 +26,7 @@ write.gra <- function(map, file, replace=FALSE)
 
     ## derive and write neighbors
     ind <- which(map[i, ] == -1) - 1
+
     write(ind, file, ncolumns = length(ind), append = TRUE)
   }
 

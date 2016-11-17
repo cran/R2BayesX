@@ -3,8 +3,7 @@ function(p, np)
 {
   rval <- .Call("cpos",
     as.numeric(p),
-    as.integer(np),
-    as.numeric(c(0, 0)))
+    as.integer(np))
 
   return(rval)
 }

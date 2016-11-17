@@ -3,6 +3,19 @@ import("colorspace")
 import("mgcv")
 importFrom("stats", "AIC", "BIC")
 
+importFrom("grDevices", "chull", "n2mfrow", "trans3d")
+importFrom("graphics", "abline", "axis", "box", "hist", "layout",
+  "lcm", "lines", "mtext", "par", "points", "rect", "text")
+importFrom("methods", "is", "slot")
+importFrom("stats", "C", "as.formula", "coef", "complete.cases",
+  "contr.sum", "density", "fitted", "model.frame",
+  "model.matrix", "model.offset", "model.weights", "na.fail",
+  "na.omit", "na.pass", "predict", "printCoefmat", "pt", "qt",
+  "quantile", "rnorm", "runif", "sd", "terms",
+  "terms.formula", "update")
+importFrom("utils", "getS3method", "head", "read.table", "tail",
+  "write.table")
+
 useDynLib("R2BayesX")
 
 export(

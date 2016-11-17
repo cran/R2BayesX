@@ -1,5 +1,5 @@
-efcfa18b911b4e8a9c3ac916be13c758 *DESCRIPTION
-d44f480d27ae542ac8930bf56c8786c8 *NAMESPACE
+b1ab9bde14bc9e05387e474f007568c8 *DESCRIPTION
+96c35644a04aefa1f95957dd2ab78915 *NAMESPACE
 4cd882455c39ff9601cd07c2f8462ff8 *R/AIC.bayesx.R
 f58f09fd34a8545134fe986ca0a633c9 *R/BIC.bayesx.R
 365e26c987c82dea1f575dd66289c650 *R/DIC.R
@@ -53,7 +53,7 @@ a38a12c896e1a0882475179f54c0e8fc *R/coeffun.R
 fffedb4dea778136a0dc6be41d29f28a *R/confint.bayesx.R
 fb4d5bd8699dbfb6ba882a0f95a75173 *R/construct.shrw.R
 4de16c1a43b6e7c17d61cc79ceb4e586 *R/cpoint.R
-68997bce350b629cdb9b885e33c76d94 *R/cpos.R
+24ea51ef1e26bbf32f9e84d6c7f1016e *R/cpos.R
 59cb5cae5cd813875989ebac6ee19bd0 *R/cprob.R
 b008a9e4588f42edb588c4c3aa9978c3 *R/d2contrsum.R
 7ee13ab52b64ffe3fb260e3601a43d19 *R/delete.Nulls.R
@@ -94,7 +94,7 @@ e08d64791abc196a32efd1460cc31baf *R/make.label.R
 f92ecfe013f0d7e95684b37d69299a02 *R/mum.R
 c972394e944765d99d4001d32b28d0d1 *R/nbAndGraConversion.R
 a781fcb8b1b27bbda90a657bbe45fb59 *R/neffects.R
-7a3e822d6d3e5772aa28bb3f44eecfc6 *R/parse.bayesx.input.R
+bbb56401d112a2d8bc72de2c1d4bde0e *R/parse.bayesx.input.R
 4206b1796ae9564d6f3ff2070ad5989e *R/parse.random.bayesx.R
 6da601396eeefb2ece62ca22584dfa98 *R/pd.R
 ef32bcaa86ed76e36661218a0608fe29 *R/plot.bayesx.R
@@ -117,7 +117,7 @@ f0d1052ab6c8b12c20a9eabd07b649a9 *R/plotmap.R
 d79e6bb9be40f5e2e7ddb1b84071a869 *R/predict.bayesx.R
 bf3843e904cb710f32e7bbe46c83a77c *R/print.bayesx.R
 a931df07e44abc24c287d594bf78ba3b *R/print.summary.bayesx.R
-5383dbdb1b79aa76f5dd472f07df9904 *R/r.R
+4359c8f3dcdf545fb4e5b9da8e61bc83 *R/r.R
 258d63b834d384f8a7bc06d042739fa9 *R/r2bayesx-internal.R
 a0ea94c72aa6c6620253398ad6a8b471 *R/read.bayesx.model.output.R
 7c38b493ebf06234a452aabbf01c3813 *R/read.bayesx.output.R
@@ -129,7 +129,7 @@ f1c1f7dda34de76ba6447afd58d724ad *R/resplit.R
 b0338f096fa6643a7cb1afdcf65273a6 *R/ringDirxy.R
 826a1d10ff4a613018f9f8ce597a8110 *R/rmf.R
 f6e45e00904c0f74fd74d021b439dda8 *R/rrd.R
-c7094848e7fdab2c2c23c41091640435 *R/s4class.R
+d87c208f96354a84a4d284a8da953fb9 *R/s4class.R
 79a49dfa909156b58650dd73827957ec *R/s4dim.R
 dbcf3e047d79246c6eabe3a2ca0972bd *R/s4hm.R
 b9c440731d0536c221e04cf49ac681e2 *R/samples.R
@@ -157,7 +157,7 @@ b72a9ab6310a1d11e6f9f14ce0dc68fa *R/summary.bayesx.R
 ade7956e6d4b43d1afc0a7d4da2b8989 *R/which.plots.R
 2293bb26a8e560b8ebba3659ea86d31e *R/write.bayesx.input.R
 1b5b7c4fad26aa73fd87a66d9647329d *R/write.bnd.R
-230c249cfdca66fd8c59282629315208 *R/write.gra.R
+28cd54363364117471d6a132040d4d0a *R/write.gra.R
 3bce9166d5836249b7e86eedf6b38605 *R/write.prg.setup.R
 67c6ffbca8324597ba054abe09a14379 *R/write.term.info.R
 6b90632633fa35cb66a5558aa341a745 *R/x2int.R
@@ -253,4 +253,4 @@ a5ef7c8eea1114042ca26fb2802c9bb5 *man/spAndBndConversion.Rd
 3727561d50804c933ecf2ab801e695a8 *man/write.bayesx.input.Rd
 bb6e0c7839e678eb95a56237d06531ee *man/write.bnd.Rd
 d06f3766752c97b604a48a0fa535ee51 *man/write.gra.Rd
-936dca095ea202c3cc7edf2a78fbb0d5 *src/bayesx.c
+3195005b89be0ea7de270c4cf2d2e271 *src/bayesx.c

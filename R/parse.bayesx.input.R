@@ -160,6 +160,16 @@ parse.bayesx.input <- function(formula, data, weights = NULL, subset = NULL, off
       if(is.function(offset)) offset <- NULL
       ff2 <- eval(parse(text = paste("update(ff,", Yn, "~ .)")))
       data[[Yn]] <- Y
+      if(!is.null(control$leftint)) {
+        data$leftint <- control$leftint
+        control$leftint <- "leftint"
+        ff2 <- update(ff2, . ~ . + leftint)
+      }
+      if(!is.null(control$lefttrunc)) {
+        data$lefttrunc <- control$lefttrunc
+        control$lefttrunc <- "lefttrunc"
+        ff2 <- update(ff2, . ~ . + lefttrunc)
+      }
       ml <- list(formula = ff2, data = data, weights = if(control$prediction) NULL else weights,
         subset = subset, offset = offset, na.action = na.action, drop.unused.levels = TRUE)
       data <- do.call("model.frame", ml)

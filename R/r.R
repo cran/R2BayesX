@@ -1,5 +1,4 @@
-r <-
-function(x, h = NULL, by = NA, xt = NULL, 
+r <- function(x, h = NULL, by = NA, xt = NULL, 
   data = NULL, weights = NULL, subset = NULL, 
   offset = NULL, na.action = na.fail, contrasts = NULL, 
   control = bayesx.control(...), ...)

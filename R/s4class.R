@@ -24,6 +24,8 @@ s4class <- function(x)
       cx <- "sm.bayesx"
     if(grepl(paste("_ridge", j, sep = ""), x, fixed = TRUE))
       cx <- "sm.bayesx"
+    if(grepl(paste("_nigmix", j, sep = ""), x, fixed = TRUE))
+      cx <- "sm.bayesx"
   }
   if(is.null(cx)) {
     warning(paste("no appropriate class found for:", x))
@@ -55,6 +57,8 @@ s4bs <- function(x)
     bs <- "kr"
   if(grepl("_ridge", x))
     bs <- "ridge"
+  if(grepl("_nigmix", x))
+    bs <- "nigmix"
 
   return(bs)
 }
