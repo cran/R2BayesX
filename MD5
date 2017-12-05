@@ -1,5 +1,5 @@
-b1ab9bde14bc9e05387e474f007568c8 *DESCRIPTION
-96c35644a04aefa1f95957dd2ab78915 *NAMESPACE
+633b70d706a5a6e0e7b070451d37795a *DESCRIPTION
+71473b2f93c3d762a905f0c0bc36ec18 *NAMESPACE
 4cd882455c39ff9601cd07c2f8462ff8 *R/AIC.bayesx.R
 f58f09fd34a8545134fe986ca0a633c9 *R/BIC.bayesx.R
 365e26c987c82dea1f575dd66289c650 *R/DIC.R
@@ -229,7 +229,7 @@ bb017750b97046e84ec7795e675b01a5 *man/delete.neighbor.Rd
 0f923672fc18792f65ac5c80d75f1b6f *man/get.neighbor.Rd
 74943b22e495b177ec951d27d45e50a4 *man/getscript.Rd
 061f3b32a5b0d4099c4c5134bcb15947 *man/logfile.Rd
-ef1cea4f738891cf23ceeb677d5a8343 *man/nbAndGraConversion.Rd
+5c543cfa51066c46e4286f93a4dbc90a *man/nbAndGraConversion.Rd
 b7a9b30edb0254cab5a3789ffc34ade6 *man/parse.bayesx.input.Rd
 760ec5b814decfe58dda5f85237dd809 *man/plot.bayesx.Rd
 da102daacb3a18d07fd8cd6841c03619 *man/plot2d.Rd
@@ -246,11 +246,12 @@ dc8c8649bb66187582f41b4024c3d629 *man/predict.bayesx.Rd
 fc3e0936727cf557f972f3de3ff0f0c4 *man/samples.Rd
 b550b3d556794c328e4e56375bf413b0 *man/shp2bnd.Rd
 9e5adf9d0c484336648881599040d5bf *man/sliceplot.Rd
-a5ef7c8eea1114042ca26fb2802c9bb5 *man/spAndBndConversion.Rd
+3ef56ad72d5639ffcb6ca68b873cdf67 *man/spAndBndConversion.Rd
 9398caf99db7f990a03ccf7ce44bd9ec *man/summary.bayesx.Rd
 018f9d035969d0871d07bf01983453fe *man/sx.Rd
 69ded3401a682f0c40243ea6d08c3199 *man/term.freqs.Rd
 3727561d50804c933ecf2ab801e695a8 *man/write.bayesx.input.Rd
 bb6e0c7839e678eb95a56237d06531ee *man/write.bnd.Rd
 d06f3766752c97b604a48a0fa535ee51 *man/write.gra.Rd
-3195005b89be0ea7de270c4cf2d2e271 *src/bayesx.c
+3195005b89be0ea7de270c4cf2d2e271 *src/R2BayesX_functions.c
+d37882b38a33b88ad74c2e0872614ee6 *src/R2BayesX_init.c

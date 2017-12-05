@@ -16,8 +16,6 @@ importFrom("stats", "C", "as.formula", "coef", "complete.cases",
 importFrom("utils", "getS3method", "head", "read.table", "tail",
   "write.table")
 
-useDynLib("R2BayesX")
-
 export(
   ## main user interface
   "bayesx",               
@@ -142,3 +140,5 @@ S3method("bayesx.construct", "pspline2dimrw1.smooth.spec")
 S3method("bayesx.construct", "kriging.smooth.spec")
 S3method("bayesx.construct", "baseline.smooth.spec")
 S3method("bayesx.construct", "catspecific.smooth.spec")
+
+useDynLib(R2BayesX, .registration = TRUE)
