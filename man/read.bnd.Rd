@@ -60,7 +60,7 @@ read.bnd(file, sorted = FALSE)
 }
 
 \references{
-  \pkg{BayesX} Reference Manual. Available at \url{http://www.BayesX.org}.
+  \pkg{BayesX} Reference Manual. Available at \url{https://www.uni-goettingen.de/de/bayesx/550513.html}.
 }
 
 \author{

@@ -78,7 +78,7 @@ read.gra(file, sorted = FALSE, sep = " ")
 }
 
 \references{
-  \pkg{BayesX} Reference Manual, Chapter 5. Available at \url{http://www.BayesX.org}.
+  \pkg{BayesX} Reference Manual, Chapter 5. Available at \url{https://www.uni-goettingen.de/de/bayesx/550513.html}.
 }
 
 \author{

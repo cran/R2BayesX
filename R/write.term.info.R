@@ -58,7 +58,7 @@ write.term.info <- function(file, terms, data, object = NULL, contrasts.arg = NU
           }
         }
         israndom <- FALSE
-        if(class(te) == "ra.smooth.spec" || class(te) == "re.smooth.spec")
+        if(inherits(te, "ra.smooth.spec") || inherits(te, "re.smooth.spec"))
           israndom <- TRUE
         if(fby) {
           te$label <- gsub(")", paste(",by=", te$by, ")", sep = ""), te$label)

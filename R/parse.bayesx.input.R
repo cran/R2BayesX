@@ -100,9 +100,9 @@ parse.bayesx.input <- function(formula, data, weights = NULL, subset = NULL, off
       S <- data[[subset]]
       if(is.null(S)) {
         S <- try(eval(parse(text = subset), envir = .GlobalEnv), silent = TRUE)
-        if(class(S) == "try-error")
+        if(inherits(S, "try-error"))
           S <- try(eval(parse(text = subset), envir = data), silent = TRUE)
-        if(class(S) == "try-error")
+        if(inherits(S, "try-error"))
           stop("problems evaluating argument subset!")
       }
       subset <- S
@@ -111,9 +111,9 @@ parse.bayesx.input <- function(formula, data, weights = NULL, subset = NULL, off
       begin <- data[[control$begin]]
       if(is.null(begin)) {
         begin <- try(eval(parse(text = control$begin), envir = .GlobalEnv), silent = TRUE)
-        if(class(begin) == "try-error")
+        if(inherits(begin, "try-error"))
           begin <- try(eval(parse(text = control$begin), envir = data), silent = TRUE)
-        if(class(begin) == "try-error")
+        if(inherits(begin, "try-error"))
           stop("problems evaluating argument begin!")
       }
     }

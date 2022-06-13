@@ -39,7 +39,7 @@ bnd2sp(bndObject)
 }
 
 \examples{
-## bnd to sp:
+\dontrun{## bnd to sp:
 file <- file.path(find.package("R2BayesX"), "examples", "Germany.bnd")
 germany <- read.bnd(file)
 spGermany <- bnd2sp(germany)
@@ -65,7 +65,7 @@ if(requireNamespace("spdep")) {
     identical(names(bndGermany), names(germany)),
     identical(length(bndGermany), length(germany))
   )
-}
+}}
 }
 
 \keyword{spatial}

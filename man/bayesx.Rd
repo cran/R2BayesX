@@ -153,7 +153,7 @@ bayesx(formula, data, weights = NULL, subset = NULL,
 \references{
   Belitz C, Brezger A, Kneib T, Lang S (2011). \pkg{BayesX} - Software for Bayesian Inference in 
     Structured Additive Regression Models. Version 2.0.1. 
-    URL \url{http://www.BayesX.org}.
+    URL \url{https://www.uni-goettingen.de/de/bayesx/550513.html}.
 
   Belitz C, Lang S (2008). Simultaneous selection of variables and smoothing parameters in 
     structured additive regression models. \emph{Computational Statistics & Data Analysis}, 
@@ -161,10 +161,10 @@ bayesx(formula, data, weights = NULL, subset = NULL,
 
   Brezger A, Kneib T, Lang S (2005). \pkg{BayesX}: Analyzing Bayesian Structured Additive Regression 
     Models. \emph{Journal of Statistical Software}, \bold{14}(11), 1--22. 
-    URL \url{http://www.jstatsoft.org/v14/i11/}.
+    URL \url{https://www.jstatsoft.org/v14/i11/}.
 
   Brezger A, Lang S (2006). Generalized Structured Additive Regression Based on Bayesian P-Splines.
-    \emph{Computational Statistics \& Data Analysis}, \bold{50}, 947--991.
+    \emph{Computational Statistics & Data Analysis}, \bold{50}, 947--991.
 
   Fahrmeir L, Kneib T, Lang S (2004). Penalized Structured Additive Regression for Space Time Data: 
     A Bayesian Perspective. \emph{Statistica Sinica}, \bold{14}, 731--761.
@@ -172,7 +172,7 @@ bayesx(formula, data, weights = NULL, subset = NULL,
   Umlauf N, Adler D, Kneib T, Lang S, Zeileis A (2015).
     Structured Additive Regression Models: An R Interface to BayesX.
     \emph{Journal of Statistical Software}, \bold{63}(21), 1--46.
-    \url{http://www.jstatsoft.org/v63/i21/}
+    \url{https://www.jstatsoft.org/v63/i21/}
 }
 
 \seealso{

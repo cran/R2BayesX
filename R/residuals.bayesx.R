@@ -23,6 +23,8 @@ residuals.bayesx <- function(object, model = NULL, term = NULL, ...)
       mn[i] <- object[[i]]$bayesx.setup$model.name
   }
   mn[duplicated(mn)] <- paste(mn[duplicated(mn)], 1:length(mn[duplicated(mn)]) + 1L, sep = "")
+  if(length(rval) < 1L)
+    stop("residuals are missing in object!")
   names(rval) <- mn
   if(length(rval) < 2L)
     rval <- rval[[1L]]

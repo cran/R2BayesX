@@ -18,13 +18,13 @@ citEntry(entry = "Article",
   volume       = "63",
   number       = "21",
   pages        = "1--46",
-  url          = "http://www.jstatsoft.org/v63/i21/",
+  url          = "https://www.jstatsoft.org/v63/i21/",
 
   textVersion  =
   paste("Nikolaus Umlauf, Daniel Adler, Thomas Kneib, Stefan Lang, Achim Zeileis (2015).",
         "Structured Additive Regression Models: An R Interface to BayesX.",
         "Journal of Statistical Software, 63(21), 1-46.",
-        "URL http://www.jstatsoft.org/v63/i21/.")
+        "URL https://www.jstatsoft.org/v63/i21/.")
 )
 
 citEntry(entry = "Manual",
@@ -36,12 +36,12 @@ citEntry(entry = "Manual",
 			     as.person("Nikolaus Umlauf")),
          year = year,
          note = note2,
-         url = "http://www.BayesX.org/",
+         url = "https://www.uni-goettingen.de/de/bayesx/550513.html",
 
          textVersion =
          paste("Christiane Belitz, Andreas Brezger, Thomas Kneib, Stefan Lang, Nikolaus Umlauf",
    	       sprintf("(%s).", year),	 
                "BayesX: Software for Bayesian Inference in Structured Additive Regression Models.",
 	       paste(note2, ".", sep = ""),
-               "URL http://www.BayesX.org/")
+               "URL https://www.uni-goettingen.de/de/bayesx/550513.html")
 )

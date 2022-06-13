@@ -11,7 +11,7 @@ find.smooth.random <- function(dir, files, data, response, eta, model.name, minf
     endings <- c("_predict.res", "FixedEffects", "LinearEffects", "scale.res", "_variance_", 
       "_var.res", ".raw", "_param.res", "_interact.res", "_lambda.res", "_df.res",
       "_knots.raw", "_contour.res", "_theta.res", "_variance_sample.ps", "_random_fixed.res",
-      "_DIC.res", "basisR")
+      "_DIC.res", "_WAIC.res", "basisR")
     for(res in endings)
       resfiles <- resfiles[!grepl(res, resfiles, fixed = TRUE)]
     resfiles <- unique(resfiles)

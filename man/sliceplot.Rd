@@ -13,7 +13,7 @@
 sliceplot(x, y = NULL, z = NULL, view = 1, c.select = NULL,
   values = NULL, probs = c(0.1, 0.5, 0.9), grid = 100,
   legend = TRUE, pos = "topright", digits = 2, data = NULL,
-  rawdata = FALSE, type = "akima", linear = FALSE,
+  rawdata = FALSE, type = "interp", linear = FALSE,
   extrap = FALSE, k = 40, rug = TRUE, rug.col = NULL,
   jitter = TRUE, ...)
 }
@@ -50,12 +50,12 @@ sliceplot(x, y = NULL, z = NULL, view = 1, c.select = NULL,
   \item{rawdata}{if set to \code{TRUE}, the data will not be interpolated, only raw data will be
     used. This is useful when displaying data on a regular grid.}
   \item{type}{character. Which type of interpolation metjod should be used. The default is
-    \code{type = "akima"}, see function \code{\link[akima]{interp}}. The two other options are
+    \code{type = "interp"}, see function \code{\link[interp]{interp}}. The two other options are
     \code{type = "mba"}, which calls function \code{\link[MBA]{mba.surf}} of package \pkg{MBA}, or
     \code{type = "mgcv"}, which uses a spatial smoother withing package \pkg{mgcv} for interpolation.
     The last option is definitely the slowest, since a full regression model needs to be estimated.}
   \item{linear}{logical. Should linear interpolation be used withing function
-     \code{\link[akima]{interp}}?}
+     \code{\link[interp]{interp}}?}
   \item{extrap}{logical. Should interpolations be computed outside the observation area
     (i.e., extrapolated)?}
   \item{k}{integer. The number of basis functions to be used to compute the interpolated surface
@@ -70,19 +70,6 @@ sliceplot(x, y = NULL, z = NULL, view = 1, c.select = NULL,
 \details{
   Similar to function \code{\link{plot3d}}, this function first applies bivariate interpolation
   on a regular \code{grid}, afterwards the slices are computed from the resulting surface. 
-}
-
-\note{
-  Function \code{sliceplot} uses per default the \pkg{akima} package to construct smooth interpolated
-  surfaces, therefore, package \pkg{akima} needs to be installed. The \pkg{akima} package has an ACM
-  license that restricts applications to non-commercial usage, see
-
-  \url{http://www.acm.org/publications/policies/softwarecrnotice}
-  
-  Function \code{sliceplot} prints a note refering to the ACM licence. This note can be supressed by
-  setting
-
-  \code{options("use.akima" = TRUE)} 
 }
 
 \author{

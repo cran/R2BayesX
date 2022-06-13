@@ -4,7 +4,7 @@ bayesx_logfile <- function(x, model = 1L)
   bayesx.log <- NULL
   if(inherits(x, "bayesx")) {
     bayesx.log <- x[[model]]$bayesx.run$log
-    if(length(bayesx.log) < 2L || class(bayesx.log) == "integer") {
+    if(length(bayesx.log) < 2L || inherits(bayesx.log, "integer")) {
       if(!is.null(x[[model]]$logfile))
         bayesx.log <- x[[model]]$logfile
     }

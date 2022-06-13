@@ -15,7 +15,7 @@
 }
 
 \source{
-  \url{http://www.BayesX.org}.
+  \url{https://www.uni-goettingen.de/de/bayesx/550513.html}.
 }
 
 \seealso{\code{\link{read.gra}}, \code{\link{bnd2gra}}}

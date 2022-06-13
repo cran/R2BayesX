@@ -32,7 +32,7 @@ gra2nb(graObject)
 }
  
 \examples{
-## first nb to gra:
+\dontrun{## first nb to gra:
 if(requireNamespace("spdep") &
   requireNamespace("rgdal") &
   requireNamespace("spData")) {
@@ -64,7 +64,7 @@ if(requireNamespace("spdep") &
   all.equal(newColNb, colNb, check.attributes = FALSE)
   attr(newColNb, "call")
   attr(colNb, "call")
-}
+}}
 }
 
 \keyword{spatial}

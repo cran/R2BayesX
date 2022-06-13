@@ -237,6 +237,11 @@ read.bayesx.model.output <- function(dir, model.name)
       dic <- chacol(read.table(file.path(dir, dic), header = TRUE))
       rval$model.fit <- c(rval$model.fit, as.list(dic))
     }
+    if(any(grep("_WAIC.res", files))) {
+      waic <- grep("_WAIC.res", files, value = TRUE)
+      waic <- chacol(read.table(file.path(dir, waic), header = TRUE))
+      rval$model.fit <- c(rval$model.fit, as.list(waic))
+    }
 
     ## reformate output
     rval <- bayesx.reformate(rval)

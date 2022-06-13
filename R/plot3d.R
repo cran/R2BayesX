@@ -5,7 +5,7 @@ plot3d <- function(x, residuals = FALSE, col.surface = NULL,
   digits = 2L, d.persp = 1L, r.persp = sqrt(3), 
   outscale = 0, data = NULL, sep = "",
   shift = NULL, trans = NULL,
-  type = "akima", linear = FALSE, extrap = FALSE, k = 40, ...)
+  type = "interp", linear = FALSE, extrap = FALSE, k = 40, ...)
 {
   if(is.null(x))
     return(invisible(NULL))

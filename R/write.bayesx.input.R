@@ -2,7 +2,7 @@ write.bayesx.input <- function(object)
 {
   if(is.null(object) || missing(object))
     stop("nothing to do!")
-  if(class(object) != "bayesx.input")
+  if(!inherits(object, "bayesx.input"))
     stop("object must be of class bayesx.input")
   data.file <- NULL
   if(is.null(object$data))

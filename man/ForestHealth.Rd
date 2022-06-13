@@ -40,11 +40,11 @@ A data frame containing 1793 observations on 16 variables.
 }
 
 \source{
-  \url{http://www.BayesX.org}.
+  \url{https://www.uni-goettingen.de/de/bayesx/550513.html}.
 }
 
 \references{
-  Kneib, T. & Fahrmeir, L. (2010): A Space-Time Study on Forest Health. In: Chandler, R. E. \& 
+  Kneib, T. & Fahrmeir, L. (2010): A Space-Time Study on Forest Health. In: Chandler, R. E. & 
     Scott, M. (eds.): Statistical Methods for Trend Detection and Analysis in the Environmental 
     Sciences, Wiley.
 
