@@ -1,5 +1,5 @@
-1382a8edb13d1ee910e744e93714402b *DESCRIPTION
-71473b2f93c3d762a905f0c0bc36ec18 *NAMESPACE
+36b3acaec3c70e26e5f1f6390488e27d *DESCRIPTION
+22a454194f6ff266ec24eadb40eeda8b *NAMESPACE
 4cd882455c39ff9601cd07c2f8462ff8 *R/AIC.bayesx.R
 f58f09fd34a8545134fe986ca0a633c9 *R/BIC.bayesx.R
 365e26c987c82dea1f575dd66289c650 *R/DIC.R
@@ -38,7 +38,7 @@ e002e576d4448530141382399f26b70d *R/bayesx.control.R
 542a0d206fd7a71f33839b09302258cc *R/bayesx_logfile.R
 fdb25dcc53b759cb238dec8e87bb9331 *R/bayesx_prgfile.R
 a3839353e586cdd0b3a1ee4295dc7bc2 *R/bayesx_runtime.R
-803a6329216bd720fe41f2110d3e7e3c *R/blow.up.resid.R
+28fcc083bdbab22b5340addec9b07fb7 *R/blow.up.resid.R
 73d875304d94002762f6c1a52534f51c *R/bnd2gra.R
 b7df41aae37868c5f4f16eb53bf46af8 *R/c.bayesx.R
 6f75b84bc57c77fd6ecc31ad2969948a *R/centroidpos.R
@@ -110,7 +110,7 @@ dddd2ae55aec98d9530885a35536089b *R/plot2d.R
 a940a1f096fe4586421afbe93a9bf3b8 *R/plot2d.default.R
 cfeab9ea80444fe38473ed4235d22228 *R/plot3d.R
 dbe43440baacf1ae0859bb59c8fb3e2d *R/plotblock.R
-03930c7c60035a521215586d547d4e85 *R/plotmap.R
+55a4c637c7b3db8108b1bb8853239166 *R/plotmap.R
 097ae3eacd64ae1036900a2391c174fc *R/plotnonp.R
 33b50015c2de1994996e267faaa9d95e *R/plotsamples.R
 02010386bb41e74f8893f55ede91a5a3 *R/plotsurf.R
@@ -153,7 +153,7 @@ b72a9ab6310a1d11e6f9f14ce0dc68fa *R/summary.bayesx.R
 040432f13af4f6e621286cb1f148216e *R/term.reorder.R
 795be3ef3e773c8810c57185105ba2a6 *R/terms.bayesx.R
 19404250f79553e48a4805d6240fe485 *R/textfun.R
-85572e7c01103776393000d1057ffa48 *R/unique.id.R
+a44b46aa488c3f12c279f085d445b78d *R/unique.id.R
 ade7956e6d4b43d1afc0a7d4da2b8989 *R/which.plots.R
 46b31591e53854719e775553feb74e00 *R/write.bayesx.input.R
 1b5b7c4fad26aa73fd87a66d9647329d *R/write.bnd.R
@@ -173,7 +173,7 @@ dc18367a00919a349fc6f36aba028a9d *data/ZambiaNutrition.rda
 4d9d2ab9ffce2f7ecba2fa8891358b8c *demo/00Index
 3aef1fbf21f1eb37b11689f5603234e9 *demo/ForestHealth.R
 ab2340a2ebe53074e45fa4237da4165e *demo/ZambiaNutrition.R
-fe47426ee53555d2ec67fca1cb04fe72 *inst/CITATION
+baf375d8654d37090144d8685606ec97 *inst/CITATION
 8ecf4b52e404af925d3ea99cf7efe214 *inst/examples/Germany.bnd
 17ea3c4b71a0b91ae55e2e2c2da2501f *inst/examples/Germany.gra
 3c64e9df7a34cbe279bf6818b339b73a *inst/examples/Northamerica.dbf
@@ -218,7 +218,7 @@ e0084a07985384cf9fa9ee75fbf625de *inst/examples/ex02/nonparametric_f_x_pspline_s
 9e48325dac030f5fcfd86b90ba66a27d *man/ZambiaNutrition.Rd
 35694e4f567b4020af1daf1d4b3c76ef *man/add.neighbor.Rd
 812099ee841c2f268a5f388773cc654c *man/bayesx.Rd
-e5a7aac1d2e1a02a86272a6eaef2850c *man/bayesx.construct.Rd
+3e949ae33663d79a4acaa5643fd609c6 *man/bayesx.construct.Rd
 e1193f4f47f0c3e9214ba0cffcb481d6 *man/bayesx.control.Rd
 816b2598f3ede3215ca7f3f2a0eb71bc *man/bayesx.term.options.Rd
 652851454cbbb4e4466e7c80dbbe517f *man/bnd2gra.Rd

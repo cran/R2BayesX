@@ -1,4 +1,4 @@
-unique.id <- function(x)
+.unique_id <- function(x)
 {
   rval <- .Call("unique_id",
     as.numeric(x),

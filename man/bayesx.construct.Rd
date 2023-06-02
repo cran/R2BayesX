@@ -11,6 +11,7 @@
 \alias{bayesx.construct.rw1.smooth.construct}
 \alias{bayesx.construct.rw2.smooth.construct}
 \alias{bayesx.construct.tensor.smooth.construct}
+\alias{bayesx.construct.t2.smooth.construct}
 \alias{bayesx.construct.te.smooth.construct}
 \alias{bayesx.construct.lasso.smooth.construct}
 \alias{bayesx.construct.ridge.smooth.construct}

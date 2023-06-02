@@ -147,10 +147,10 @@ plotmap <- function(map, x = NULL, id = NULL, c.select = NULL, legend = TRUE,
     icolors <- map_fun(cvals)
 
     if(!outside) {
-      maptools::gpclibPermit()
       class(map) <- "bnd"
       mapsp <- bnd2sp(map)
-      ob <- maptools::unionSpatialPolygons(mapsp, rep(1L, length = length(mapsp)), avoidGEOS  = TRUE)
+      ob <- sf::st_union(sf::st_as_sf(mapsp))
+      ob <- sf::as_Spatial(ob)
 
       nob <- length(slot(slot(ob, "polygons")[[1]], "Polygons"))
       pip <- NULL

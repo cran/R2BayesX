@@ -1,47 +1,55 @@
-citHeader("When using R2BayesX/BayesXsrc in publications, please cite both the R interface and BayesX itself:")
-
-## R >= 2.8.0 passes package metadata to citation().
-if(!exists("meta") || is.null(meta)) meta <- packageDescription("BayesXsrc")
 year <- sub("-.*", "", meta$Date)
-note1 <- sprintf("R package version %s", meta$Version)
-note2 <- sprintf("Version %s", strsplit(meta$Version, "-", fixed = TRUE)[[1]][1])
+note <- sprintf("Version %s", strsplit(meta$Version, "-", fixed = TRUE)[[1]][1])
 
-citEntry(entry = "Article",
+bibentry(bibtype = "Article",
   title        = "Structured Additive Regression Models: An {R} Interface to {BayesX}",
-  author       = personList(as.person("Nikolaus Umlauf"),
-                   as.person("Daniel Adler"),
-                   as.person("Thomas Kneib"),
-                   as.person("Stefan Lang"),
-                   as.person("Achim Zeileis")),
+  author       = c(person(given = "Nikolaus",
+                          family = "Umlauf",
+                          email = "Nikolaus.Umlauf@uibk.ac.at"),
+                   person(given = "Daniel",
+                          family = "Adler",
+                          email = "dadler@dyncall.org"),
+                   person(given = "Thomas",
+                          family = "Kneib",
+                          email = "tkneib@uni-goettingen.de"),
+                   person(given = "Stefan",
+                          family = "Lang",
+                          email = "Stefan.Lang@uibk.ac.at"),
+                   person(given = "Achim",
+                          family = "Zeileis",
+                          email = "Achim.Zeileis@R-project.org")),
   journal      = "Journal of Statistical Software",
   year         = "2015",
   volume       = "63",
   number       = "21",
   pages        = "1--46",
-  url          = "https://www.jstatsoft.org/v63/i21/",
-
-  textVersion  =
-  paste("Nikolaus Umlauf, Daniel Adler, Thomas Kneib, Stefan Lang, Achim Zeileis (2015).",
-        "Structured Additive Regression Models: An R Interface to BayesX.",
-        "Journal of Statistical Software, 63(21), 1-46.",
-        "URL https://www.jstatsoft.org/v63/i21/.")
+  doi          = "10.18637/jss.v063.i21",
+  header       = "When using R2BayesX/BayesXsrc in publications, please cite both the R interface and BayesX itself:"
 )
 
-citEntry(entry = "Manual",
-         title = "{BayesX}: Software for {B}ayesian Inference in Structured Additive Regression Models",
-         author = personList(as.person("Christiane Belitz"), 
-	                     as.person("Andreas Brezger"),
-	                     as.person("Thomas Kneib"),
-                             as.person("Stefan Lang"),
-			     as.person("Nikolaus Umlauf")),
-         year = year,
-         note = note2,
-         url = "https://www.uni-goettingen.de/de/bayesx/550513.html",
-
-         textVersion =
-         paste("Christiane Belitz, Andreas Brezger, Thomas Kneib, Stefan Lang, Nikolaus Umlauf",
-   	       sprintf("(%s).", year),	 
-               "BayesX: Software for Bayesian Inference in Structured Additive Regression Models.",
-	       paste(note2, ".", sep = ""),
-               "URL https://www.uni-goettingen.de/de/bayesx/550513.html")
+bibentry(bibtype = "Manual",
+  title        = "{BayesX}: Software for {B}ayesian Inference in Structured Additive Regression Models",
+  author       = c(person(given = "Christian", family = "Belitz"),
+                   person(given = "Andreas", family = "Brezger"),
+                   person(given = "Nadja",
+                          family = "Klein",
+                          email = "nadja.klein@statistik.tu-dortmund.de"),
+                   person(given = "Thomas",
+                          family = "Kneib",
+                          email = "tkneib@uni-goettingen.de"),
+                   person(given = "Stefan",
+                          family = "Lang",
+                          email = "Stefan.Lang@uibk.ac.at"),
+                   person(given = "Nikolaus",
+                          family = "Umlauf",
+                          email = "Nikolaus.Umlauf@uibk.ac.at")),
+  year = year,
+  note = note,
+  url = "https://www.uni-goettingen.de/de/bayesx/550513.html",
+  textVersion = paste("Christiane Belitz, Andreas Brezger, Thomas Kneib, Stefan Lang, Nikolaus Umlauf",
+                  sprintf("(%s).", year),	 
+                  "BayesX: Software for Bayesian Inference in Structured Additive Regression Models.",
+	                paste(note, ".", sep = ""),
+                  "https://www.uni-goettingen.de/de/bayesx/550513.html")
 )
+

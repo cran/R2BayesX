@@ -17,7 +17,7 @@ blow.up.resid <- function(data, x, xnam, response, eta, dimx, cx)
       if(!is.matrix(eta))
         eta <- matrix(eta, ncol = 1L)
       eta <- eta[ox, ]
-      ind <- unique.id(xtmp)
+      ind <- .unique_id(xtmp)
       if(max(ind) <= nrow(x)) {
         x <- as.data.frame(x[ind,])
         x$pcat80 <- NULL
