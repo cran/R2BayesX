@@ -34,13 +34,13 @@ gra2nb(graObject)
 \examples{
 \dontrun{## first nb to gra:
 if(requireNamespace("spdep") &
-  requireNamespace("rgdal") &
+  requireNamespace("sf") &
   requireNamespace("spData")) {
   library("spdep")
   library("spData")
-  library("rgdal")
+  library("sf")
 
-  columbus <- readOGR(system.file("shapes/columbus.shp", package="spData")[1])
+  columbus <- as(st_read(system.file("shapes/columbus.shp", package="spData")[1]), "Spatial")
 
   colNb <- poly2nb(columbus)
 

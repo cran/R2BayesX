@@ -61,7 +61,7 @@ read.bayesx.output(dir, model.name = NULL)
 }
 
 \examples{
-## load example data from
+\dontrun{## load example data from
 ## package example folder
 dir <- file.path(find.package("R2BayesX"), "/examples/ex01")
 b <- read.bayesx.output(dir)
@@ -87,6 +87,6 @@ plot(b)
 ## nonparametric effect
 b <- read.bayesx.output(dir, model.name = "surface")
 plot(b)
-}
+}}
 
 \keyword{regression}

@@ -48,8 +48,7 @@
 }
 
 \examples{
-\dontrun{
-## generate some data
+\dontrun{## generate some data
 set.seed(121)
 n <- 500
 
@@ -79,7 +78,6 @@ hist(residuals(b1))
 pres <- residuals(b1, term = "sx(x)")
 plot(fx, ylim = range(pres[, 2]))
 points(pres)
-}
 
 ## now another example with
 ## use of read.bayesx.output
@@ -104,8 +102,6 @@ names(attributes(fx))
 spv <- attr(fx, "variance.sample")
 plot(spv, type = "l")
 
-
-\dontrun{
 ## combine model objects
 b <- c(b1, b2)
 

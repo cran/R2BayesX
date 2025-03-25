@@ -1,4 +1,4 @@
-062dc39ac5d195aa620dd61248f59b62 *DESCRIPTION
+4597a12d5679958d0e16912e0b56b0ef *DESCRIPTION
 22a454194f6ff266ec24eadb40eeda8b *NAMESPACE
 4cd882455c39ff9601cd07c2f8462ff8 *R/AIC.bayesx.R
 f58f09fd34a8545134fe986ca0a633c9 *R/BIC.bayesx.R
@@ -225,11 +225,11 @@ e1193f4f47f0c3e9214ba0cffcb481d6 *man/bayesx.control.Rd
 99d35fa6a6389d40a5adf2afa77f07c6 *man/colorlegend.Rd
 a7e1019187d19ff6ba75467c263e27b5 *man/cprob.Rd
 bb017750b97046e84ec7795e675b01a5 *man/delete.neighbor.Rd
-0ceab1f492616cdc6a902869f9ca989f *man/fitted.bayesx.Rd
+6550ce9fc327393335ad90972b301771 *man/fitted.bayesx.Rd
 0f923672fc18792f65ac5c80d75f1b6f *man/get.neighbor.Rd
 74943b22e495b177ec951d27d45e50a4 *man/getscript.Rd
 061f3b32a5b0d4099c4c5134bcb15947 *man/logfile.Rd
-a98c7e95696874d2c012cc67587225c5 *man/nbAndGraConversion.Rd
+0ea7dedf0ba29663fddb42888825007c *man/nbAndGraConversion.Rd
 b7a9b30edb0254cab5a3789ffc34ade6 *man/parse.bayesx.input.Rd
 760ec5b814decfe58dda5f85237dd809 *man/plot.bayesx.Rd
 da102daacb3a18d07fd8cd6841c03619 *man/plot2d.Rd
@@ -239,7 +239,7 @@ da102daacb3a18d07fd8cd6841c03619 *man/plot2d.Rd
 81966ba9c7e2a139f3f9ee42d71b79c6 *man/plotsamples.Rd
 dc8c8649bb66187582f41b4024c3d629 *man/predict.bayesx.Rd
 16d2558c84711af8888bf0f5156d21a7 *man/prgfile.Rd
-89565262e2514a6920d0de24e9dc9c82 *man/read.bayesx.output.Rd
+2249b5f9bb8c8e047043fe38199ac682 *man/read.bayesx.output.Rd
 175cc161b1cb45c2c18b7a0576778472 *man/read.bnd.Rd
 5caf0bfd4127a11c5c1cf8d4e9b90258 *man/read.gra.Rd
 5a85f7c950818d20419730441f5a75cb *man/runtime.Rd
