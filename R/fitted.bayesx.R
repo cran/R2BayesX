@@ -20,13 +20,16 @@ fitted.bayesx <- function(object, model = NULL, term = NULL, ...)
     if(length(object) > 1L) {
       rval <- list()
       for(i in 1L:k) {
-        rval[[i]] <- object[[i]]$effects[term]
+        take <- if(is.character(term)) pmatch(term, names(object[[i]]$effects), duplicates.ok = TRUE) else term
+        rval[[i]] <- object[[i]]$effects[take]
         if(!is.null(object[[i]]$bayesx.setup$model.name))
           mn[i] <- object[[i]]$bayesx.setup$model.name
       }
       mn[duplicated(mn)] <- paste(mn[duplicated(mn)], 1:length(mn[duplicated(mn)]) + 1L, sep = "")
       names(rval) <- mn
     } else {
+      if(is.character(term))
+        term <- pmatch(term, names(object[[1L]]$effects), duplicates.ok = TRUE)
       if(length(term) > 1L) {
         rval <- object[[1L]]$effects[term]
       } else {

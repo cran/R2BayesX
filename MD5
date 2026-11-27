@@ -1,4 +1,4 @@
-4597a12d5679958d0e16912e0b56b0ef *DESCRIPTION
+96ca07992ef59f228e4f9602ebe2cd92 *DESCRIPTION
 22a454194f6ff266ec24eadb40eeda8b *NAMESPACE
 4cd882455c39ff9601cd07c2f8462ff8 *R/AIC.bayesx.R
 f58f09fd34a8545134fe986ca0a633c9 *R/BIC.bayesx.R
@@ -70,7 +70,7 @@ bb08c7fa880ce789a008190bf51a0d4b *R/f2int.R
 2693a4b69ab689d85ee6b1867a570158 *R/find.fixed.effects.R
 195cb2b90cbe032c148a7c6292bb9dfb *R/find.limits.R
 315fc573c75d103168e85ddad02f9e47 *R/find.smooth.random.R
-a549e897a50f0a9cf902444b02250ffb *R/fitted.bayesx.R
+1d68ea397442e5f14a7cfd62afea0fa3 *R/fitted.bayesx.R
 5c759a8ad111d0d21496544d2ccdab65 *R/geo.smooth.spec.R
 452214b140894d50724dfec9d79c184c *R/get.eta.R
 658b8204ccaca567dfae0d5f299581a2 *R/get.kde.range.R
@@ -93,11 +93,11 @@ e08d64791abc196a32efd1460cc31baf *R/make.label.R
 0efc9029f349d382e23555937e892e8a *R/model.frame.bayesx.R
 f92ecfe013f0d7e95684b37d69299a02 *R/mum.R
 c972394e944765d99d4001d32b28d0d1 *R/nbAndGraConversion.R
-a781fcb8b1b27bbda90a657bbe45fb59 *R/neffects.R
+e38ee12a572a8efdd3e2ff3ef90c6707 *R/neffects.R
 5273f98f53e5ccd58f863582f79ab54d *R/parse.bayesx.input.R
 4206b1796ae9564d6f3ff2070ad5989e *R/parse.random.bayesx.R
 6da601396eeefb2ece62ca22584dfa98 *R/pd.R
-ef32bcaa86ed76e36661218a0608fe29 *R/plot.bayesx.R
+19b0450abfc0af8fcfca7195dec68123 *R/plot.bayesx.R
 5ac682f06891a72fe75702b7335c3411 *R/plot.bnd.R
 a4ce43a237257b2f8a6c404f55388a08 *R/plot.fit.bayesx.R
 57b5a68eef42683926fef31d200de501 *R/plot.geo.bayesx.R
@@ -133,8 +133,8 @@ acc1eae23968b1852999d836a61c6e2d *R/s4class.R
 79a49dfa909156b58650dd73827957ec *R/s4dim.R
 dbcf3e047d79246c6eabe3a2ca0972bd *R/s4hm.R
 b9c440731d0536c221e04cf49ac681e2 *R/samples.R
-18706593f7fdbd3d81f7de51fdd08b9c *R/search.bayesx.models.R
-e6b8b6849c0fa175b82d144cddc41e67 *R/search.bayesx.tex.R
+af8f3d961f64af15daf6d38c79d161c6 *R/search.bayesx.models.R
+df329b364262b141bfeb13d34eda8dbe *R/search.bayesx.tex.R
 ebed76b459b73b03ae42c33dfae16503 *R/set.hlevel.stuff.R
 88c94e49a56c291d330f363056bf9fd2 *R/set.plot2d.specs.R
 18d367a7f747111c4ec34c851dde5dd3 *R/setmfrow.R
@@ -225,7 +225,7 @@ e1193f4f47f0c3e9214ba0cffcb481d6 *man/bayesx.control.Rd
 99d35fa6a6389d40a5adf2afa77f07c6 *man/colorlegend.Rd
 a7e1019187d19ff6ba75467c263e27b5 *man/cprob.Rd
 bb017750b97046e84ec7795e675b01a5 *man/delete.neighbor.Rd
-6550ce9fc327393335ad90972b301771 *man/fitted.bayesx.Rd
+a6be8bdac9dc5baebaecdb807145f8a7 *man/fitted.bayesx.Rd
 0f923672fc18792f65ac5c80d75f1b6f *man/get.neighbor.Rd
 74943b22e495b177ec951d27d45e50a4 *man/getscript.Rd
 061f3b32a5b0d4099c4c5134bcb15947 *man/logfile.Rd
@@ -239,7 +239,7 @@ da102daacb3a18d07fd8cd6841c03619 *man/plot2d.Rd
 81966ba9c7e2a139f3f9ee42d71b79c6 *man/plotsamples.Rd
 dc8c8649bb66187582f41b4024c3d629 *man/predict.bayesx.Rd
 16d2558c84711af8888bf0f5156d21a7 *man/prgfile.Rd
-2249b5f9bb8c8e047043fe38199ac682 *man/read.bayesx.output.Rd
+89565262e2514a6920d0de24e9dc9c82 *man/read.bayesx.output.Rd
 175cc161b1cb45c2c18b7a0576778472 *man/read.bnd.Rd
 5caf0bfd4127a11c5c1cf8d4e9b90258 *man/read.gra.Rd
 5a85f7c950818d20419730441f5a75cb *man/runtime.Rd

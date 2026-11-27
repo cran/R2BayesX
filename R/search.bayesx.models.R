@@ -49,7 +49,7 @@ function(dir)
       k <- length(fs)
       model.names2[[n]] <- rep("NA", k)
       for(j in 1L:length(fs))
-        model.names2[[n]][j] <- strsplit(fs[j], search.endings[i], "")[[1L]]
+        model.names2[[n]][j] <- strsplit(fs[j], search.endings[i], fixed = TRUE)[[1L]][1L]
       ok <- TRUE
     }
   }
@@ -59,8 +59,8 @@ function(dir)
   else {
     model.names <- unique(unlist(model.names))
     for(k in 1L:length(model.names)) {
-      model.names[k] <- strsplit(model.names[k], "_MAIN_REGRESSION", "")[[1L]][1L]
-      model.names[k] <- strsplit(model.names[k], "_RANDOM_EFFECTS", "")[[1L]][1L]
+      model.names[k] <- strsplit(model.names[k], "_MAIN_REGRESSION", fixed = TRUE)[[1L]][1L]
+      model.names[k] <- strsplit(model.names[k], "_RANDOM_EFFECTS", fixed = TRUE)[[1L]][1L]
       if(length(grep("hlevel", model.names[k]))) {
         split <- strsplit(model.names[k], "_hlevel")[[1L]]
         if(length(split) < 2L)

@@ -48,7 +48,8 @@
 }
 
 \examples{
-\dontrun{## generate some data
+\dontrun{
+## generate some data
 set.seed(121)
 n <- 500
 

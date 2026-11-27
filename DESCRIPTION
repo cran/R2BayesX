@@ -1,13 +1,11 @@
 Package: R2BayesX
-Version: 1.1-6
-Date: 2025-03-25
+Version: 1.1-7
+Date: 2026-11-26
 Title: Estimate Structured Additive Regression Models with 'BayesX'
-Authors@R: c(person(given = "Nikolaus", family = "Umlauf", role = c("aut", "cre"), email = "Nikolaus.Umlauf@uibk.ac.at",
-          comment = c(ORCID = "0000-0003-2160-9803")),
-        person(given = "Thomas", family = "Kneib", role = "aut", email = "tkneib@uni-goettingen.de"),
-        person(given = "Stefan", family = "Lang", role = "aut", email = "Stefan.Lang@uibk.ac.at"),
-        person(given = "Achim", family = "Zeileis", role = "aut", email = "Achim.Zeileis@R-project.org",
-               comment = c(ORCID = "0000-0003-0918-3766")))
+Authors@R: c(person(given = "Nikolaus", family = "Umlauf", role = c("aut", "cre"), email = "Nikolaus.Umlauf@uibk.ac.at", comment = c(ORCID = "0000-0003-2160-9803")),
+        person(given = "Thomas", family = "Kneib", role = "aut", email = "tkneib@uni-goettingen.de", comment = c(ORCID = "0000-0003-3390-0972")),
+        person(given = "Stefan", family = "Lang", role = "aut", email = "Stefan.Lang@uibk.ac.at", comment = c(ORCID = "0000-0003-0739-3858")),
+        person(given = "Achim", family = "Zeileis", role = "aut", email = "Achim.Zeileis@R-project.org", comment = c(ORCID = "0000-0003-0918-3766")))
 Description: An R interface to estimate structured additive regression (STAR) models with 'BayesX'.
 Depends: R (>= 2.13.0), BayesXsrc, colorspace, mgcv
 Suggests: interp, coda, maps, MBA, parallel, sf, shapefiles, sp, spdep,
@@ -15,12 +13,15 @@ Suggests: interp, coda, maps, MBA, parallel, sf, shapefiles, sp, spdep,
 Imports: methods
 License: GPL-2 | GPL-3
 LazyLoad: yes
+URL: https://codeberg.org/nikum/R2BayesX/
+BugReports: https://codeberg.org/nikum/R2BayesX/issues
 NeedsCompilation: yes
-Packaged: 2025-03-25 10:47:36 UTC; nik
-Author: Nikolaus Umlauf [aut, cre] (<https://orcid.org/0000-0003-2160-9803>),
-  Thomas Kneib [aut],
-  Stefan Lang [aut],
-  Achim Zeileis [aut] (<https://orcid.org/0000-0003-0918-3766>)
+Packaged: 2026-11-27 07:08:42 UTC; nik
+Author: Nikolaus Umlauf [aut, cre] (ORCID:
+    <https://orcid.org/0000-0003-2160-9803>),
+  Thomas Kneib [aut] (ORCID: <https://orcid.org/0000-0003-3390-0972>),
+  Stefan Lang [aut] (ORCID: <https://orcid.org/0000-0003-0739-3858>),
+  Achim Zeileis [aut] (ORCID: <https://orcid.org/0000-0003-0918-3766>)
 Maintainer: Nikolaus Umlauf <Nikolaus.Umlauf@uibk.ac.at>
 Repository: CRAN
-Date/Publication: 2025-03-25 17:50:05 UTC
+Date/Publication: 2026-11-27 07:50:02 UTC

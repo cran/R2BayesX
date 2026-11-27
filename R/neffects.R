@@ -17,7 +17,7 @@ function(x, term)
             take <- c(take, jj)
         }
       } else take <- match(term[j], ne)
-      if(length(take) > 0L && length(x[[i]]$effects) > 0L && !is.na(take))
+      if(length(take) > 0L && length(x[[i]]$effects) > 0L && !any(is.na(take)))
         n <- n + length(take)
     }
   }

@@ -102,7 +102,7 @@ plot.bayesx <- function(x, model = NULL, term = NULL, which = 1L, ask = FALSE, .
                 take <- c(take, jj)
             }
           } else take <- match(ts[j], ne)
-          if(length(take) > 0L && length(x[[i]]$effects) > 0L && !is.na(take)) {
+          if(length(take) > 0L && length(x[[i]]$effects) > 0L && !any(is.na(take))) {
             for(takeme in take) {
               args$x <- x[[i]]$effects[[takeme]]
               args$diagnostics <- FALSE

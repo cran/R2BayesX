@@ -99,9 +99,9 @@ search.bayesx.tex <- function(x)
     }
     rval$step <- as.integer(resplit(thingrep))
   }
-  dic <- any(grepl("DIC \\\\>", x))
+  dic <- any(grepl("DIC[[:space:]]+\\\\>", x))
   if(dic) {
-    dic <- splitme(grep("DIC \\\\>", x, value = TRUE))
+    dic <- splitme(grep("DIC[[:space:]]+\\\\>", x, value = TRUE))
     ni <- length(dic)
     j <- ni + 1L
     dicgrep <- NULL
@@ -115,9 +115,9 @@ search.bayesx.tex <- function(x)
     }
     rval$DIC <- as.numeric(resplit(dicgrep))
   }
-  pd <- any(grepl("pD \\\\>", x))
+  pd <- any(grepl("pD[[:space:]]+\\\\>", x))
   if(pd) {
-    pd <- splitme(grep("pD \\\\>", x, value = TRUE))
+    pd <- splitme(grep("pD[[:space:]]+\\\\>", x, value = TRUE))
     ni <- length(pd)
     j <- ni + 1L
     pdgrep <- NULL
